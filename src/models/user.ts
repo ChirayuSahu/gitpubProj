@@ -25,6 +25,10 @@ const userSchema = new Schema(
             ref: "Challenges",
             default: [],
         },
+        streak: {
+            type: Number,
+            default: 0,
+        },
     },
     {
         timestamps: true,
