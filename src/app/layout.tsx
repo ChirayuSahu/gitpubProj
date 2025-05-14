@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Keania_One } from "next/font/google";
+import { Geist, Geist_Mono, Keania_One, Inter, DM_Sans } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,6 +17,7 @@ const keania = Keania_One({
     subsets: ['latin'],
     weight: '400',
 })
+
 
 export const metadata: Metadata = {
   title: "Code Clash Arena",

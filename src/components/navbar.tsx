@@ -17,7 +17,7 @@ const Navbar = () => {
                 <div>
                     <h1 className='text-2xl'>{`</CodeClash`}</h1>
                 </div>
-                <div className='flex gap-15 text-lg'>
+                <div className='flex gap-15 text-xl'>
                     {
                         navItems.map((item, index)=>(
                             <Link key={index} href={item.href}>{item.name}</Link>
