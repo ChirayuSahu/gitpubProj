@@ -7,10 +7,13 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import AnimatedCards from '@/components/animatedCards'
 import Image from 'next/image'
+import LoadingPage from '@/components/custom/loadingPage'
 
 const LoginPage = () => {
 
     const router = useRouter();
+    const [loading, setLoading] = useState(false)
+
     const [form, setForm] = useState({
         email: '',
         password: '',
@@ -22,24 +25,33 @@ const LoginPage = () => {
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
+        e.preventDefault();
+        setLoading(true);
 
         try {
             const result = await signIn('credentials', {
                 email: form.email,
                 password: form.password,
                 redirect: false,
-            })
+            });
 
             if (result?.error) {
-                console.log('Login failed:', result.error)
-
-            } else {
-                router.push('/dashboard')
+                console.log('Login failed:', result.error);
+                setLoading(false);
+                return;
             }
+
+            router.push('/dashboard');
+
         } catch (error: any) {
-            console.error('Unexpected error:', error.message)
+            console.error('Unexpected error:', error.message);
+            setLoading(false);
         }
+    };
+
+
+    if (loading) {
+        return <LoadingPage text="Logging in..." />
     }
 
 
@@ -53,14 +65,14 @@ const LoginPage = () => {
                         className='bg-[#0B0E37] p-10 rounded-2xl shadow-[#6370A5] shadow-sm border-2 border-[#6370A5] w-100 h-[50vh] flex flex-col gap-3 justify-center'
                     >
                         <div className='flex items-center justify-center gap-5 mb-6'>
-                        <Image
-                            src='/robot.png'
-                            alt='robot'
-                            width={100}
-                            height={100}
-                            draggable={false}
-                        />
-                        <h1 className='text-6xl text-white text-center font-bold'>Welcome!</h1>
+                            <Image
+                                src='/robot.png'
+                                alt='robot'
+                                width={100}
+                                height={100}
+                                draggable={false}
+                            />
+                            <h1 className='text-6xl text-white text-center font-bold'>Welcome!</h1>
                         </div>
 
                         <div className='flex flex-col gap-1'>
