@@ -12,7 +12,8 @@ import LoadingPage from '@/components/custom/loadingPage'
 const LoginPage = () => {
 
     const router = useRouter();
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
+    const [progress, setProgress] = useState(0)
 
     const [form, setForm] = useState({
         email: '',
@@ -51,7 +52,7 @@ const LoginPage = () => {
 
 
     if (loading) {
-        return <LoadingPage text="Logging in..." />
+        return <LoadingPage text="Logging in..." progress={90}/>
     }
 
 
