@@ -8,11 +8,12 @@ import { useRouter } from 'next/navigation'
 import AnimatedCards from '@/components/animatedCards'
 import Image from 'next/image'
 import LoadingPage from '@/components/custom/loadingPage'
+import { set } from 'mongoose'
 
 const LoginPage = () => {
 
     const router = useRouter();
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
     const [progress, setProgress] = useState(0)
 
     const [form, setForm] = useState({
@@ -28,6 +29,7 @@ const LoginPage = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        setProgress(10);
 
         try {
             const result = await signIn('credentials', {
@@ -36,23 +38,30 @@ const LoginPage = () => {
                 redirect: false,
             });
 
+            setProgress(50);
+
             if (result?.error) {
                 console.log('Login failed:', result.error);
                 setLoading(false);
                 return;
             }
 
+            setProgress(80);
+
             router.push('/dashboard');
+
+            setProgress(100);
 
         } catch (error: any) {
             console.error('Unexpected error:', error.message);
+            setProgress(100);
             setLoading(false);
         }
     };
 
 
     if (loading) {
-        return <LoadingPage text="Logging in..." progress={90}/>
+        return <LoadingPage text="Logging in..." progress={progress}/>
     }
 
 

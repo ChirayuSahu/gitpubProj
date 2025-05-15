@@ -4,13 +4,21 @@ const userSchema = new Schema(
     {
         name: {
             type: String,
-            rewuired: true,
+            required: true,
+        },
+        username: {
+            type: String,
+            required: true,
+            unique: true,
+            lowercase: true,
+            index: true,
         },
         email: {
             type: String,
             required: true,
             unique: true,
             lowercase: true,
+            index: true,
         },
         password: {
             type: String,
@@ -29,6 +37,21 @@ const userSchema = new Schema(
             type: Number,
             default: 0,
         },
+        matchHistory:{
+            type: [Schema.Types.ObjectId],
+            ref: "Match",
+            default: [],
+        },
+        isPlaying: {
+            type: Boolean,
+            default: false,
+        },
+        isOnline: {
+            type: Boolean,
+            default: false,
+        },
+
+
     },
     {
         timestamps: true,
