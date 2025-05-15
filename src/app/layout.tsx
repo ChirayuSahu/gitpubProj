@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Keania_One, Inter, DM_Sans } from "next/font/google";
+import { Geist, Geist_Mono, Keania_One, Londrina_Solid } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,9 +14,15 @@ const geistMono = Geist_Mono({
 });
 
 const keania = Keania_One({
-    variable: "--font-keania",
-    subsets: ['latin'],
-    weight: '400',
+  variable: "--font-keania",
+  subsets: ['latin'],
+  weight: '400',
+})
+
+const londrina = Londrina_Solid({
+  variable: "--font-londrina",
+  subsets: ['latin'],
+  weight: '400',
 })
 
 
@@ -32,8 +39,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${keania.className} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${londrina.className} antialiased`}
       >
+        <Navbar />
         {children}
       </body>
     </html>
