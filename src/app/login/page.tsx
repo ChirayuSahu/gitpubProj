@@ -50,7 +50,7 @@ const LoginPage = () => {
                 <div className='absolute flex items-center justify-center w-full h-full backdrop-blur-xs'>
                     <form
                         onSubmit={handleSubmit}
-                        className='bg-[#0B0E37] p-10 rounded-2xl shadow-lg w-100 h-[50vh] flex flex-col gap-3 justify-center'
+                        className='bg-[#0B0E37] p-10 rounded-2xl shadow-[#6370A5] shadow-sm border-2 border-[#6370A5] w-100 h-[50vh] flex flex-col gap-3 justify-center'
                     >
                         <div className='flex items-center justify-center gap-5 mb-6'>
                         <Image
