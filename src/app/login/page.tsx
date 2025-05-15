@@ -4,8 +4,11 @@ import React, { useState } from 'react'
 import Button from '@/components/custom/button'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const LoginPage = () => {
+
+    const router = useRouter();
     const [form, setForm] = useState({
         email: '',
         password: '',
@@ -30,7 +33,7 @@ const LoginPage = () => {
                 console.log('Login failed:', result.error)
 
             } else {
-                window.location.href = '/'
+                router.push('/dashboard')
             }
         } catch (error: any) {
             console.error('Unexpected error:', error.message)

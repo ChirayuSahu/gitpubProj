@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Keania_One, Londrina_Solid } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
+import AuthSessionProvider from "@/providers/authSessionProvider";
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,18 +34,23 @@ export const metadata: Metadata = {
   description: "Code Clash Arena - A platform to challenge your coding skills.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const session = await getServerSession(authOptions);
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${londrina.className} antialiased`}
       >
-        <Navbar />
-        {children}
+        <AuthSessionProvider session={session}>
+          <Navbar />
+          {children}
+        </AuthSessionProvider>
       </body>
     </html>
   );
