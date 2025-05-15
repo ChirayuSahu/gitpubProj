@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Keania_One, Londrina_Solid } from "next/font/google";
+import { Geist, Geist_Mono, Londrina_Solid } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import AuthSessionProvider from "@/providers/authSessionProvider";
@@ -15,12 +15,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-const keania = Keania_One({
-  variable: "--font-keania",
-  subsets: ['latin'],
-  weight: '400',
-})
 
 const londrina = Londrina_Solid({
   variable: "--font-londrina",

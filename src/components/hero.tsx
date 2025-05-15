@@ -1,7 +1,6 @@
 import React from 'react'
 import Button from './custom/button'
 import AnimatedCard from './animatedCards'
-import Image from 'next/image'
 
 const Hero = () => {
 
