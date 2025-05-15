@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar";
 import AuthSessionProvider from "@/providers/authSessionProvider";
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
+import ScreenGuard from "@/components/screenGuard";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,6 +46,7 @@ export default async function RootLayout({
           <Navbar />
           {children}
         </AuthSessionProvider>
+        <ScreenGuard />
       </body>
     </html>
   );

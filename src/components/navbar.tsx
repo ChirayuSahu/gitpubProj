@@ -22,6 +22,11 @@ const Navbar = () => {
         { name: 'Community', href: '/' },
     ]
 
+    const handleLogout = () => {
+        signOut();
+        router.push('/login');
+    }
+
     return (
 
 
@@ -46,7 +51,7 @@ const Navbar = () => {
                                 <Button className='text-lg py-2 px-6' onClick={()=>(router.push('/dashboard'))} >Dashboard</Button>
                             </div>
                             <div className=''>
-                                <Button className='text-lg py-2 px-6' onClick={() => signOut()}>Logout</Button>
+                                <Button className='text-lg py-2 px-6' onClick={handleLogout}>Logout</Button>
                             </div>
                         </div>
                     </>
