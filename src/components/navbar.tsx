@@ -34,10 +34,10 @@ const Navbar = () => {
             <div className='fixed z-100 w-full py-4 flex justify-between items-center px-15 text-[#24F2F4] backdrop-blur-md border-b border-[#24F2F4]'>
                 <div>
                     <Link href={'/'}>
-                        <h1 className='text-2xl'>{`</CodeClash`}</h1>
+                        <h1 className='text-4xl'>{`</CodeClash`}</h1>
                     </Link>
                 </div>
-                <div className='flex gap-15 text-xl'>
+                <div className='flex gap-15 text-2xl'>
                     {
                         navItems.map((item) => (
                             <Link key={item.name} href={item.href}>{item.name}</Link>
@@ -57,7 +57,7 @@ const Navbar = () => {
                     </>
                 ) : (
                     <div className=''>
-                        <Button className='text-lg py-2 px-6'>Sign Up</Button>
+                        <Button className='text-lg py-2 px-6' onClick={()=>(router.push('/login'))}>Login</Button>
                     </div>
                 )}
 

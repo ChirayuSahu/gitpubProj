@@ -6,6 +6,7 @@ import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import AnimatedCards from '@/components/animatedCards'
+import Image from 'next/image'
 
 const LoginPage = () => {
 
@@ -49,9 +50,18 @@ const LoginPage = () => {
                 <div className='absolute flex items-center justify-center w-full h-full backdrop-blur-xs'>
                     <form
                         onSubmit={handleSubmit}
-                        className='bg-[#0B0E37] p-8 rounded-lg shadow-lg w-96 flex flex-col gap-6'
+                        className='bg-[#0B0E37] p-10 rounded-2xl shadow-lg w-100 h-[50vh] flex flex-col gap-3 justify-center'
                     >
-                        <h1 className='text-3xl text-white text-center font-bold'>Welcome Again!</h1>
+                        <div className='flex items-center justify-center gap-5 mb-6'>
+                        <Image
+                            src='/robot.png'
+                            alt='robot'
+                            width={100}
+                            height={100}
+                            draggable={false}
+                        />
+                        <h1 className='text-6xl text-white text-center font-bold'>Welcome!</h1>
+                        </div>
 
                         <div className='flex flex-col gap-1'>
                             <label htmlFor='email' className='text-white font-medium'>
@@ -63,7 +73,7 @@ const LoginPage = () => {
                                 name='email'
                                 value={form.email}
                                 onChange={handleChange}
-                                className='p-2 rounded-md bg-[#050A27] text-white outline-none'
+                                className='p-2 rounded-lg bg-[#050A27] text-white border-2 border-[#6370A5] outline-none'
                                 required
                             />
                         </div>
@@ -78,18 +88,18 @@ const LoginPage = () => {
                                 name='password'
                                 value={form.password}
                                 onChange={handleChange}
-                                className='p-2 rounded-md bg-[#050A27] text-white outline-none'
+                                className='p-2 rounded-lg bg-[#050A27] text-white border-2 border-[#6370A5] outline-none'
                                 required
                             />
                         </div>
 
                         <Button
                             type='submit'
-                            className='py-2'
+                            className='py-2 text-3xl border-lg mt-4'
                         >
                             Log In
                         </Button>
-                        <h1 className='text-center'>Need an account? <Link className='underline' href={'/'}>Sign in</Link></h1>
+                        <h1 className='text-center mt-4'>Don't have an account? <Link className='underline' href={'/'}>Sign in</Link></h1>
                     </form>
                 </div>
             </div>
