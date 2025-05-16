@@ -26,7 +26,8 @@ const challengesSchema = new Schema(
         timeLimit:{
             type: Number,
             required: true,
-        }
+        },
+
     },
     {
         timestamps: true,

@@ -29,7 +29,7 @@ const LoginPage = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        setProgress(10);
+        setProgress(30);
 
         try {
             const result = await signIn('credentials', {
@@ -41,7 +41,7 @@ const LoginPage = () => {
             setProgress(50);
 
             if (result?.error) {
-                console.log('Login failed:', result.error);
+                setProgress(100);
                 setLoading(false);
                 return;
             }
