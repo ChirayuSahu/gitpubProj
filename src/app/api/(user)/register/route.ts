@@ -6,9 +6,9 @@ import { hashPass } from "@/lib/encrypt";
 
 export const POST = async (req: NextRequest) => {
     
-    const { name, email, password } = await req.json();
+    const { name, username, email, password } = await req.json();
 
-    if (!name || !email || !password) {
+    if (!name || !username || !email || !password) {
         return NextResponse.json({ message: "All fields are required." }, { status: 400 });
     }
 
@@ -18,14 +18,21 @@ export const POST = async (req: NextRequest) => {
 
         await connectMongo();
 
-        const existing = await User.findOne({ email });
+        const existingEmail = await User.findOne({ email });
 
-        if (existing) {
-            return NextResponse.json({message: "User already exists."}, {status: 400});
+        if (existingEmail) {
+            return NextResponse.json({message: "Email already exists."}, {status: 400});
+        }
+
+        const existingUsername = await User.findOne({ username });
+
+        if(existingUsername) {
+            return NextResponse.json({message: "Username already exists."}, {status: 400});
         }
 
         const user = await User.create({
             name,
+            username,
             email,
             password: hashedPass,
         })
