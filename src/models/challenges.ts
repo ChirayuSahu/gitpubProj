@@ -27,7 +27,20 @@ const challengesSchema = new Schema(
             type: Number,
             required: true,
         },
-
+        testCases: {
+            type: [
+                {
+                    input: {
+                        type: String,
+                        required: true,
+                    },
+                    output: {
+                        type: String,
+                        required: true,
+                    },
+                }
+            ],
+        }
     },
     {
         timestamps: true,
