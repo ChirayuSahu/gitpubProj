@@ -1,9 +1,14 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
+  content: [
+    "./src/**/*.{js,ts,jsx,tsx}", // Ensures Tailwind scans your React+TSX files
+  ],
   theme: {
     extend: {
       backgroundImage: {
-        'hero-pattern': "url('/path-to-image.jpg')",
+        "game-bg": "url('gitPub/gitpubProj/public/herobg.png')",
       },
     },
   },
-}
+  plugins: [],
+};
