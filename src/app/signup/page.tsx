@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import AnimatedCards from '@/components/animatedCards'
 import Image from 'next/image'
 import LoadingPage from '@/components/custom/loadingPage'
+import { toast } from 'sonner'
 
 const SignUpPage = () => {
 
@@ -38,28 +39,29 @@ const SignUpPage = () => {
                 body: JSON.stringify(form),
             });
 
-            console.log('Response status:', res.status);
+            const data = await res.json();
 
             if (!res.ok) {
                 setProgress(100);
                 setLoading(false);
+                toast.error(data.message);
                 return;
             }
 
             setProgress(50);
-            console.log('Navigating to /login');
             router.push('/login');
 
         } catch (error: any) {
+            toast.error('Unexpected error:', error.message);
+        } finally {
             setLoading(false);
             setProgress(100);
-            console.error('Unexpected error:', error.message);
         }
     };
 
 
     if (loading) {
-        return <LoadingPage text="Logging in..." progress={progress} />
+        return <LoadingPage text="Signing up..." progress={progress} />
     }
 
 
@@ -149,7 +151,7 @@ const SignUpPage = () => {
                         >
                             Sign Up
                         </Button>
-                        <h1 className='text-center mt-4'>Already have an account? <Link className='underline' href={'/login'}>Login</Link></h1>
+                        <h1 className='text-center mt-4 text-white'>Already have an account? <Link className='underline' href={'/login'}>Login</Link></h1>
                     </form>
                 </div>
             </div>

@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import AnimatedCards from '@/components/animatedCards'
 import Image from 'next/image'
 import LoadingPage from '@/components/custom/loadingPage'
+import { toast } from 'sonner'
 
 const LoginPage = () => {
 
@@ -39,9 +40,10 @@ const LoginPage = () => {
 
             setProgress(50);
 
-            if (result?.error) {
+            if(!result?.ok){
                 setProgress(100);
                 setLoading(false);
+                toast.error('Invalid credentials');
                 return;
             }
 
@@ -52,7 +54,7 @@ const LoginPage = () => {
             setProgress(100);
 
         } catch (error: any) {
-            console.error('Unexpected error:', error.message);
+            toast.error('Unexpected error:', error.message);
             setProgress(100);
             setLoading(false);
         }
@@ -120,7 +122,7 @@ const LoginPage = () => {
                         >
                             Log In
                         </Button>
-                        <h1 className='text-center mt-4'>Don&apos;t have an account? <Link className='underline' href={'/signup'}>Sign in</Link></h1>
+                        <h1 className='text-center mt-4 text-white'>Don&apos;t have an account? <Link className='underline' href={'/signup'}>Sign in</Link></h1>
                     </form>
                 </div>
             </div>

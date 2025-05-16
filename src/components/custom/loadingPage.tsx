@@ -15,19 +15,22 @@ const LoadingPage: React.FC<LoadingPageProps> = ({ text, progress }) => {
                 speed={0.2}
                 squareSize={70}
                 direction='diagonal'
-                borderColor='#fff'
-                hoverFillColor='#222'
-                className='opacity-20 z-0 bg-[#1259d4]'
+                borderColor='#999'
+                hoverFillColor=''
+                className='absolute opacity-20 z-[1] bg-center'
             />
-            <div className="absolute inset-0 z-10 flex items-center justify-center h-screen w-screen">
+            <div className='absolute inset-0 z-0 h-screen w-screen bg-[url("/herobg.png")]'>
+
+            </div>
+            <div className='absolute inset-0 z-10 flex items-center justify-center h-screen w-screen'>
                 <div className="flex flex-col items-start gap-4 w-1/2 max-w-lg">
-                    <div className="text-4xl">{text}</div>
+                    <div className="text-4xl text-white">{text}</div>
                     <progress
                         className="w-full h-10 rounded-full [&::-webkit-progress-bar]:bg-gray-200 [&::-webkit-progress-value]:bg-[#040482]"
                         value={progress}
                         max={100}
                     />
-                    <p className="text-2xl text-white mt-8 text-center w-full">
+                    <p suppressHydrationWarning className="text-2xl text-white mt-8 text-center w-full">
                         {progress > 85 ? ("Almost there..." ) : (
                             loadingTexts[Math.floor(Math.random() * loadingTexts.length)]
                         )}

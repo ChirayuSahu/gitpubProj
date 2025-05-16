@@ -6,6 +6,7 @@ import AuthSessionProvider from "@/providers/authSessionProvider";
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import ScreenGuard from "@/components/screenGuard";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,6 +48,7 @@ export default async function RootLayout({
           {children}
         </AuthSessionProvider>
         <ScreenGuard />
+        <Toaster richColors position="top-right" theme="light" />
       </body>
     </html>
   );
