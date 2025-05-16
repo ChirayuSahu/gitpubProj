@@ -8,6 +8,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 [![Next.js](https://img.shields.io/badge/Next.js-14.0+-black?logo=next.js)](https://nextjs.org/)
 [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](CONTRIBUTING.md)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/ChirayuSahu/gitpubProj)
 
 ## 🚀 Features
 
