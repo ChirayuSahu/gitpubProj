@@ -13,7 +13,7 @@ const Hero = () => {
                     <div className='flex flex-col gap-20 justify-center m-20'>
                         <h1 className={`text-[#24F2F4] text-8xl font-bold text-center text-shadow-lg/20`}>CodeClash <p>Arena</p></h1>
                         <div className='flex gap-4 justify-center items-center'>
-                            <h1 className='text-5xl font-bold text-center text-shadow-lg/20'>Let's</h1>
+                            <h1 className='text-5xl font-bold text-center text-shadow-lg/20'>Let&apos;s</h1>
                             <RotatingText
                                 texts={['Clash', 'Code', 'Conquer']}
                                 mainClassName="text-5xl leading-none py-0 text-[#24F2F4] overflow-hidden flex items-center"

@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation'
 import AnimatedCards from '@/components/animatedCards'
 import Image from 'next/image'
 import LoadingPage from '@/components/custom/loadingPage'
-import { set } from 'mongoose'
 
 const LoginPage = () => {
 
@@ -121,7 +120,7 @@ const LoginPage = () => {
                         >
                             Log In
                         </Button>
-                        <h1 className='text-center mt-4'>Don't have an account? <Link className='underline' href={'/'}>Sign in</Link></h1>
+                        <h1 className='text-center mt-4'>Don&apos;t have an account? <Link className='underline' href={'/'}>Sign in</Link></h1>
                     </form>
                 </div>
             </div>
