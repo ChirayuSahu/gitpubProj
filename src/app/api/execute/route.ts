@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
 
-    const { code } = await req.json();
+    const { language, code } = await req.json();
 
-    if (!code) {
-        return NextResponse.json({ message: "Code is required." }, { status: 400 });
+    if (!code || !language) {
+        return NextResponse.json({ message: "Code and Language is required." }, { status: 400 });
     }
 
     try {
@@ -15,7 +15,7 @@ export const POST = async (req: NextRequest) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                language: "python",
+                language: language,
                 version: "3.10.0",
                 files: [
                     {
