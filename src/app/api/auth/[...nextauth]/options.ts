@@ -19,7 +19,12 @@ export const authOptions: NextAuthOptions = {
 
                 try {
                     await connectMongo();
-                    const user = await User.findOne({ email: credentials.email });
+                    const user = await User.findOne({
+                        $or:[
+                            { email: credentials.email },
+                            { username: credentials.email }
+                        ]
+                    });
 
                     if (!user) {
                         throw new Error("User not found");

@@ -10,6 +10,24 @@ const challengesSchema = new Schema(
             type: String,
             required: true,
         },
+        difficulty: {
+            type: String,
+            enum: ["easy", "medium", "hard"],
+            required: true,
+        },
+        winXP: {
+            type: Number,
+            required: true,
+        },
+        loseXP: {
+            type: Number,
+            required: true,
+        },
+        timeLimit:{
+            type: Number,
+            required: true,
+        },
+
     },
     {
         timestamps: true,
