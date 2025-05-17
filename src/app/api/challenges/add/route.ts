@@ -4,9 +4,9 @@ import Challenge from "@/models/challenges";
 
 export const POST = async (req: NextRequest) => {
 
-    const { name, description, difficulty, winXP, loseXP, timeLimit, testCases } = await req.json();
+    const { name, description, difficulty, winXP, loseXP, timeLimit, testCases, starterCode } = await req.json();
 
-    if (!name || !description || !difficulty || !winXP || !loseXP || !timeLimit || !testCases) {
+    if (!name || !description || !difficulty || !winXP || !loseXP || !timeLimit || !testCases || !starterCode) {
         return NextResponse.json({ message: "All fields are required." }, { status: 400 });
     }
 
@@ -21,6 +21,7 @@ export const POST = async (req: NextRequest) => {
             loseXP,
             timeLimit,
             testCases,
+            starterCode,
         });
 
         challenge.save();

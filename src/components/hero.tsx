@@ -12,8 +12,6 @@ const Hero = () => {
 
     const { data: session } = useSession()
 
-
-
     return (
         <>
             <AnimatedCard />
