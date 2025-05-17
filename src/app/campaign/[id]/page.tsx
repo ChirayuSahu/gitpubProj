@@ -223,6 +223,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
       <div className='absolute opacity-10 top-0 z-10 left-0 w-full min-h-screen overflow-hidden'>
         <Squares
           speed={0.1}
+          squareSize={100}
 
         />
       </div>
@@ -274,9 +275,9 @@ export default function SpecificCampaignPage({ params }: PageProps) {
           </div>
 
           <div className="col-span-3 border-2 border-blue-500 rounded-lg bg-[#020c2b] p-2">
-            <div className="relative">
+            <div className={`py-2 ${output || checkingData ? 'h-full' : 'h-[77vh]'}`}>
               <Editor
-                height="320px"
+                height="100%"
                 defaultLanguage="python"
                 value={code}
                 theme="my-dark-theme"
@@ -326,13 +327,13 @@ export default function SpecificCampaignPage({ params }: PageProps) {
                 <div
                   key={index}
                   className={`rounded-lg p-4 border m-2 ${res.passed
-                      ? 'bg-green-900/30 border-green-500'
-                      : 'bg-red-900/30 border-red-500'
+                      ? 'border-[#0DFF00]'
+                      : 'border-[#FF0000]'
                     }`}
                   style={{
                     boxShadow: res.passed
-                      ? '0 0 10px 3px rgba(34,197,94, 0.5)'
-                      : '0 0 10px 3px rgba(239,68,68, 0.5)'
+                      ? '0 0 10px 3px rgba(34,197,94, 0.25)'
+                      : '0 0 10px 3px rgba(239,68,68, 0.25)'
                   }}
                 >
 

@@ -245,6 +245,7 @@ export default function CampaignMode() {
             </button>
             <button
               className="px-6 py-2 border border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black transition"
+              onClick={handleCheckCode}
             >
               Check Answer
             </button>
