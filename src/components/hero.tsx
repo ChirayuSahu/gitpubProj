@@ -1,9 +1,18 @@
+"use client"
+
 import React from 'react'
 import Button from './custom/button'
 import AnimatedCard from './animatedCards'
 import RotatingText from '@/components/RotatingText/RotatingText'
+import { useSession } from 'next-auth/react'
+import Link from 'next/link'
+
 
 const Hero = () => {
+
+    const { data: session } = useSession()
+
+
 
     return (
         <>
@@ -28,7 +37,11 @@ const Hero = () => {
                             />
                         </div>
                         <div className='flex justify-center'>
+                            <Link
+                            href={session ? '/dashboard' : '/signup'}
+                            >
                             <Button className='px-12 py-4 text-xl'>Start Clashing</Button>
+                            </Link>
                         </div>
                     </div>
                 </div>

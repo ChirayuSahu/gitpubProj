@@ -25,7 +25,7 @@ export const POST = async (req: NextRequest) => {
 
         challenge.save();
 
-        return NextResponse.json({ message: "Challenge created successfully." }, { status: 201 });
+        return NextResponse.json({ message: "Challenge created successfully.", challenge }, { status: 201 });
 
     } catch (error: any) {
         return NextResponse.json({ message: error.message }, { status: 500 });
