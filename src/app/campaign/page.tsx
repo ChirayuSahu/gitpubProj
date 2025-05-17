@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Editor } from '@monaco-editor/react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { toast } from 'sonner';
 
 const questions = [
   {
@@ -21,6 +22,21 @@ const questions = [
 ];
 
 export default function CampaignMode() {
+
+  const id = "68286aba224af4b034f7d64f"
+
+  useEffect(() => {
+
+    const fetchQuestion = async () => {
+      try {
+
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    }
+
+  }, [id])
+
   const [question, setQuestion] = useState(questions[0]);
   const [code, setCode] = useState('def solve(a, b):\n    return a + b');
   const [output, setOutput] = useState('');
@@ -81,7 +97,6 @@ export default function CampaignMode() {
       </div>
 
       <div className="grid grid-cols-4 gap-6">
-        {/* Question Panel */}
         <div className="col-span-1 border-2 border-blue-500 p-4 rounded-lg relative h-[400px] overflow-auto">
           <h2 className="font-bold mb-2">{question.prompt}</h2>
           <p className="text-sm mb-4 whitespace-pre-wrap">{question.constraints}</p>
@@ -94,7 +109,6 @@ export default function CampaignMode() {
           </button>
         </div>
 
-        {/* Code Editor */}
         <div className="col-span-3 border-2 border-blue-500 rounded-lg bg-[#1F1F1E]">
           <div className="relative">
             <Editor
@@ -125,7 +139,6 @@ export default function CampaignMode() {
         </div>
       </div>
 
-      {/* Terminal Output */}
       <div className="mt-6 border-2 border-blue-500 p-4 rounded-lg bg-[#020c2b] min-h-[100px]">
         <h3 className="text-lg font-bold mb-2 text-white">Terminal</h3>
         <pre className="text-white whitespace-pre-wrap">{output}</pre>

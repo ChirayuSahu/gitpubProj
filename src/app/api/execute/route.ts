@@ -65,7 +65,7 @@ print(${functionName}(input_value))
         }
 
         return NextResponse.json(
-            { message: "Code tested successfully.", results, functionName },
+            { message: "Code tested successfully.", results },
             { status: 200 }
         );
     } catch (error: any) {

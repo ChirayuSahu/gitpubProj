@@ -7,6 +7,19 @@ export const GET = async (req: NextRequest) => {
     const { searchParams } = new URL(req.url);
     const difficulty = searchParams.get("difficulty");
     const limitParam = searchParams.get("limit");
+    const questionId = searchParams.get("id");
+
+    if (questionId) {
+      
+      await connectMongo();
+
+
+      const challenge = await Challenges.findById(questionId);
+      if (!challenge) {
+        return NextResponse.json({ message: "Challenge not found." }, { status: 404 });
+      }
+      return NextResponse.json({ challenge }, { status: 200 });
+    }
 
     if (!difficulty) {
       return NextResponse.json({ message: "Difficulty is required." }, { status: 400 });
@@ -14,10 +27,8 @@ export const GET = async (req: NextRequest) => {
 
     await connectMongo();
 
-    // Convert limit to a number if provided
     const limit = limitParam ? parseInt(limitParam, 10) : null;
 
-    // Use aggregation if limit is provided to get random results
     let challenges;
     if (limit) {
       challenges = await Challenges.aggregate([
