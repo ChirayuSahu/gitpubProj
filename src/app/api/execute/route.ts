@@ -32,7 +32,7 @@ export const POST = async (req: NextRequest) => {
             const fullCode = `
 import ast
 ${code}
-input_value = ast.literal_eval(${JSON.stringify(input)})
+input_value = ${JSON.stringify(input)}
 print(${functionName}(input_value))
 `.trim();
 

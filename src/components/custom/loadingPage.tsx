@@ -13,7 +13,7 @@ const LoadingPage: React.FC<LoadingPageProps> = ({ text, progress }) => {
         <>
             <Squares
                 speed={0.2}
-                squareSize={70}
+                squareSize={100}
                 direction='diagonal'
                 borderColor='#999'
                 hoverFillColor=''

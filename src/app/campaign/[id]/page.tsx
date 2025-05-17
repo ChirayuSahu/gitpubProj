@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Editor, { useMonaco } from '@monaco-editor/react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import LoadingPage from '@/components/custom/loadingPage';
 import { useRouter } from 'next/navigation';
 import Squares from '@/components/Squares/Squares';
+import { use } from 'react';
 
 type TestCase = {
   input: string;
@@ -32,11 +33,10 @@ type Output = {
   stderr: string;
 };
 
+
 type PageProps = {
-  params: {
-    id: string;
-  };
-}
+  params: Promise<{ id: string }>;
+};
 
 export default function SpecificCampaignPage({ params }: PageProps) {
 
@@ -44,7 +44,6 @@ export default function SpecificCampaignPage({ params }: PageProps) {
 
   useEffect(() => {
     if (monaco) {
-      // Define and set your theme if needed
       monaco.editor.defineTheme('my-dark-theme', {
         base: 'vs-dark',
         inherit: true,
@@ -58,7 +57,6 @@ export default function SpecificCampaignPage({ params }: PageProps) {
       });
       monaco.editor.setTheme('my-dark-theme');
 
-      // Inject CSS to make editor font bold
       const style = document.createElement('style');
       style.innerHTML = `
         .monaco-editor .mtk1 {
@@ -76,16 +74,16 @@ export default function SpecificCampaignPage({ params }: PageProps) {
     }
   }, [monaco]);
 
-  const { id } = params;
+  const { id } = use(params);
 
   const [question, setQuestion] = useState<Challenge | null>(null);
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [output, setOutput] = useState<Output | null>();
-  const [hintShown, setHintShown] = useState(false);
   const [checkingData, setCheckingData] = useState<any>(null);
   const [correct, setCorrect] = useState(false);
+  const [fullscreen, setFullScreen] = useState(false);
 
   const router = useRouter();
 
@@ -216,6 +214,40 @@ export default function SpecificCampaignPage({ params }: PageProps) {
     return <LoadingPage text="Loading..." progress={progress} />
   }
 
+  if (fullscreen) {
+    return (
+      <div className="relative col-span-3 bg-[#020c2b] p-2">
+        <div className={`py-6 h-[99vh]`}>
+          <Editor
+            height="100%"
+            defaultLanguage="python"
+            value={code}
+            theme="my-dark-theme"
+            onChange={(value) => setCode(value || '')}
+            options={{
+              scrollBeyondLastLine: false,
+              fontSize: 20,
+              minimap: { enabled: false },
+
+            }}
+          />
+          <div className="absolute bottom-5 right-5 flex gap-4">
+            <button onClick={() => setFullScreen(!fullscreen)} className="bg-[#000928] p-2 rounded-full">
+              <Image
+                src="/fullscreen.png"
+                alt="Fullscreen"
+                style={{ width: '24px', height: '24px' }}
+                className="cursor-pointer"
+                width={24}
+                height={24}
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <>
       <div className='absolute bg-[#051D5B] top-0 left-0 w-full min-h-screen overflow-hidden'>
@@ -234,9 +266,10 @@ export default function SpecificCampaignPage({ params }: PageProps) {
               <Image
                 src="/back.png"
                 alt="Back"
-                width={28}
-                height={28}
+                style={{ width: '30px', height: '24px' }}
                 className="cursor-pointer"
+                width={24}
+                height={24}
               />
             </Link>
             <h1 className="text-cyan-400 text-4xl font-bold">CAMPAIGN MODE</h1>
@@ -245,17 +278,19 @@ export default function SpecificCampaignPage({ params }: PageProps) {
             <Image
               src="/gear.png"
               alt="Settings"
-              width={28}
-              height={28}
+              style={{ width: '24px', height: '24px' }}
               className="cursor-pointer"
+              width={24}
+              height={24}
             />
             <Link href="/">
               <Image
                 src="/home.png"
                 alt="Home"
-                width={28}
-                height={28}
+                style={{ width: '24px', height: '24px' }}
                 className="cursor-pointer"
+                width={24}
+                height={24}
               />
             </Link>
           </div>
@@ -274,7 +309,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
             ))}
           </div>
 
-          <div className="col-span-3 border-2 border-blue-500 rounded-lg bg-[#020c2b] p-2">
+          <div className="relative col-span-3 border-2 border-blue-500 rounded-lg bg-[#020c2b] p-2">
             <div className={`py-2 ${output || checkingData ? 'h-full' : 'h-[77vh]'}`}>
               <Editor
                 height="100%"
@@ -289,13 +324,23 @@ export default function SpecificCampaignPage({ params }: PageProps) {
 
                 }}
               />
+              <div className="absolute bottom-5 right-5 flex gap-4">
+                <button onClick={() => setFullScreen(!fullscreen)} className="bg-[#000928] p-2 rounded-full">
+                  <Image
+                    src="/fullscreen.png"
+                    alt="Fullscreen"
+                    style={{ width: '24px', height: '24px' }}
+                    className="cursor-pointer"
+                    width={24}
+                    height={24}
+                  />
+                </button>
+              </div>
             </div>
-
           </div>
 
           <div className='flex items-center justify-center'>
             <button
-              onClick={() => setHintShown(prev => !prev)}
               disabled={!correct}
               className={`px-4 text-2xl font-black py-1 border-4 bg-[#000928] border-yellow-400 text-yellow-500 rounded transition ${correct ? 'cursor-pointer hover:text-black text-yellow-300' : 'cursor-not-allowed hover:bg-[#000928]'}`}
             >
@@ -327,8 +372,8 @@ export default function SpecificCampaignPage({ params }: PageProps) {
                 <div
                   key={index}
                   className={`rounded-lg p-4 border m-2 ${res.passed
-                      ? 'border-[#0DFF00]'
-                      : 'border-[#FF0000]'
+                    ? 'border-[#0DFF00]'
+                    : 'border-[#FF0000]'
                     }`}
                   style={{
                     boxShadow: res.passed
