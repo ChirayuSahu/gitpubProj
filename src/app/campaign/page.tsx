@@ -6,7 +6,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { toast } from 'sonner';
 import LoadingPage from '@/components/custom/loadingPage';
-import { set } from 'mongoose';
 
 type TestCase = {
   input: string;
@@ -184,7 +183,7 @@ export default function CampaignMode() {
             className="cursor-pointer"
           />
         </Link>
-        <h1 className="text-cyan-400 text-2xl font-bold">CAMPAIGN MODE</h1>
+        <h1 className="text-cyan-400 text-3xl font-bold">CAMPAIGN MODE</h1>
         <div className="flex gap-4 text-cyan-400 text-xl">
           <Image
             src="/gear.png"
@@ -246,6 +245,7 @@ export default function CampaignMode() {
             </button>
             <button
               className="px-6 py-2 border border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black transition"
+              onClick={handleCheckCode}
             >
               Check Answer
             </button>
