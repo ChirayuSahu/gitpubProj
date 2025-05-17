@@ -8,7 +8,7 @@ export default function NavbarWrapper() {
   const pathname = usePathname();
 
   // Hide navbar on /campaign
-  if (pathname.startsWith('/campaign') || pathname.startsWith('/courses')) {
+  if (pathname.startsWith('/campaign') || pathname.startsWith('/courses') || pathname.startsWith('/path')) {
     return null;
   }
 
