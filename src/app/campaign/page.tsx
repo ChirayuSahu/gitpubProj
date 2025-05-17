@@ -5,6 +5,7 @@ import { Editor } from '@monaco-editor/react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { toast } from 'sonner';
+import LoadingPage from '@/components/custom/loadingPage';
 import { set } from 'mongoose';
 
 type TestCase = {
@@ -50,7 +51,7 @@ export default function CampaignMode() {
   const id = "68286aba224af4b034f7d64f"
   const [question, setQuestion] = useState<Challenge | null>(null);
   const [code, setCode] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [output, setOutput] = useState<Output | null>();
   const [hintShown, setHintShown] = useState(false);
@@ -78,6 +79,9 @@ export default function CampaignMode() {
 
       } catch (error: any) {
         toast.error(error.message);
+      } finally {
+        setProgress(100);
+        setLoading(false);
       }
     }
 
@@ -158,7 +162,14 @@ export default function CampaignMode() {
 
     } catch (error: any) {
       toast.error(error.message);
+    } finally {
+      setProgress(100);
+      setLoading(false);
     }
+  }
+
+  if(loading) {
+    return <LoadingPage text="Loading..." progress={progress} />
   }
 
   return (
