@@ -15,7 +15,7 @@ export default function ScreenGuard() {
         }
       } else {
         if (pathname === "/no-mobile") {
-          router.replace("/");
+          router.back();
         }
       }
     }

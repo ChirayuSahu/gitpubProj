@@ -29,13 +29,11 @@ export const POST = async (req: NextRequest) => {
         for (const testCase of testCases) {
             const { input, output: expectedOutput } = testCase;
 
-            // Combine starterCode, user code, and call to extracted function
             const fullCode = `
-${starterCode}
-
+import ast
 ${code}
-
-print(${functionName}(${JSON.stringify(input)}))
+input_value = ast.literal_eval(${JSON.stringify(input)})
+print(${functionName}(input_value))
 `.trim();
 
             const res = await fetch("https://emkc.org/api/v2/piston/execute", {
@@ -61,11 +59,13 @@ print(${functionName}(${JSON.stringify(input)}))
                 expectedOutput,
                 actualOutput,
                 passed: actualOutput === expectedOutput,
+                stdout: data?.run?.output || "",
+                stderr: data?.run?.stderr || "",
             });
         }
 
         return NextResponse.json(
-            { message: "Code tested successfully.", results },
+            { message: "Code tested successfully.", results, functionName },
             { status: 200 }
         );
     } catch (error: any) {

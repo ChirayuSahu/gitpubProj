@@ -18,7 +18,6 @@ const questions = [
       { input: [100, 23], expected: 123 },
     ],
   },
-  // Add more questions as needed
 ];
 
 export default function CampaignMode() {
@@ -96,19 +95,20 @@ export default function CampaignMode() {
         </div>
 
         {/* Code Editor */}
-        <div className="col-span-3 border-2 border-blue-500 rounded-lg">
+        <div className="col-span-3 border-2 border-blue-500 rounded-lg bg-[#1F1F1E]">
           <div className="relative">
             <Editor
-              height="400px"
+              height="320px"
               defaultLanguage="python"
               value={code}
               theme="vs-dark"
               onChange={(value) => setCode(value || '')}
               options={{ minimap: { enabled: false } }}
+              
             />
           </div>
 
-          <div className="flex justify-center gap-6 mt-4">
+          <div className="flex justify-center gap-6 mt-4 bg-[#1F1F1E]">
             <button
               onClick={runCode}
               className="px-6 py-2 border border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black transition"
