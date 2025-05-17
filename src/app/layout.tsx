@@ -41,7 +41,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${londrina.className} antialiased`}
+        className={`${londrina.className} antialiased`}
       >
         <AuthSessionProvider session={session}>
           <NavbarWrapper />

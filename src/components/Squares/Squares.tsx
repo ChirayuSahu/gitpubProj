@@ -86,20 +86,6 @@ const Squares: React.FC<SquaresProps> = ({
           ctx.strokeRect(squareX, squareY, squareSize, squareSize);
         }
       }
-
-      const gradient = ctx.createRadialGradient(
-        width / 2,
-        height / 2,
-        0,
-        width / 2,
-        height / 2,
-        Math.sqrt(width ** 2 + height ** 2) / 2
-      );
-      gradient.addColorStop(0, "rgba(0, 0, 0, 0)");
-      gradient.addColorStop(1, "#060606");
-
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, width, height);
     };
 
     const updateAnimation = () => {
