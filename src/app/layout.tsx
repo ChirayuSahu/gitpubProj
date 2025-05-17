@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Londrina_Solid } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/navbar";
+import NavbarWrapper from "@/components/NavbarWrapper";
 import AuthSessionProvider from "@/providers/authSessionProvider";
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
@@ -44,7 +44,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${londrina.className} antialiased`}
       >
         <AuthSessionProvider session={session}>
-          <Navbar />
+          <NavbarWrapper />
           {children}
         </AuthSessionProvider>
         <ScreenGuard />
