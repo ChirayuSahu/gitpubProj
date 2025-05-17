@@ -1,0 +1,74 @@
+🎮 CodeClash Arena – PvP Chaos Mode Rules (Final Version)
+
+🔧 General PvP Mechanics
+	•	Players matched by RP (Rating Points) and sorted into leagues.
+	•	Each player gets a different coding question based on difficulty.
+	•	Matches are timed.
+	•	Two types of sabotage:
+	•	🤖 Computer-generated chaos (auto-injected code sabotage)
+	•	🧨 Manual sabotage button (player-triggered, limited use)
+	•	If no one submits a solution before time runs out → both get 0 RP.
+
+⸻
+
+🧱 League-Specific PvP Rules
+
+🟦 Byte League (0–200 RP)
+	•	Match Time: 2 minutes (120s)
+	•	Computer Chaos:
+	•	Starts at 30s
+	•	Ends at 1:30 (90s)
+	•	Triggers every 15 seconds
+	•	Manual Sabotage:
+	•	Active between 1:00–1:40 (60s–100s)
+	•	Can be used once only
+	•	Difficulty: Easy
+	•	RP:
+	•	Win: +50
+	•	Loss: –50
+
+⸻
+
+🟪 Kilobyte League (200–500 RP)
+	•	Same rules as Byte League
+
+⸻
+
+🟧 Megabyte League (500–1000 RP)
+	•	Match Time: 3 minutes (180s)
+	•	Computer Chaos:
+	•	Starts at 30s
+	•	Ends at 2:25 (145s)
+	•	Triggers every 15 seconds
+	•	Manual Sabotage:
+	•	Active between 1:55–2:35 (115s–155s)
+	•	Can be used once only
+	•	Difficulty: Medium
+	•	RP:
+	•	Win: +50
+	•	Loss: –50
+
+⸻
+
+🟥 Gigabyte League (1000–2000 RP)
+	•	Match Time: 5 minutes (300s)
+	•	Computer Chaos:
+	•	Starts at 45s
+	•	Ends at 4:00 (240s)
+	•	Triggers every 15 seconds
+	•	Manual Sabotage:
+	•	Active in two windows:
+	•	1:45–2:30 (105s–150s)
+	•	3:30–4:15 (210s–255s)
+	•	Can be used once in each window (max 2 times)
+	•	Difficulty: Hard
+	•	RP:
+	•	Win: +100
+	•	Loss: –100
+
+⸻
+
+🟨 Terabyte League (2000–5000 RP)
+	•	Same rules as Gigabyte League
+
+⸻

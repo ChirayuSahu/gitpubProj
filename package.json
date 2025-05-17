@@ -12,14 +12,18 @@
     "@gsap/react": "^2.1.2",
     "@monaco-editor/react": "^4.7.0",
     "bcryptjs": "^3.0.2",
+    "dotenv": "^16.5.0",
     "framer-motion": "^11.18.2",
     "gsap": "^3.13.0",
     "mongoose": "^8.14.3",
     "next": "15.3.2",
     "next-auth": "^4.24.11",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-router-dom": "^7.6.0"
+    "node-fetch": "^2.7.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
