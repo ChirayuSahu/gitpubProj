@@ -3,28 +3,15 @@ import { connectMongo } from "@/utils/connectMongo";
 import { getToken } from "next-auth/jwt";
 import User from "@/models/user";
 import Challenges from "@/models/challenges";
-import { i } from "framer-motion/client";
 
 
 export async function POST (req: NextRequest) {
-    const headers = req.headers;
-    const token = headers.get("Authorization")?.split(" ")[1];
-    if (!token) {
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
-    
-    const decodedToken = await getToken({ req, secret: process.env.NEXT_AUTH_SECRET });
-    if (!decodedToken) {
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
-    
-    const { id } = decodedToken;
-    
-    if (!id) {
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
 
-    const { challengeId } = await req.json();
+    const { id, challengeId } = await req.json();
+
+    if (!id || !challengeId) {
+        return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
+    }
 
     try {
         
