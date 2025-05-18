@@ -31,7 +31,7 @@ export async function POST (req: NextRequest) {
         }
 
         if (user.challenges.includes(challengeId)) {
-            return NextResponse.json({ message: "Challenge already completed."}, { status: 200 });
+            return NextResponse.json({ message: "Challenge already completed."}, { status: 201 });
         }
 
         user.challenges.push(challengeId);

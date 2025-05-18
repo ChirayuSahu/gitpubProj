@@ -9,6 +9,9 @@ import LoadingPage from '@/components/custom/loadingPage';
 import { useRouter } from 'next/navigation';
 import Squares from '@/components/Squares/Squares';
 import { use } from 'react';
+import { useSession } from 'next-auth/react';
+import CompletedScreen from '@/components/custom/completedScreen';
+import { set } from 'mongoose';
 
 type TestCase = {
   input: string;
@@ -41,6 +44,10 @@ type PageProps = {
 export default function SpecificCampaignPage({ params }: PageProps) {
 
   const monaco = useMonaco();
+  const { data: session } = useSession();
+  const userId = session?.user.id;
+
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     if (monaco) {
@@ -84,9 +91,58 @@ export default function SpecificCampaignPage({ params }: PageProps) {
   const [checkingData, setCheckingData] = useState<any>(null);
   const [correct, setCorrect] = useState(false);
   const [fullscreen, setFullScreen] = useState(false);
+  const alreadyCompleted = useRef(false);
+
+  const [completed, setCompleted] = useState(false);
 
   const router = useRouter();
 
+  useEffect(() => {
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'F') {
+        event.preventDefault();
+        setFullScreen(prev => !prev);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+
+  useEffect(() => {
+
+    const checkCompleted = async () => {
+      try {
+        const res = await fetch(`/api/me`, {
+          method: 'GET',
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          router.back();
+          return;
+        }
+
+        setUser(data);
+        
+        if (data.challenges?.includes(id)) {
+          alreadyCompleted.current = true;
+        }
+        toast.info('Press "Shift + F" to toggle fullscreen mode')
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    };
+
+    
+    checkCompleted();
+  }, [id, router]);
+  
 
   useEffect(() => {
 
@@ -153,7 +209,6 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         return;
       }
 
-      console.log("Checking Data", data);
       setCheckingData(data);
 
       const allPassed = data.results.every((result: any) => result.passed);
@@ -200,7 +255,6 @@ export default function SpecificCampaignPage({ params }: PageProps) {
       }
 
       setOutput(data);
-      console.log(data);
 
     } catch (error: any) {
       toast.error(error.message);
@@ -210,13 +264,56 @@ export default function SpecificCampaignPage({ params }: PageProps) {
     }
   }
 
+  const handleSubmit = async () => {
+    setLoading(true);
+    setProgress(10);
+    try {
+      const res = await fetch(`/api/completed`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          challengeId: question?._id,
+          id: userId,
+        }),
+      })
+
+      setProgress(50);
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message);
+        return;
+      }
+
+      toast.success(data.message)
+      setCompleted(true);
+
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setProgress(100);
+      setLoading(false);
+    }
+  }
+
+  if(completed){
+    return (
+      <div className='absolute z-0 h-screen w-full bg-[#011037]'>
+        <CompletedScreen currentXp={user?.xpPoints} nextTierXp={600} xpIncrease={question?.winXP}/>
+      </div>
+    )
+  }
+
   if (loading) {
     return <LoadingPage text="Loading..." progress={progress} />
   }
 
   if (fullscreen) {
     return (
-      <div className="relative col-span-3 bg-[#020c2b] p-2">
+      <div className="relative col-span-3 bg-[#020c2b] p-2 min-h-screen">
         <div className={`py-6 h-[99vh]`}>
           <Editor
             height="100%"
@@ -232,7 +329,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
             }}
           />
           <div className="absolute bottom-5 right-5 flex gap-4">
-            <button onClick={() => setFullScreen(!fullscreen)} className="bg-[#000928] p-2 rounded-full">
+            <button onClick={() => setFullScreen(prev => !prev)} className="bg-[#000928] p-2 rounded-full">
               <Image
                 src="/minimize.png"
                 alt="Minimize"
@@ -298,7 +395,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
 
         <div className="grid grid-cols-4 gap-6 overflow-auto">
           <div className={`col-span-1 border-2 border-blue-500 p-4 bg-[#000928] rounded-lg relative overflow-auto ${output || checkingData ? 'h-full' : 'h-[80vh]'}`}>
-            <h2 className="text-2xl font-bold mb-2">{question?.name}</h2>
+            <h2 className="text-2xl font-bold mb-2">{question?.name} {alreadyCompleted.current && (<span className='text-green-400'>- Completed</span>)}</h2>
             <p className="text-xl mb-4 whitespace-pre-wrap">{question?.description}</p>
             <p className="text-xl mb-4 whitespace-pre-wrap">Test Cases</p>
             {question?.testCases.map((testCase, index) => (
@@ -340,12 +437,15 @@ export default function SpecificCampaignPage({ params }: PageProps) {
           </div>
 
           <div className='flex items-center justify-center'>
-            <button
+            {!alreadyCompleted.current && (
+              <button
               disabled={!correct}
-              className={`px-4 text-2xl font-black py-1 border-4 bg-[#000928] border-yellow-400 text-yellow-500 rounded transition ${correct ? 'cursor-pointer hover:text-black text-yellow-300' : 'cursor-not-allowed hover:bg-[#000928]'}`}
+              onClick={handleSubmit}
+              className={`px-4 text-2xl font-black py-1 border-4 bg-[#000928] border-yellow-400 text-yellow-500 rounded transition ${correct ? 'cursor-pointer hover:text-black hover:bg-yellow-400 text-yellow-300' : 'cursor-not-allowed hover:bg-[#000928]'}`}
             >
               Submit
             </button>
+            )}
           </div>
 
           <div className="flex justify-center items-center col-span-3 gap-4">

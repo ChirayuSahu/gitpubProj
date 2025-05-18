@@ -3,7 +3,7 @@ import CompletedScreen from '@/components/custom/completedScreen'
 
 const TestPage = () => {
   return (
-    <CompletedScreen levelName='Dead' currentXp={100} nextTierXp={400} xpIncrease={300}/>
+    <CompletedScreen currentXp={100} nextTierXp={400} xpIncrease={30}/>
   )
 }
 
