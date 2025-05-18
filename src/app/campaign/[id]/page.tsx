@@ -357,6 +357,8 @@ export default function SpecificCampaignPage({ params }: PageProps) {
     )
   }
 
+  console.log("redered.")
+
   return (
     <>
       <div className='absolute bg-[#051D5B] top-0 left-0 w-full min-h-screen overflow-hidden'>
@@ -483,7 +485,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         </div>
 
         {checkingData && !output && (
-          <div className="mt-6 flex flex-col gap-5 border-2 border-blue-500 p-6 rounded-lg bg-[#020c2b] overflow-auto max-h-[33vh]">
+          <div className="mt-6 flex flex-col gap-5 border-2 border-blue-500 p-6 rounded-lg bg-[#020c2b] overflow-auto max-h-[32vh]">
             <h3 className="text-4xl font-bold mb-2 text-white">Test Results</h3>
             {Array.isArray(checkingData.results) ? (
               checkingData.results.map((res: any, index: number) => (
@@ -510,8 +512,8 @@ export default function SpecificCampaignPage({ params }: PageProps) {
                     </span>
                   </div>
                   <p className="text-lg text-gray-300"><strong className="text-white">Input:</strong> {res.input}</p>
-                  <p className="text-lg text-gray-300"><strong className="text-white">Expected:</strong> {res.expectedOutput}</p>
-                  <p className="text-lg text-gray-300"><strong className="text-white">Received:</strong> {res.actualOutput}</p>
+                  <pre className="text-lg text-gray-300"><strong className="text-white">Expected:</strong> {res.expectedOutput}</pre>
+                  <pre className="text-lg text-gray-300"><strong className="text-white">Received:</strong> {res.actualOutput}</pre>
                 </div>
 
               ))
@@ -522,11 +524,11 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         )}
 
         {output && (
-          <div className="mt-6 border-2 border-blue-500 p-4 rounded-lg bg-[#020c2b] min-h-[33vh]">
-            <h3 className="text-lg font-bold mb-2 text-white">Output</h3>
-            <pre className="text-white whitespace-pre-wrap">{output.message}</pre>
-            <pre className="text-white whitespace-pre-wrap">{output.output}</pre>
-            <pre className="text-white whitespace-pre-wrap">{output.stderr}</pre>
+          <div className="mt-6 border-2 border-blue-500 p-4 rounded-lg bg-[#020c2b] max-h-[32vh] overflow-auto">
+            <h3 className="text-4xl font-bold mb-2 text-white">Output</h3>
+            <h3 className="text-xl mb-4 text-green-500">{output.message}</h3>
+            <pre className="text-white whitespace-pre-wrap my-4">stdout: {output.output}</pre>
+            <pre className="text-red-500 whitespace-pre-wrap my-4">stderr: {output.stderr}</pre>
           </div>
         )}
       </div>
