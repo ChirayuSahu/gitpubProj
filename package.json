@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google/genai": "^0.14.1",
     "@gsap/react": "^2.1.2",
     "@monaco-editor/react": "^4.7.0",
     "bcryptjs": "^3.0.2",

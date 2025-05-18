@@ -86,14 +86,18 @@ export default function SpecificCampaignPage({ params }: PageProps) {
 
   const router = useRouter();
   const [chaos, setChaos] = useState(false);
+  
+  useEffect(() => {
+    if (chaosQuestions.includes(id)) {
+      setChaos(true);
+    } else if (!campaignQuestionIds.includes(id)) {
+      router.push('/campaign');
+    }
 
-  if (!campaignQuestionIds.includes(id)) {
-    router.push('/campaign');
-  }
-
-  if (chaosQuestions.includes(id)) {
-    setChaos(true);
-  }
+    
+  }, [id, chaosQuestions, campaignQuestionIds, router]);
+  
+  
 
   const [question, setQuestion] = useState<Challenge | null>(null);
   const [code, setCode] = useState('');
