@@ -22,11 +22,9 @@ export default function CurvedPathPage() {
   const router = useRouter();
 
   return (
-    <div className="bg-[url('/herobg.png')] bg-center bg-cover overflow-auto">
-      <div className="relative h-[2000px] overflow-visible">
-
-        {/* SVG Glowing Curved Path */}
-        <svg className="absolute top-0 left-200 -translate-x-1/2 w-[400px] h-full pointer-events-none z-0">
+    <div className="bg-[url('/campaign-bg.jpg')] bg-center bg-cover overflow-auto">
+      <div className="flex justify-center h-[200vh] overflow-auto">
+        <svg className="w-80 h-full pointer-events-none z-0">
           <path
             d="M 200 0 
               C 0 150, 400 150, 200 300
@@ -43,7 +41,7 @@ export default function CurvedPathPage() {
           />
         </svg>
 
-        <svg className="absolute top-0 left-150 -translate-x-1/2 w-[400px] h-full pointer-events-none z-0">
+        <svg className="w-80 h-full pointer-events-none z-0">
           <path
             d="M 200 0 
               C 0 150, 400 150, 200 300
@@ -59,8 +57,8 @@ export default function CurvedPathPage() {
             className="animate-pulse"
           />
         </svg>
-
-        {/* Star Buttons */}
+        </div>
+        <div className='absolute top-0 left-0 w-full flex items-center justify-center h-[200vh]'>
         {points.map((point, index) => (
           <button
             key={index}

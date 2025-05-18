@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isAuthPage = pathname === "/login" || pathname === "/signup";
-  const protectedRoutes = ["/dashboard", "/campaign", "/pvp" ];
+  const protectedRoutes = ["/dashboard", "/campaign", "/pvp", "/menu" ];
   const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route));
 
   if (isProtectedRoute && !token) {
@@ -16,12 +16,12 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isAuthPage && token) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/menu", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login", "/signup", "/campaign/:path*", "/pvp/:path*"],
+  matcher: ["/dashboard/:path*", "/login", "/signup", "/campaign/:path*", "/pvp/:path*", "/menu"],
 };
