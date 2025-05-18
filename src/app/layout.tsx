@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Londrina_Solid } from "next/font/google";
+import { Londrina_Solid, Outfit } from "next/font/google";
 import "./globals.css";
 import NavbarWrapper from "@/components/NavbarWrapper";
 import AuthSessionProvider from "@/providers/authSessionProvider";
@@ -8,15 +8,12 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import ScreenGuard from "@/components/screenGuard";
 import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  display: 'swap',
+})
 
 const londrina = Londrina_Solid({
   variable: "--font-londrina",
@@ -41,7 +38,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${londrina.className} antialiased`}
+        className={`${outfit.variable} ${londrina.className} antialiased`}
       >
         <AuthSessionProvider session={session}>
           <NavbarWrapper />

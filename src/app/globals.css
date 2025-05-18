@@ -3,6 +3,14 @@
 
 @custom-variant dark (&:is(.dark *));
 
+:root {
+  --font-outfit: 'Outfit', sans-serif;
+}
+
+[class*='--font-outfit'] {
+  font-family: var(--font-outfit);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

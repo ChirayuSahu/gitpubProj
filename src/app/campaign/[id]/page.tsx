@@ -11,7 +11,7 @@ import Squares from '@/components/Squares/Squares';
 import { use } from 'react';
 import { useSession } from 'next-auth/react';
 import CompletedScreen from '@/components/custom/completedScreen';
-import { set } from 'mongoose';
+import { campaignQuestionIds, chaosQuestions } from '@/lib/campaignQuestionIds';
 
 type TestCase = {
   input: string;
@@ -83,6 +83,17 @@ export default function SpecificCampaignPage({ params }: PageProps) {
 
   const { id } = use(params);
 
+  const router = useRouter();
+  const [chaos, setChaos] = useState(false);
+
+  if (!campaignQuestionIds.includes(id)) {
+    router.push('/campaign');
+  }
+
+  if (chaosQuestions.includes(id)) {
+    setChaos(true);
+  }
+
   const [question, setQuestion] = useState<Challenge | null>(null);
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(true);
@@ -93,9 +104,10 @@ export default function SpecificCampaignPage({ params }: PageProps) {
   const [fullscreen, setFullScreen] = useState(false);
   const alreadyCompleted = useRef(false);
 
+  const userCode = useRef<string | undefined>(undefined);
+
   const [completed, setCompleted] = useState(false);
 
-  const router = useRouter();
 
   useEffect(() => {
 
@@ -129,7 +141,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         }
 
         setUser(data);
-        
+
         if (data.challenges?.includes(id)) {
           alreadyCompleted.current = true;
         }
@@ -139,10 +151,10 @@ export default function SpecificCampaignPage({ params }: PageProps) {
       }
     };
 
-    
+
     checkCompleted();
   }, [id, router]);
-  
+
 
   useEffect(() => {
 
@@ -163,7 +175,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         }
 
         setQuestion(data.challenge);
-        setCode(data.challenge.starterCode);
+        userCode.current = data.challenge.starterCode;
 
       } catch (error: any) {
         toast.error(error.message);
@@ -191,7 +203,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         body: JSON.stringify({
           language: 'python',
           starterCode: question?.starterCode,
-          code: code,
+          code: userCode.current,
           testCases: question?.testCases
         }),
       });
@@ -239,7 +251,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          code: code,
+          code: userCode.current,
         }),
       });
 
@@ -299,10 +311,10 @@ export default function SpecificCampaignPage({ params }: PageProps) {
     }
   }
 
-  if(completed){
+  if (completed) {
     return (
       <div className='absolute z-0 h-screen w-full bg-[#011037]'>
-        <CompletedScreen currentXp={user?.xpPoints} nextTierXp={600} xpIncrease={question?.winXP}/>
+        <CompletedScreen currentXp={user?.xpPoints} nextTierXp={600} xpIncrease={question?.winXP} />
       </div>
     )
   }
@@ -318,9 +330,9 @@ export default function SpecificCampaignPage({ params }: PageProps) {
           <Editor
             height="100%"
             defaultLanguage="python"
-            value={code}
+            value={userCode.current}
             theme="my-dark-theme"
-            onChange={(value) => setCode(value || '')}
+            onChange={(value) => { userCode.current = value || ''; }}
             options={{
               scrollBeyondLastLine: false,
               fontSize: 20,
@@ -394,14 +406,14 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         </div>
 
         <div className="grid grid-cols-4 gap-6 overflow-auto">
-          <div className={`col-span-1 border-2 border-blue-500 p-4 bg-[#000928] rounded-lg relative overflow-auto ${output || checkingData ? 'h-full' : 'h-[80vh]'}`}>
+          <div className={`--font-outfit font-black col-span-1 border-2 border-blue-500 p-4 bg-[#000928] rounded-lg relative overflow-auto ${output || checkingData ? 'h-full' : 'h-[80vh]'}`}>
             <h2 className="text-2xl font-bold mb-2">{question?.name} {alreadyCompleted.current && (<span className='text-green-400'>- Completed</span>)}</h2>
             <p className="text-xl mb-4 whitespace-pre-wrap">{question?.description}</p>
             <p className="text-xl mb-4 whitespace-pre-wrap">Test Cases</p>
             {question?.testCases.map((testCase, index) => (
               <div key={index} className="mb-2">
-                <p className="text-xl">Input: {JSON.stringify(testCase.input)}</p>
-                <p className="text-xl">Output: {testCase.output}</p>
+                <p className="text-xl"><span className='text-yellow-500'>Input:</span> {JSON.stringify(testCase.input)}</p>
+                <p className="text-xl"><span className='text-yellow-500'>Output:</span> {testCase.output}</p>
               </div>
             ))}
           </div>
@@ -411,9 +423,9 @@ export default function SpecificCampaignPage({ params }: PageProps) {
               <Editor
                 height="100%"
                 defaultLanguage="python"
-                value={code}
+                value={userCode.current}
                 theme="my-dark-theme"
-                onChange={(value) => setCode(value || '')}
+                onChange={(value) => { userCode.current = value || ''; }}
                 options={{
                   scrollBeyondLastLine: false,
                   fontSize: 20,
@@ -439,12 +451,12 @@ export default function SpecificCampaignPage({ params }: PageProps) {
           <div className='flex items-center justify-center'>
             {!alreadyCompleted.current && (
               <button
-              disabled={!correct}
-              onClick={handleSubmit}
-              className={`px-4 text-2xl font-black py-1 border-4 bg-[#000928] border-yellow-400 text-yellow-500 rounded transition ${correct ? 'cursor-pointer hover:text-black hover:bg-yellow-400 text-yellow-300' : 'cursor-not-allowed hover:bg-[#000928]'}`}
-            >
-              Submit
-            </button>
+                disabled={!correct}
+                onClick={handleSubmit}
+                className={`px-4 text-2xl font-black py-1 border-4 bg-[#000928] border-yellow-400 text-yellow-300 rounded transition ${correct ? 'cursor-pointer hover:text-black hover:bg-yellow-400 text-yellow-300' : 'cursor-not-allowed hover:bg-[#000928]'}`}
+              >
+                Submit
+              </button>
             )}
           </div>
 
@@ -504,7 +516,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         )}
 
         {output && (
-          <div className="mt-6 border-2 border-blue-500 p-4 rounded-lg bg-[#020c2b] max-h-[40vh]">
+          <div className="mt-6 border-2 border-blue-500 p-4 rounded-lg bg-[#020c2b] min-h-[33vh]">
             <h3 className="text-lg font-bold mb-2 text-white">Output</h3>
             <pre className="text-white whitespace-pre-wrap">{output.message}</pre>
             <pre className="text-white whitespace-pre-wrap">{output.output}</pre>
