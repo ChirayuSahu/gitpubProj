@@ -31,10 +31,7 @@ export async function POST (req: NextRequest) {
         }
 
         if (user.challenges.includes(challengeId)) {
-            user.xpPoints += 10;
-            const xpPoints = user.xpPoints;
-            await user.save();
-            return NextResponse.json({ message: "Challenge already completed, 10 XP Points added.", xpPoints }, { status: 200 });
+            return NextResponse.json({ message: "Challenge already completed."}, { status: 200 });
         }
 
         user.challenges.push(challengeId);
