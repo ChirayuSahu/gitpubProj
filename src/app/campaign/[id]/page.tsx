@@ -12,6 +12,9 @@ import { use } from 'react';
 import { useSession } from 'next-auth/react';
 import CompletedScreen from '@/components/custom/completedScreen';
 import { campaignQuestionIds, chaosQuestions } from '@/lib/campaignQuestionIds';
+import CountdownTimer from '@/components/custom/timer';
+import { useTimerStore } from '@/providers/timerStore';
+import { set } from 'mongoose';
 
 type TestCase = {
   input: string;
@@ -86,7 +89,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
 
   const router = useRouter();
   const [chaos, setChaos] = useState(false);
-  
+
   useEffect(() => {
     if (chaosQuestions.includes(id)) {
       setChaos(true);
@@ -94,10 +97,10 @@ export default function SpecificCampaignPage({ params }: PageProps) {
       router.push('/campaign');
     }
 
-    
+
   }, [id, chaosQuestions, campaignQuestionIds, router]);
-  
-  
+
+
 
   const [question, setQuestion] = useState<Challenge | null>(null);
   const [code, setCode] = useState('');
@@ -108,10 +111,15 @@ export default function SpecificCampaignPage({ params }: PageProps) {
   const [correct, setCorrect] = useState(false);
   const [fullscreen, setFullScreen] = useState(false);
   const alreadyCompleted = useRef(false);
+  const [timeUp, setTimeUp] = useState(false);
 
   const userCode = useRef<string | undefined>(undefined);
 
   const [completed, setCompleted] = useState(false);
+
+  const [isAddingChaos, setIsAddingChaos] = useState(false);
+  const timeLeft = useTimerStore((state) => state.timeLeft);
+  const lastRunAt = useRef<number | null>(null);
 
 
   useEffect(() => {
@@ -193,6 +201,53 @@ export default function SpecificCampaignPage({ params }: PageProps) {
     fetchQuestion();
 
   }, [id])
+
+  const addChaos = async () => {
+
+    setIsAddingChaos(true);
+    setProgress(10);
+
+    try {
+      const res = await fetch(`/api/addChaos`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code: userCode.current,
+        }),
+      });
+
+      setProgress(50);
+
+      const data = await res.json();
+
+      userCode.current = data.chaoticCode;
+
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setProgress(100);
+      setIsAddingChaos(false);
+    }
+  }
+
+  useEffect(() => {
+    const totalTime = question?.timeLimit! * 60 || 300;
+    const elapsed = totalTime - timeLeft;
+
+    if (
+      elapsed > 0 &&
+      elapsed < totalTime &&
+      elapsed % 30 === 0
+    ) {
+      if (lastRunAt.current !== elapsed) {
+        addChaos();
+        lastRunAt.current = elapsed;
+      }
+    }
+  }, [timeLeft]);
+
 
   const handleCheckCode = async () => {
     setOutput(null);
@@ -324,14 +379,24 @@ export default function SpecificCampaignPage({ params }: PageProps) {
     )
   }
 
+  if (isAddingChaos) {
+    return <LoadingPage text="Adding Chaos..." progress={progress} />
+  }
+
   if (loading) {
     return <LoadingPage text="Loading..." progress={progress} />
   }
 
   if (fullscreen) {
     return (
-      <div className="relative col-span-3 bg-[#020c2b] p-2 min-h-screen">
-        <div className={`py-6 h-[99vh]`}>
+      <div className={`relative col-span-3 bg-[#020c2b] p-2 min-h-screen`}>
+        <div className={`py-6 h-[96vh] ${chaos ? `pt-11` : ``}`}>
+          {chaos && (
+            <div className="absolute top-1 right-5 flex gap-4 z-50 bg-opacity-70 p-2 rounded">
+              <CountdownTimer minutes={question?.timeLimit} />
+            </div>
+          )}
+
           <Editor
             height="100%"
             defaultLanguage="python"
@@ -361,7 +426,13 @@ export default function SpecificCampaignPage({ params }: PageProps) {
     )
   }
 
-  console.log("redered.")
+  if (timeUp) {
+
+    setTimeout(() => {
+      router.push('/menu');
+    }, 2000);
+    return <LoadingPage text="Time Up. Redirecting to menu.." progress={100} />
+  }
 
   return (
     <>
@@ -422,16 +493,15 @@ export default function SpecificCampaignPage({ params }: PageProps) {
                 <p className="text-xl"><span className='text-yellow-500'>Output:</span> {testCase.output}</p>
               </div>
             ))}
-            {question?.testCases.map((testCase, index) => (
-              <div key={index} className="mb-2">
-                <p className="text-xl"><span className='text-yellow-500'>Input:</span> {JSON.stringify(testCase.input)}</p>
-                <p className="text-xl"><span className='text-yellow-500'>Output:</span> {testCase.output}</p>
-              </div>
-            ))}
           </div>
 
           <div className="relative col-span-3 border-2 border-blue-500 rounded-lg bg-[#020c2b] p-2">
-            <div className={`py-2 ${output || checkingData ? 'h-full' : 'h-[77vh]'}`}>
+            <div className={`py-2 ${chaos ? `pt-12` : ``}  ${output || checkingData ? 'h-full' : 'h-[77vh]'}`}>
+              {chaos && (
+                <div className="absolute top-1 right-5 flex gap-4 z-50 bg-opacity-70 p-2 rounded">
+                  <CountdownTimer minutes={question?.timeLimit} onTimeUp={() => setTimeUp(true)} />
+                </div>
+              )}
               <Editor
                 height="100%"
                 defaultLanguage="python"
