@@ -3,6 +3,9 @@ import { useRouter } from 'next/navigation';
 import { Star } from 'lucide-react';
 import React from 'react';
 
+// Indices of completed levels
+const completedLevels = [0, 1, 2];
+
 const points = [
   { top: '4%', left: '42.5%', page: '/lesson1' },
   { top: '11.5%', left: '55%', page: '/lesson' },
@@ -26,7 +29,9 @@ export default function CurvedPathPage() {
       <div className="relative h-[2000px] overflow-visible">
 
         {/* SVG Glowing Curved Path */}
-        <svg className="absolute top-0 left-200 -translate-x-1/2 w-[400px] h-full pointer-events-none z-0">
+        <svg className="absolute top-0 left-200 -translate-x-1/2 w-[400px] h-full pointer-events-none z-0"
+        viewBox="0 0 400 2000"
+        preserveAspectRatio="xMidYMid meet">
           <path
             d="M 200 0 
               C 0 150, 400 150, 200 300
@@ -43,7 +48,9 @@ export default function CurvedPathPage() {
           />
         </svg>
 
-        <svg className="absolute top-0 left-150 -translate-x-1/2 w-[400px] h-full pointer-events-none z-0">
+        <svg className="absolute top-0 left-150 -translate-x-1/2 w-[400px] h-full pointer-events-none z-0"
+        viewBox="0 0 400 2000"
+        preserveAspectRatio="xMidYMid meet">
           <path
             d="M 200 0 
               C 0 150, 400 150, 200 300
@@ -61,16 +68,26 @@ export default function CurvedPathPage() {
         </svg>
 
         {/* Star Buttons */}
-        {points.map((point, index) => (
+        {points.map((point, index) => {
+          const isCompleted = completedLevels.includes(index);
+          const isSpecial = index === 3;
+
+          return (
           <button
             key={index}
             onClick={() => router.push(point.page)}
-            className={`absolute ${index === 3 ? 'bg-red-600 hover:bg-red-400 border-red-300' : 'bg-cyan-700 hover:bg-cyan-500 border-cyan-300'} text-white rounded-full w-14 h-14 flex items-center justify-center border-2 shadow-lg hover:scale-110 transition-all duration-300 z-10`}
+            className={`absolute w-14 h-14 text-white rounded-full flex items-center justify-center border-2 shadow-lg hover:scale-110 transition-all duration-300 z-10
+              ${isCompleted ? 'bg-cyan-500 border-cyan-300' :
+              isSpecial ? 'bg-red-600 hover:bg-red-400 border-red-300' :
+              'bg-transparent border-cyan-300 hover:bg-cyan-700'}
+            ${!isCompleted && !isSpecial ? 'text-cyan-300 hover:text-white hover:scale-110' : 'text-white'}
+          `}
             style={{ top: point.top, left: point.left, transform: 'translate(-50%, -50%)' }}
           >
             <Star className="w-6 h-6" />
           </button>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

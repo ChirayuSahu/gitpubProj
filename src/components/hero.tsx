@@ -36,7 +36,7 @@ const Hero = () => {
                         </div>
                         <div className='flex justify-center'>
                             <Link
-                            href={session ? '/dashboard' : '/signup'}
+                            href={session ? '/menu' : '/signup'}
                             >
                             <Button className='px-12 py-4 text-xl'>Start Clashing</Button>
                             </Link>
