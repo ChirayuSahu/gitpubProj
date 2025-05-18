@@ -234,8 +234,8 @@ export default function SpecificCampaignPage({ params }: PageProps) {
           <div className="absolute bottom-5 right-5 flex gap-4">
             <button onClick={() => setFullScreen(!fullscreen)} className="bg-[#000928] p-2 rounded-full">
               <Image
-                src="/fullscreen.png"
-                alt="Fullscreen"
+                src="/minimize.png"
+                alt="Minimize"
                 style={{ width: '24px', height: '24px' }}
                 className="cursor-pointer"
                 width={24}
