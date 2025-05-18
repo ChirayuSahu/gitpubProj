@@ -60,6 +60,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
           'editor.foreground': '#ffffff',
           'editorLineNumber.foreground': '#F2B72D',
           'editorCursor.foreground': '#F2B72D',
+          'scrollbarSlider.background': '#EAB206',
         },
       });
       monaco.editor.setTheme('my-dark-theme');
@@ -337,7 +338,6 @@ export default function SpecificCampaignPage({ params }: PageProps) {
               scrollBeyondLastLine: false,
               fontSize: 20,
               minimap: { enabled: false },
-
             }}
           />
           <div className="absolute bottom-5 right-5 flex gap-4">
@@ -405,11 +405,17 @@ export default function SpecificCampaignPage({ params }: PageProps) {
           </div>
         </div>
 
-        <div className="grid grid-cols-4 gap-6 overflow-auto">
-          <div className={`--font-outfit font-black col-span-1 border-2 border-blue-500 p-4 bg-[#000928] rounded-lg relative overflow-auto ${output || checkingData ? 'h-full' : 'h-[80vh]'}`}>
+        <div className="grid grid-cols-4 gap-6 overflow-auto custom-scrollbar">
+          <div className={`custom-scrollbar --font-outfit font-black col-span-1 border-2 border-blue-500 p-4 bg-[#000928] rounded-lg relative overflow-auto ${output || checkingData ? 'max-h-[45vh]' : 'h-[80vh]'}`}>
             <h2 className="text-2xl font-bold mb-2">{question?.name} {alreadyCompleted.current && (<span className='text-green-400'>- Completed</span>)}</h2>
             <p className="text-xl mb-4 whitespace-pre-wrap">{question?.description}</p>
             <p className="text-xl mb-4 whitespace-pre-wrap">Test Cases</p>
+            {question?.testCases.map((testCase, index) => (
+              <div key={index} className="mb-2">
+                <p className="text-xl"><span className='text-yellow-500'>Input:</span> {JSON.stringify(testCase.input)}</p>
+                <p className="text-xl"><span className='text-yellow-500'>Output:</span> {testCase.output}</p>
+              </div>
+            ))}
             {question?.testCases.map((testCase, index) => (
               <div key={index} className="mb-2">
                 <p className="text-xl"><span className='text-yellow-500'>Input:</span> {JSON.stringify(testCase.input)}</p>
