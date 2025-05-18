@@ -9,35 +9,37 @@ const socket = io('http://localhost:4000')
 
 export default function MatchIntroPage() {
   const { data: session, status } = useSession()
-  const { roomId } = useParams()
-  const router = useRouter()
   const searchParams = useSearchParams()
+  const { roomId } = useParams<{ roomId: string }>()
+  const router = useRouter()
 
   const [isReady, setIsReady] = useState(false)
 
-  // Optional fallback (in case user is not logged in)
-  if (status === 'loading') return <p>Loading session...</p>
-  if (!session?.user) return <p className="text-red-500">❌ Not logged in</p>
-
-  const username = session.user.name || 'Player_Anon'
-  const rp = parseInt(searchParams.get('rp') || '0')
+  // ✅ Fallback logic: query param → session → default
+  const username = searchParams.get('username') || session?.user?.name || 'Player_Test'
+  const rp = parseInt(searchParams.get('rp') || '500')
+  const league = searchParams.get('league') || 'Byte'
 
   useEffect(() => {
-    socket.emit('joinRoom', { roomId, username })
+    if (roomId && username) {
+      socket.emit('joinRoom', { roomId, username })
+    }
   }, [roomId, username])
 
   const handleStartMatch = () => {
     setIsReady(true)
     setTimeout(() => {
-      router.push(`/pvp/${roomId}`)
+      router.push(`/pvp/${roomId}?username=${encodeURIComponent(username)}&league=${encodeURIComponent(league)}&rp=${rp}`)
     }, 1500)
   }
+
+  if (status === 'loading') return <p className="text-white">Loading session...</p>
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col justify-center items-center space-y-6">
       <h1 className="text-3xl font-bold text-yellow-400">🎮 Match Lobby</h1>
       <p className="text-lg text-gray-300">Room ID: <span className="text-green-400">{roomId}</span></p>
-      <p className="text-sm text-gray-400">Username: {username} | RP: {rp}</p>
+      <p className="text-sm text-gray-400">Username: {username} | RP: {rp} | League: {league}</p>
 
       <button
         onClick={handleStartMatch}

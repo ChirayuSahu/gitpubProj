@@ -1,14 +1,17 @@
 #!/bin/bash
 
-# Start FastAPI (your model API server)
-echo "🚀 Starting Model API Server (FastAPI) on port 8000..."
+# Stop on first error
+set -e
+
+# Start Flask (your model API server)
+echo "🚀 Starting Flask Model API Server on port 8000..."
 cd ai-chaos-model
-python api_server.py &
+nohup python api_server.py > ../logs/model_api.log 2>&1 &
 cd ..
 
 # Start Socket.IO server
 echo "🔌 Starting Socket.IO Server on port 4000..."
-node socket-server.js &
+nohup node socket-server.js > logs/socket_server.log 2>&1 &
 
 # Start Next.js frontend
 echo "🎮 Starting Next.js Frontend on port 3000..."
