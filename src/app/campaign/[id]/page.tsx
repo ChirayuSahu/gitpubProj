@@ -14,7 +14,6 @@ import CompletedScreen from '@/components/custom/completedScreen';
 import { campaignQuestionIds, chaosQuestions } from '@/lib/campaignQuestionIds';
 import CountdownTimer from '@/components/custom/timer';
 import { useTimerStore } from '@/providers/timerStore';
-import { set } from 'mongoose';
 
 type TestCase = {
   input: string;
@@ -46,9 +45,15 @@ type PageProps = {
 
 export default function SpecificCampaignPage({ params }: PageProps) {
 
+
+
   const monaco = useMonaco();
   const { data: session } = useSession();
   const userId = session?.user.id;
+
+  useEffect(() => {
+    if (!session) return;
+  }, [session]);
 
   const [user, setUser] = useState<any>(null);
 
@@ -98,12 +103,11 @@ export default function SpecificCampaignPage({ params }: PageProps) {
     }
 
 
-  }, [id, chaosQuestions, campaignQuestionIds, router]);
+  }, [id, router]);
 
 
 
   const [question, setQuestion] = useState<Challenge | null>(null);
-  const [code, setCode] = useState('');
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [output, setOutput] = useState<Output | null>();
@@ -135,8 +139,9 @@ export default function SpecificCampaignPage({ params }: PageProps) {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
 
+
+  }, []);
 
   useEffect(() => {
 
@@ -158,9 +163,9 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         if (data.challenges?.includes(id)) {
           alreadyCompleted.current = true;
         }
-        toast.info('Press "Shift + F" to toggle fullscreen mode')
+
       } catch (error: any) {
-        toast.error(error.message);
+        toast.error(error?.message || JSON.stringify(error) || 'An unknown error occurred');
       }
     };
 
@@ -191,16 +196,17 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         userCode.current = data.challenge.starterCode;
 
       } catch (error: any) {
-        toast.error(error.message);
+        toast.error(error?.message || JSON.stringify(error) || 'An unknown error occurred');
       } finally {
         setProgress(100);
         setLoading(false);
       }
     }
 
+
     fetchQuestion();
 
-  }, [id])
+  }, [id, router])
 
   const addChaos = async () => {
 
@@ -225,7 +231,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
       userCode.current = data.chaoticCode;
 
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(error?.message || JSON.stringify(error) || 'An unknown error occurred');
     } finally {
       setProgress(100);
       setIsAddingChaos(false);
@@ -246,7 +252,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         lastRunAt.current = elapsed;
       }
     }
-  }, [timeLeft]);
+  }, [timeLeft, question?.timeLimit!]);
 
 
   const handleCheckCode = async () => {
@@ -277,7 +283,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
       if (!res.ok) {
         setProgress(100);
         setLoading(false);
-        toast.error(data.message);
+        toast.error(data?.message || JSON.stringify(data) || 'An unknown error occurred');
         return;
       }
 
@@ -322,14 +328,14 @@ export default function SpecificCampaignPage({ params }: PageProps) {
       if (!res.ok) {
         setProgress(100);
         setLoading(false);
-        toast.error(data.message);
+        toast.error(data?.message || JSON.stringify(data) || 'An unknown error occurred');
         return;
       }
 
       setOutput(data);
 
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(error?.message || JSON.stringify(error) || 'An unknown error occurred');
     } finally {
       setProgress(100);
       setLoading(false);
@@ -356,7 +362,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error(data.message);
+        toast.error(data?.message || JSON.stringify(data) || 'An unknown error occurred');
         return;
       }
 
@@ -364,7 +370,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
       setCompleted(true);
 
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(error?.message || JSON.stringify(error) || 'An unknown error occurred');
     } finally {
       setProgress(100);
       setLoading(false);
@@ -448,7 +454,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
       <div className="absolute z-20 text-white p-6 overflow-hidden">
         <div className="flex justify-between items-center mb-4">
           <div className='flex items-center gap-4'>
-            <Link href="/courses" className="text-cyan-400 text-xl font-bold">
+            <Link href="/campaign" className="text-cyan-400 text-xl font-bold">
               <Image
                 src="/back.png"
                 alt="Back"
@@ -483,7 +489,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         </div>
 
         <div className="grid grid-cols-4 gap-6 overflow-auto custom-scrollbar">
-          <div className={`custom-scrollbar --font-outfit font-black col-span-1 border-2 border-blue-500 p-4 bg-[#000928] rounded-lg relative overflow-auto ${output || checkingData ? 'max-h-[45vh]' : 'h-[80vh]'}`}>
+          <div className={`custom-scrollbar --font-outfit font-black col-span-1 border-2 border-blue-500 p-8 bg-[#000928] rounded-lg relative overflow-auto ${output || checkingData ? 'max-h-[45vh]' : 'h-[80vh]'}`}>
             <h2 className="text-2xl font-bold mb-2">{question?.name} {alreadyCompleted.current && (<span className='text-green-400'>- Completed</span>)}</h2>
             <p className="text-xl mb-4 whitespace-pre-wrap">{question?.description}</p>
             <p className="text-xl mb-4 whitespace-pre-wrap">Test Cases</p>
@@ -559,7 +565,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         </div>
 
         {checkingData && !output && (
-          <div className="mt-6 flex flex-col gap-5 border-2 border-blue-500 p-6 rounded-lg bg-[#020c2b] overflow-auto max-h-[32vh]">
+          <div className="mt-6 flex flex-col gap-5 border-2 border-blue-500 p-6 rounded-lg bg-[#020c2b] overflow-auto min-h-[32vh] max-h-[32vh]">
             <h3 className="text-4xl font-bold mb-2 text-white">Test Results</h3>
             {Array.isArray(checkingData.results) ? (
               checkingData.results.map((res: any, index: number) => (
@@ -598,7 +604,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         )}
 
         {output && (
-          <div className="mt-6 border-2 border-blue-500 p-4 rounded-lg bg-[#020c2b] max-h-[32vh] overflow-auto">
+          <div className="mt-6 border-2 border-blue-500 p-4 rounded-lg bg-[#020c2b] min-h-[32vh] max-h-[32vh] overflow-auto">
             <h3 className="text-4xl font-bold mb-2 text-white">Output</h3>
             <h3 className="text-xl mb-4 text-green-500">{output.message}</h3>
             <pre className="text-white whitespace-pre-wrap my-4">stdout: {output.output}</pre>

@@ -27,7 +27,7 @@ const GameModes = () => {
         {/* CAMPAIGN MODE */}
         <div className="bg-black/40 border-2 border-cyan-400 rounded-2xl w-[320px] h-[500px] flex flex-col justify-between items-center p-4 text-white shadow-xl hover:scale-105 transition-all duration-300">
           <div className="relative w-full h-full">
-            <Link href='/courses'>
+            <Link href='/courses' className='cursor-pointer'>
             <Image
               src="/campaign_panel.png"
               alt="Campaign Mode"
@@ -36,7 +36,7 @@ const GameModes = () => {
               priority
             /></Link>
           </div>
-          <button className="w-full mt-4 bg-cyan-400 hover:bg-cyan-300 text-black font-extrabold text-xl py-3 rounded-xl transition-all duration-300">
+          <button  className="pointer-events-none w-full mt-4 bg-cyan-400 hover:bg-cyan-300 text-black font-extrabold text-xl py-3 rounded-xl transition-all duration-300">
             PLAY
           </button>
         </div>

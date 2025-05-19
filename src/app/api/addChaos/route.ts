@@ -18,6 +18,7 @@ Rewrite the following Python function into a chaotic and confusing version by:
 - Adding redundant or confusing comments,
 - Using unusual expressions or steps that still produce the correct output,
 - Do NOT change the logic or output of the function.
+- keep the length of the code similar to the original.
 
 Return the entire rewritten function as a JSON object with a single key "code" and the value being the chaotic code as a string.
 
@@ -33,7 +34,7 @@ ${code}
       contents: prompt,
     });
 
-    let text = await res.text;
+    const text = await res.text;
 
     const match = text?.match(/```json\s*([\s\S]*?)\s*```/);
 

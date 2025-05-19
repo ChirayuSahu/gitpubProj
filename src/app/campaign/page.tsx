@@ -1,66 +1,37 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Editor } from '@monaco-editor/react';
-import Link from 'next/link';
-import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { Star } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import LoadingPage from '@/components/custom/loadingPage';
 
-type TestCase = {
-  input: string;
-  output: string;
-};
-
-type Challenge = {
-  _id: string;
-  name: string;
-  description: string;
-  difficulty: string;
-  winXP: number;
-  loseXP: number;
-  timeLimit: number;
-  starterCode: string;
-  testCases: TestCase[];
-};
-
-type Output = {
-  message: string;
-  output: string;
-  stderr: string;
-};
-
-const questions = [
-  {
-    prompt: 'Return the sum of two integers',
-    constraints: 'Input: 1, 3\nOutput: 4',
-    testCases: [
-      { input: [1, 3], expected: 4 },
-      { input: [5, 6], expected: 11 },
-      { input: [-2, 9], expected: 7 },
-      { input: [0, 0], expected: 0 },
-      { input: [-4, -1], expected: -5 },
-      { input: [100, 23], expected: 123 },
-    ],
-  },
+const points = [
+  { top: 'top-[3rem]', left: 'left-[38vw]', page: '6829860450e43d23d5b1538a' },
+  { top: 'top-[12rem]', left: 'left-[53vw]', page: '6829861350e43d23d5b1538f' },
+  { top: 'top-[22rem]', left: 'left-[38vw]', page: '6829863750e43d23d5b15394' },
+  { top: 'top-[31rem]', left: 'left-[53vw]', page: '6829865650e43d23d5b15399' },
+  { top: 'top-[40.5rem]', left: 'left-[38vw]', page: '6829866a50e43d23d5b1539e' },
+  { top: 'top-[49.5rem]', left: 'left-[53vw]', page: '682986a850e43d23d5b153a3' },
+  { top: 'top-[59.5rem]', left: 'left-[38vw]', page: '6829cedfa94ace1cc63e7128' },
+  { top: 'top-[68.5rem]', left: 'left-[53vw]', page: '6829cef7a94ace1cc63e712e' },
+  { top: 'top-[78rem]', left: 'left-[38vw]', page: '6829cf45a94ace1cc63e713c' },
+  { top: 'top-[87rem]', left: 'left-[53vw]', page: '6829cf5ca94ace1cc63e7142' },
+  { top: 'top-[96.75rem]', left: 'left-[38vw]', page: '6829cf74a94ace1cc63e7148' },
+  { top: 'top-[106rem]', left: 'left-[53vw]', page: '6829cf89a94ace1cc63e714d' },
 ];
 
-export default function CampaignMode() {
-
-  const id = "68286aba224af4b034f7d64f"
-  const [question, setQuestion] = useState<Challenge | null>(null);
-  const [code, setCode] = useState('');
+export default function CurvedPathPage() {
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = useState(0);
-  const [output, setOutput] = useState<Output | null>();
-  const [hintShown, setHintShown] = useState(false);
+  const [completedLevels, setCompletedLevels] = useState<string[]>([]);
 
   useEffect(() => {
 
-    const fetchQuestion = async () => {
+    const getCompletedLevels = async () => {
       try {
 
-        const res = await fetch(`/api/challenges/get?id=${id}`, {
+        const res = await fetch(`/api/me`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -69,197 +40,94 @@ export default function CampaignMode() {
 
         const data = await res.json();
 
-        if (!res.ok) {
-          toast.error(data.message)
-        }
-
-        setQuestion(data.challenge);
-        setCode(data.challenge.starterCode);
-
+        console.log(data);
+        setCompletedLevels(data.challenges);
       } catch (error: any) {
-        toast.error(error.message);
+        toast.error(error)
       } finally {
-        setProgress(100);
         setLoading(false);
       }
+
     }
+    getCompletedLevels();
 
-    fetchQuestion();
-
-  }, [id])
-
-  const handleCheckCode = async () => {
-    setLoading(true);
-    setProgress(10);
-
-    try {
-
-      const res = await fetch(`/api/execute`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          language: 'python',
-          starterCode: question?.starterCode,
-          code: code,
-          testCases: question?.testCases
-        }),
-      })
-
-      setProgress(50);
-
-      const data = await res.json();
-      
-      setProgress(70);
-
-      if (!res.ok) {
-        setProgress(100);
-        setLoading(false);
-        toast.error(data.message);
-        return;
-      }
-
-      setOutput(data.results[0].stdout);
-      console.log(data)
-
-    } catch (error: any) {
-      toast.error(error.message);
-    }
-
-  }
-
-  const handleExecuteCode = async () => {
-    setOutput(null);
-    setLoading(true);
-    setProgress(10);
-
-    try {
-      const res = await fetch(`/api/run`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          code: code,
-        }),
-      });
-
-      setProgress(50);
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setProgress(100);
-        setLoading(false);
-        toast.error(data.message);
-        return;
-      }
-
-      setOutput(data);
-      console.log(data);
-
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
-      setProgress(100);
-      setLoading(false);
-    }
-  }
+  }, []);
 
   if(loading) {
-    return <LoadingPage text="Loading..." progress={progress} />
+    return <LoadingPage text='Fetching Levels...' progress={100}/>
   }
 
   return (
-    <div className="min-h-screen bg-[#020c2b] text-white p-6 font-mono">
-      <div className="flex justify-between items-center mb-4">
-        <Link href="/courses" className="text-cyan-400 text-xl font-bold">
-          <Image
-            src="/back.png"
-            alt="Back"
-            width={28}
-            height={28}
-            className="cursor-pointer"
+    <div className="bg-[url('/herobg.png')] bg-center bg-cover overflow-auto">
+      <div className="relative h-[2000px] overflow-visible">
+
+        <svg className="absolute transition-all duration-300 top-0 left-[55vw] -translate-x-1/2 w-[400px] h-full pointer-events-none z-0"
+          viewBox="0 0 400 2000"
+          preserveAspectRatio="xMidYMid meet">
+          <path
+            d="M 200 0 
+              C 0 150, 400 150, 200 300
+              C 0 450, 400 450, 200 600
+              C 0 750, 400 750, 200 900
+              C 0 1050, 400 1050, 200 1200
+              C 0 1350, 400 1350, 200 1500
+              C 0 1650, 400 1650, 200 1800"
+            stroke="#00FFFF"
+            strokeWidth="4"
+            fill="none"
+            strokeLinecap="round"
+            className="animate-pulse"
           />
-        </Link>
-        <h1 className="text-cyan-400 text-3xl font-bold">CAMPAIGN MODE</h1>
-        <div className="flex gap-4 text-cyan-400 text-xl">
-          <Image
-            src="/gear.png"
-            alt="Settings"
-            width={28}
-            height={28}
-            className="cursor-pointer"
+        </svg>
+
+        <svg className="absolute transition-all duration-300 top-0 left-[40vw] -translate-x-1/2 w-[400px] h-full pointer-events-none z-0"
+          viewBox="0 0 400 2000"
+          preserveAspectRatio="xMidYMid meet">
+          <path
+            d="M 200 0 
+              C 0 150, 400 150, 200 300
+              C 0 450, 400 450, 200 600
+              C 0 750, 400 750, 200 900
+              C 0 1050, 400 1050, 200 1200
+              C 0 1350, 400 1350, 200 1500
+              C 0 1650, 400 1650, 200 1800"
+            stroke="#00FFFF"
+            strokeWidth="4"
+            fill="none"
+            strokeLinecap="round"
+            className="animate-pulse"
           />
-          <Link href="/">
-            <Image
-              src="/home.png"
-              alt="Home"
-              width={28}
-              height={28}
-              className="cursor-pointer"
-            />
-          </Link>
-        </div>
-      </div>
+        </svg>
 
-      <div className="grid grid-cols-4 gap-6">
-        <div className="col-span-1 border-2 border-blue-500 p-4 rounded-lg relative h-full overflow-auto">
-          <h2 className="font-bold mb-2">{question?.name}</h2>
-          <p className="text-sm mb-4 whitespace-pre-wrap">Test Cases</p>
-          {question?.testCases.map((testCase, index) => (
-            <div key={index} className="mb-2">
-              <p className="text-xs">Input: {JSON.stringify(testCase.input)}</p>
-              <p className="text-xs">Output: {testCase.output}</p>
-            </div>
-          ))}
-          {hintShown && <div className="text-yellow-300 text-sm mt-2">-{question?.loseXP}</div>}
-          <button
-            onClick={() => setHintShown(prev => !prev)}
-            className="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-1 border border-yellow-400 text-yellow-300 rounded hover:bg-yellow-500 hover:text-black transition"
-          >
-            Hint
-          </button>
-        </div>
+        {points.map((point, index) => {
+          const isCompleted = completedLevels.includes(point.page);
+          const isSpecial = index === 5 || index === 11;
+          const isUnlocked = index === 0 || completedLevels.includes(points[index - 1].page);
 
-        <div className="col-span-3 border-2 border-blue-500 rounded-lg bg-[#1F1F1E] p-2">
-          <div className="relative">
-            <Editor
-              height="320px"
-              defaultLanguage="python"
-              value={code}
-              theme="vs-dark"
-              onChange={(value) => setCode(value || '')}
-              options={{ minimap: { enabled: false } }}
-
-            />
-          </div>
-
-          <div className="flex justify-center gap-6 mt-4 bg-[#1F1F1E]">
+          return (
             <button
-              className="px-6 py-2 border border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black transition"
-              onClick={handleExecuteCode}
+              key={index}
+              onClick={() => {
+                if (isUnlocked) {
+                  router.push(`/campaign/${point.page}`);
+                } else {
+                  toast.warning('Complete the previous level first!');
+                }
+              }}
+              disabled={!isUnlocked}
+              className={`${point.top} ${point.left} absolute w-14 h-14 flex items-center justify-center rounded-full border-2 shadow-lg transition-all duration-300 z-10
+        ${isCompleted ? 'bg-cyan-500 hover:scale-110 border-cyan-300 text-white' :  !isUnlocked && isSpecial ? `'bg-gray-400 border-gray-300 text-gray-100 cursor-not-allowed opacity-60` :
+                  isSpecial ? 'bg-red-600 hover:bg-red-400 hover:scale-110 border-red-300 text-white' :
+                    isUnlocked ? 'bg-transparent border-cyan-300 hover:bg-cyan-700 text-cyan-300 hover:text-white hover:scale-110' :
+                      'bg-gray-400 border-gray-300 text-gray-100 cursor-not-allowed opacity-60'}
+      `}
             >
-              RUN
+              <Star className="w-6 h-6" />
             </button>
-            <button
-              className="px-6 py-2 border border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black transition"
-              onClick={handleCheckCode}
-            >
-              Check Answer
-            </button>
-          </div>
-        </div>
+          );
+        })}
+
       </div>
-      { output && (
-        <div className="mt-6 border-2 border-blue-500 p-4 rounded-lg bg-[#020c2b] min-h-[100px]">
-          <h3 className="text-lg font-bold mb-2 text-white">Output</h3>
-          <pre className="text-white whitespace-pre-wrap">{output.message}</pre>
-          <pre className="text-white whitespace-pre-wrap">{output.output}</pre>
-          <pre className="text-white whitespace-pre-wrap">{output.stderr}</pre>
-        </div>
-      )}
     </div>
   );
 }

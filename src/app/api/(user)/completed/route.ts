@@ -1,6 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
 import { connectMongo } from "@/utils/connectMongo";
-import { getToken } from "next-auth/jwt";
 import User from "@/models/user";
 import Challenges from "@/models/challenges";
 

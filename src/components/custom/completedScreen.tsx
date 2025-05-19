@@ -22,7 +22,7 @@ const CompletedScreen = ({ currentXp, nextTierXp, xpIncrease }: CompletedScreenP
         }, 200);
 
         return () => clearTimeout(timeout);
-    }, []);
+    }, [currentXp, xpIncrease]);
 
     const percentFilled = 100;
 
