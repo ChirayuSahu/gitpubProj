@@ -16,10 +16,10 @@ const Navbar = () => {
     const router = useRouter()
 
     const navItems = [
-        { name: 'Learn', href: '/learn' },
-        { name: 'Battle', href: '/' },
-        { name: 'Rankings', href: '/' },
-        { name: 'Community', href: '/' },
+        { name: 'Learn', href: '/path' },
+        { name: 'Battle', href: '/chaos' },
+        { name: 'Rankings', href: '/leaderboard' },
+        { name: 'Menu', href: '/menu' },
     ]
 
     const handleLogout = () => {
