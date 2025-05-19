@@ -25,7 +25,7 @@ export default function CurvedPathPage() {
   const router = useRouter();
 
   return (
-    <div className="bg-[url('/herobg.png')] bg-center bg-cover overflow-auto">
+    <div className="bg-[url('/campaign-bg.png')] bg-center bg-cover overflow-auto">
       <div className="relative h-[2000px] overflow-visible">
 
         {/* SVG Glowing Curved Path */}
