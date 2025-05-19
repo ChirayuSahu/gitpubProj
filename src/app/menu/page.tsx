@@ -23,6 +23,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-[url('/herobg.png')] bg-cover flex flex-col items-center justify-center space-y-6">
+
       <button
         onClick={handleGameClick}
         className="px-16 py-8 text-3xl font-bold text-cyan-300 bg-black border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300"

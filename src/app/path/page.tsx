@@ -70,22 +70,26 @@ export default function CurvedPathPage() {
         {/* Star Buttons */}
         {points.map((point, index) => {
           const isCompleted = completedLevels.includes(index);
-          const isSpecial = index === 3;
+          const isSpecial = index === 3; // Fourth one red
 
           return (
-          <button
-            key={index}
-            onClick={() => router.push(point.page)}
-            className={`absolute w-14 h-14 text-white rounded-full flex items-center justify-center border-2 shadow-lg hover:scale-110 transition-all duration-300 z-10
-              ${isCompleted ? 'bg-cyan-500 border-cyan-300' :
-              isSpecial ? 'bg-red-600 hover:bg-red-400 border-red-300' :
-              'bg-transparent border-cyan-300 hover:bg-cyan-700'}
-            ${!isCompleted && !isSpecial ? 'text-cyan-300 hover:text-white hover:scale-110' : 'text-white'}
-          `}
-            style={{ top: point.top, left: point.left, transform: 'translate(-50%, -50%)' }}
-          >
-            <Star className="w-6 h-6" />
-          </button>
+            <button
+              key={index}
+              onClick={() => router.push(point.page)}
+              className={`absolute w-14 h-14 flex items-center justify-center rounded-full border-2 shadow-lg transition-all duration-300 z-10
+                ${isCompleted ? 'bg-cyan-500 hover:scale-110 border-cyan-300' :
+                  isSpecial ? 'bg-red-600 hover:bg-red-400 hover:scale-110 border-red-300' :
+                  'bg-transparent border-cyan-300 hover:bg-cyan-700'}
+                ${!isCompleted && !isSpecial ? 'text-cyan-300 hover:text-white hover:scale-110' : 'text-white'}
+              `}
+              style={{
+                top: point.top,
+                left: point.left,
+                transform: 'translate(-50%, -50%)',
+              }}
+            >
+              <Star className="w-6 h-6" />
+            </button>
           );
         })}
       </div>

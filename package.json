@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google/genai": "^0.14.1",
     "@gsap/react": "^2.1.2",
     "@monaco-editor/react": "^4.7.0",
     "bcryptjs": "^3.0.2",
@@ -25,7 +26,8 @@
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.6.0",
     "sonner": "^2.0.3",
-    "tailwind-merge": "^3.3.0"
+    "tailwind-merge": "^3.3.0",
+    "zustand": "^5.0.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

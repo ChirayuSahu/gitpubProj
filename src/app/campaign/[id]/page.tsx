@@ -9,6 +9,12 @@ import LoadingPage from '@/components/custom/loadingPage';
 import { useRouter } from 'next/navigation';
 import Squares from '@/components/Squares/Squares';
 import { use } from 'react';
+import { useSession } from 'next-auth/react';
+import CompletedScreen from '@/components/custom/completedScreen';
+import { campaignQuestionIds, chaosQuestions } from '@/lib/campaignQuestionIds';
+import CountdownTimer from '@/components/custom/timer';
+import { useTimerStore } from '@/providers/timerStore';
+import { set } from 'mongoose';
 
 type TestCase = {
   input: string;
@@ -41,6 +47,10 @@ type PageProps = {
 export default function SpecificCampaignPage({ params }: PageProps) {
 
   const monaco = useMonaco();
+  const { data: session } = useSession();
+  const userId = session?.user.id;
+
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     if (monaco) {
@@ -53,6 +63,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
           'editor.foreground': '#ffffff',
           'editorLineNumber.foreground': '#F2B72D',
           'editorCursor.foreground': '#F2B72D',
+          'scrollbarSlider.background': '#EAB206',
         },
       });
       monaco.editor.setTheme('my-dark-theme');
@@ -76,6 +87,21 @@ export default function SpecificCampaignPage({ params }: PageProps) {
 
   const { id } = use(params);
 
+  const router = useRouter();
+  const [chaos, setChaos] = useState(false);
+
+  useEffect(() => {
+    if (chaosQuestions.includes(id)) {
+      setChaos(true);
+    } else if (!campaignQuestionIds.includes(id)) {
+      router.push('/campaign');
+    }
+
+
+  }, [id, chaosQuestions, campaignQuestionIds, router]);
+
+
+
   const [question, setQuestion] = useState<Challenge | null>(null);
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(true);
@@ -84,8 +110,63 @@ export default function SpecificCampaignPage({ params }: PageProps) {
   const [checkingData, setCheckingData] = useState<any>(null);
   const [correct, setCorrect] = useState(false);
   const [fullscreen, setFullScreen] = useState(false);
+  const alreadyCompleted = useRef(false);
+  const [timeUp, setTimeUp] = useState(false);
 
-  const router = useRouter();
+  const userCode = useRef<string | undefined>(undefined);
+
+  const [completed, setCompleted] = useState(false);
+
+  const [isAddingChaos, setIsAddingChaos] = useState(false);
+  const timeLeft = useTimerStore((state) => state.timeLeft);
+  const lastRunAt = useRef<number | null>(null);
+
+
+  useEffect(() => {
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'F') {
+        event.preventDefault();
+        setFullScreen(prev => !prev);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+
+  useEffect(() => {
+
+    const checkCompleted = async () => {
+      try {
+        const res = await fetch(`/api/me`, {
+          method: 'GET',
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          router.back();
+          return;
+        }
+
+        setUser(data);
+
+        if (data.challenges?.includes(id)) {
+          alreadyCompleted.current = true;
+        }
+        toast.info('Press "Shift + F" to toggle fullscreen mode')
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    };
+
+
+    checkCompleted();
+  }, [id, router]);
 
 
   useEffect(() => {
@@ -107,7 +188,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         }
 
         setQuestion(data.challenge);
-        setCode(data.challenge.starterCode);
+        userCode.current = data.challenge.starterCode;
 
       } catch (error: any) {
         toast.error(error.message);
@@ -120,6 +201,53 @@ export default function SpecificCampaignPage({ params }: PageProps) {
     fetchQuestion();
 
   }, [id])
+
+  const addChaos = async () => {
+
+    setIsAddingChaos(true);
+    setProgress(10);
+
+    try {
+      const res = await fetch(`/api/addChaos`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code: userCode.current,
+        }),
+      });
+
+      setProgress(50);
+
+      const data = await res.json();
+
+      userCode.current = data.chaoticCode;
+
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setProgress(100);
+      setIsAddingChaos(false);
+    }
+  }
+
+  useEffect(() => {
+    const totalTime = question?.timeLimit! * 60 || 300;
+    const elapsed = totalTime - timeLeft;
+
+    if (
+      elapsed > 0 &&
+      elapsed < totalTime &&
+      elapsed % 30 === 0
+    ) {
+      if (lastRunAt.current !== elapsed) {
+        addChaos();
+        lastRunAt.current = elapsed;
+      }
+    }
+  }, [timeLeft]);
+
 
   const handleCheckCode = async () => {
     setOutput(null);
@@ -135,7 +263,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         body: JSON.stringify({
           language: 'python',
           starterCode: question?.starterCode,
-          code: code,
+          code: userCode.current,
           testCases: question?.testCases
         }),
       });
@@ -153,7 +281,6 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         return;
       }
 
-      console.log("Checking Data", data);
       setCheckingData(data);
 
       const allPassed = data.results.every((result: any) => result.passed);
@@ -184,7 +311,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          code: code,
+          code: userCode.current,
         }),
       });
 
@@ -200,7 +327,6 @@ export default function SpecificCampaignPage({ params }: PageProps) {
       }
 
       setOutput(data);
-      console.log(data);
 
     } catch (error: any) {
       toast.error(error.message);
@@ -210,29 +336,81 @@ export default function SpecificCampaignPage({ params }: PageProps) {
     }
   }
 
+  const handleSubmit = async () => {
+    setLoading(true);
+    setProgress(10);
+    try {
+      const res = await fetch(`/api/completed`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          challengeId: question?._id,
+          id: userId,
+        }),
+      })
+
+      setProgress(50);
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message);
+        return;
+      }
+
+      toast.success(data.message)
+      setCompleted(true);
+
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setProgress(100);
+      setLoading(false);
+    }
+  }
+
+  if (completed) {
+    return (
+      <div className='absolute z-0 h-screen w-full bg-[#011037]'>
+        <CompletedScreen currentXp={user?.xpPoints} nextTierXp={600} xpIncrease={question?.winXP} />
+      </div>
+    )
+  }
+
+  if (isAddingChaos) {
+    return <LoadingPage text="Adding Chaos..." progress={progress} />
+  }
+
   if (loading) {
     return <LoadingPage text="Loading..." progress={progress} />
   }
 
   if (fullscreen) {
     return (
-      <div className="relative col-span-3 bg-[#020c2b] p-2">
-        <div className={`py-6 h-[99vh]`}>
+      <div className={`relative col-span-3 bg-[#020c2b] p-2 min-h-screen`}>
+        <div className={`py-6 h-[96vh] ${chaos ? `pt-11` : ``}`}>
+          {chaos && (
+            <div className="absolute top-1 right-5 flex gap-4 z-50 bg-opacity-70 p-2 rounded">
+              <CountdownTimer minutes={question?.timeLimit} />
+            </div>
+          )}
+
           <Editor
             height="100%"
             defaultLanguage="python"
-            value={code}
+            value={userCode.current}
             theme="my-dark-theme"
-            onChange={(value) => setCode(value || '')}
+            onChange={(value) => { userCode.current = value || ''; }}
             options={{
               scrollBeyondLastLine: false,
               fontSize: 20,
               minimap: { enabled: false },
-
             }}
           />
           <div className="absolute bottom-5 right-5 flex gap-4">
-            <button onClick={() => setFullScreen(!fullscreen)} className="bg-[#000928] p-2 rounded-full">
+            <button onClick={() => setFullScreen(prev => !prev)} className="bg-[#000928] p-2 rounded-full">
               <Image
                 src="/minimize.png"
                 alt="Minimize"
@@ -246,6 +424,14 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         </div>
       </div>
     )
+  }
+
+  if (timeUp) {
+
+    setTimeout(() => {
+      router.push('/menu');
+    }, 2000);
+    return <LoadingPage text="Time Up. Redirecting to menu.." progress={100} />
   }
 
   return (
@@ -296,27 +482,32 @@ export default function SpecificCampaignPage({ params }: PageProps) {
           </div>
         </div>
 
-        <div className="grid grid-cols-4 gap-6 overflow-auto">
-          <div className={`col-span-1 border-2 border-blue-500 p-4 bg-[#000928] rounded-lg relative overflow-auto ${output || checkingData ? 'h-full' : 'h-[80vh]'}`}>
-            <h2 className="text-2xl font-bold mb-2">{question?.name}</h2>
+        <div className="grid grid-cols-4 gap-6 overflow-auto custom-scrollbar">
+          <div className={`custom-scrollbar --font-outfit font-black col-span-1 border-2 border-blue-500 p-4 bg-[#000928] rounded-lg relative overflow-auto ${output || checkingData ? 'max-h-[45vh]' : 'h-[80vh]'}`}>
+            <h2 className="text-2xl font-bold mb-2">{question?.name} {alreadyCompleted.current && (<span className='text-green-400'>- Completed</span>)}</h2>
             <p className="text-xl mb-4 whitespace-pre-wrap">{question?.description}</p>
             <p className="text-xl mb-4 whitespace-pre-wrap">Test Cases</p>
             {question?.testCases.map((testCase, index) => (
               <div key={index} className="mb-2">
-                <p className="text-xl">Input: {JSON.stringify(testCase.input)}</p>
-                <p className="text-xl">Output: {testCase.output}</p>
+                <p className="text-xl"><span className='text-yellow-500'>Input:</span> {JSON.stringify(testCase.input)}</p>
+                <p className="text-xl"><span className='text-yellow-500'>Output:</span> {testCase.output}</p>
               </div>
             ))}
           </div>
 
           <div className="relative col-span-3 border-2 border-blue-500 rounded-lg bg-[#020c2b] p-2">
-            <div className={`py-2 ${output || checkingData ? 'h-full' : 'h-[77vh]'}`}>
+            <div className={`py-2 ${chaos ? `pt-12` : ``}  ${output || checkingData ? 'h-full' : 'h-[77vh]'}`}>
+              {chaos && (
+                <div className="absolute top-1 right-5 flex gap-4 z-50 bg-opacity-70 p-2 rounded">
+                  <CountdownTimer minutes={question?.timeLimit} onTimeUp={() => setTimeUp(true)} />
+                </div>
+              )}
               <Editor
                 height="100%"
                 defaultLanguage="python"
-                value={code}
+                value={userCode.current}
                 theme="my-dark-theme"
-                onChange={(value) => setCode(value || '')}
+                onChange={(value) => { userCode.current = value || ''; }}
                 options={{
                   scrollBeyondLastLine: false,
                   fontSize: 20,
@@ -340,12 +531,15 @@ export default function SpecificCampaignPage({ params }: PageProps) {
           </div>
 
           <div className='flex items-center justify-center'>
-            <button
-              disabled={!correct}
-              className={`px-4 text-2xl font-black py-1 border-4 bg-[#000928] border-yellow-400 text-yellow-500 rounded transition ${correct ? 'cursor-pointer hover:text-black text-yellow-300' : 'cursor-not-allowed hover:bg-[#000928]'}`}
-            >
-              Submit
-            </button>
+            {!alreadyCompleted.current && (
+              <button
+                disabled={!correct}
+                onClick={handleSubmit}
+                className={`px-4 text-2xl font-black py-1 border-4 bg-[#000928] border-yellow-400 text-yellow-300 rounded transition ${correct ? 'cursor-pointer hover:text-black hover:bg-yellow-400 text-yellow-300' : 'cursor-not-allowed hover:bg-[#000928]'}`}
+              >
+                Submit
+              </button>
+            )}
           </div>
 
           <div className="flex justify-center items-center col-span-3 gap-4">
@@ -365,7 +559,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         </div>
 
         {checkingData && !output && (
-          <div className="mt-6 flex flex-col gap-5 border-2 border-blue-500 p-6 rounded-lg bg-[#020c2b] overflow-auto max-h-[33vh]">
+          <div className="mt-6 flex flex-col gap-5 border-2 border-blue-500 p-6 rounded-lg bg-[#020c2b] overflow-auto max-h-[32vh]">
             <h3 className="text-4xl font-bold mb-2 text-white">Test Results</h3>
             {Array.isArray(checkingData.results) ? (
               checkingData.results.map((res: any, index: number) => (
@@ -392,8 +586,8 @@ export default function SpecificCampaignPage({ params }: PageProps) {
                     </span>
                   </div>
                   <p className="text-lg text-gray-300"><strong className="text-white">Input:</strong> {res.input}</p>
-                  <p className="text-lg text-gray-300"><strong className="text-white">Expected:</strong> {res.expectedOutput}</p>
-                  <p className="text-lg text-gray-300"><strong className="text-white">Received:</strong> {res.actualOutput}</p>
+                  <pre className="text-lg text-gray-300"><strong className="text-white">Expected:</strong> {res.expectedOutput}</pre>
+                  <pre className="text-lg text-gray-300"><strong className="text-white">Received:</strong> {res.actualOutput}</pre>
                 </div>
 
               ))
@@ -404,11 +598,11 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         )}
 
         {output && (
-          <div className="mt-6 border-2 border-blue-500 p-4 rounded-lg bg-[#020c2b] max-h-[40vh]">
-            <h3 className="text-lg font-bold mb-2 text-white">Output</h3>
-            <pre className="text-white whitespace-pre-wrap">{output.message}</pre>
-            <pre className="text-white whitespace-pre-wrap">{output.output}</pre>
-            <pre className="text-white whitespace-pre-wrap">{output.stderr}</pre>
+          <div className="mt-6 border-2 border-blue-500 p-4 rounded-lg bg-[#020c2b] max-h-[32vh] overflow-auto">
+            <h3 className="text-4xl font-bold mb-2 text-white">Output</h3>
+            <h3 className="text-xl mb-4 text-green-500">{output.message}</h3>
+            <pre className="text-white whitespace-pre-wrap my-4">stdout: {output.output}</pre>
+            <pre className="text-red-500 whitespace-pre-wrap my-4">stderr: {output.stderr}</pre>
           </div>
         )}
       </div>
