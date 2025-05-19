@@ -90,7 +90,9 @@ export default function SpecificCampaignPage({ params }: PageProps) {
     }
   }, [monaco]);
 
-  const { id } = use(params);
+  // const { id } = use(params);
+
+  const id = "6829cef7a94ace1cc63e712e";
 
   const router = useRouter();
   const [chaos, setChaos] = useState(false);
@@ -142,36 +144,6 @@ export default function SpecificCampaignPage({ params }: PageProps) {
 
 
   }, []);
-
-  useEffect(() => {
-
-    const checkCompleted = async () => {
-      try {
-        const res = await fetch(`/api/me`, {
-          method: 'GET',
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          router.back();
-          return;
-        }
-
-        setUser(data);
-
-        if (data.challenges?.includes(id)) {
-          alreadyCompleted.current = true;
-        }
-
-      } catch (error: any) {
-        toast.error(error?.message || JSON.stringify(error) || 'An unknown error occurred');
-      }
-    };
-
-
-    checkCompleted();
-  }, [id, router]);
 
 
   useEffect(() => {
