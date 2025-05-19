@@ -26,7 +26,7 @@ export const GET = async (req: NextRequest) => {
 
         return NextResponse.json({ leaderboard: formattedLeaderboard }, { status: 200 });
 
-    } catch (error) {
-        return NextResponse.json({ message: "Error fetching leaderboard" }, { status: 500 });
+    } catch (error: any) {
+        return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }

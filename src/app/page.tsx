@@ -13,7 +13,7 @@ export default function Home() {
           <div className="max-w-md">
             <h2 className="text-4xl font-bold mb-4">Level up your learning</h2>
             <p className="text-lg leading-relaxed">
-              Level up your coding skills and rack up XP as you conquer fun, bite-sized lessons in Python, HTML, JavaScript, and more! With every challenge you complete, you'll unlock badges and feel the thrill of progress—just like powering through your favorite adventure game.
+              Level up your coding skills and rack up XP as you conquer fun, bite-sized lessons in Python, HTML, JavaScript, and more! With every challenge you complete, you&apos;ll unlock badges and feel the thrill of progress—just like powering through your favorite adventure game.
             </p>
           </div>
         </section>

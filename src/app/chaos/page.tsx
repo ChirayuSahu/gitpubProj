@@ -99,7 +99,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
     if (chaosQuestions.includes(id)) {
       setChaos(true);
     } else if (!campaignQuestionIds.includes(id)) {
-      router.push('/campaign');
+      router.push('/chaos');
     }
 
 
@@ -454,7 +454,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
       <div className="absolute z-20 text-white p-6 overflow-hidden">
         <div className="flex justify-between items-center mb-4">
           <div className='flex items-center gap-4'>
-            <Link href="/campaign" className="text-cyan-400 text-xl font-bold">
+            <Link href="/gamemodes" className="text-cyan-400 text-xl font-bold">
               <Image
                 src="/back.png"
                 alt="Back"
@@ -464,7 +464,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
                 height={24}
               />
             </Link>
-            <h1 className="text-cyan-400 text-4xl font-bold">CAMPAIGN MODE</h1>
+            <h1 className="text-cyan-400 text-4xl font-bold">CHAOS MODE</h1>
           </div>
           <div className="flex gap-4 text-cyan-400 text-xl">
             <Image
@@ -560,6 +560,11 @@ export default function SpecificCampaignPage({ params }: PageProps) {
               onClick={handleCheckCode}
             >
               Check Answer
+            </button>
+            <button
+              className="px-4 py-1 border-4 font-bold bg-[#000928] border-red-400 text-red-300 rounded hover:bg-red-400 hover:text-black text-2xl transition"
+            >
+              SABOTAGE
             </button>
           </div>
         </div>

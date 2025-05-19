@@ -11,20 +11,21 @@ export async function POST(req: NextRequest) {
   }
 
   const prompt = `
-Rewrite the following Python function into a chaotic and confusing version by:
-- Changing variable and function names to meaningless or strange ones,
-- Adding unnecessary intermediate variables or calculations,
-- Reordering lines if possible,
-- Adding redundant or confusing comments,
-- Using unusual expressions or steps that still produce the correct output,
-- Do NOT change the logic or output of the function.
+Rewrite the following Python function by:
+- Slightly changing variable and function names to simple, different ones,
+- Adding at most one unnecessary intermediate variable,
+- Keeping the original order mostly the same,
+- Adding minimal or no comments,
+- Ensuring the logic and output remain unchanged,
+- Keeping the code length close to the original.
 
-Return the entire rewritten function as a JSON object with a single key "code" and the value being the chaotic code as a string.
+Return the rewritten function as a JSON object with a single key "code" whose value is the rewritten function as a string.
 
 Original code:
 
 ${code}
 `;
+
 
   try {
 
@@ -33,7 +34,7 @@ ${code}
       contents: prompt,
     });
 
-    let text = await res.text;
+    const text = await res.text;
 
     const match = text?.match(/```json\s*([\s\S]*?)\s*```/);
 
