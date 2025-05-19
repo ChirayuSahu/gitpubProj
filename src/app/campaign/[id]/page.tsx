@@ -464,13 +464,13 @@ export default function SpecificCampaignPage({ params }: PageProps) {
                 height={24}
               />
             </Link>
-            <h1 className="text-cyan-400 text-4xl font-bold">CAMPAIGN MODE</h1>
+            <h1 className="text-cyan-400 text-5xl font-bold">CAMPAIGN MODE</h1>
           </div>
           <div className="flex gap-4 text-cyan-400 text-xl">
             <Image
               src="/gear.png"
               alt="Settings"
-              style={{ width: '24px', height: '24px' }}
+              style={{ width: '44px', height: '44px' }}
               className="cursor-pointer"
               width={24}
               height={24}
@@ -479,7 +479,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
               <Image
                 src="/home.png"
                 alt="Home"
-                style={{ width: '24px', height: '24px' }}
+                style={{ width: '44px', height: '44px' }}
                 className="cursor-pointer"
                 width={24}
                 height={24}
