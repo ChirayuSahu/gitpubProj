@@ -14,14 +14,14 @@ const TopMenu = ({ back, text }: TopMenuProps) => {
     <div className="flex justify-between items-center mb-4 mt-8 m-10">
                     <div className='flex items-center gap-8'>
                         <Link href={back} className="text-cyan-400 text-xl font-bold">
-                            <ArrowLeft/>
+                            <ArrowLeft strokeWidth={3}/>
                         </Link>
                         <h1 className="text-cyan-400 text-5xl font-bold">{text}</h1>
                     </div>
                     <div className="flex gap-4 text-cyan-400 text-xl">
-                        <Cog/>
+                        <Cog strokeWidth={3}/>
                         <Link href="/">
-                            <House/>
+                            <House strokeWidth={3}/>
                         </Link>
                     </div>
                 </div>
