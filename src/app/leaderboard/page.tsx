@@ -3,6 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { toast } from 'sonner';
+import LoadingPage from '@/components/custom/loadingPage';
+import Squares from '@/components/Squares/Squares';
+import { hardcodedUsers, getRandomAvatar } from './leaderboard.helpers';
 
 interface UserData {
   username: string;
@@ -16,94 +20,161 @@ interface UserData {
 
 const Leaderboard = () => {
   const [users, setUsers] = useState<UserData[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const res = await fetch('/api/leaderboard?limit=50');
         const data = await res.json();
-        if (data.leaderboard) {
-          setUsers(data.leaderboard);
-        }
-      } catch (error) {
-        console.error("Failed to fetch leaderboard:", error);
+        let fetchedUsers: UserData[] = data.leaderboard || [];
+
+        const combinedUsers = [...fetchedUsers, ...hardcodedUsers];
+
+        combinedUsers.sort((a, b) =>
+          (b.rating ?? b.xpPoints ?? 0) - (a.rating ?? a.xpPoints ?? 0)
+        );
+
+        setUsers(combinedUsers);
+      } catch (error: any) {
+        toast.error(error.message);
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 
+  if (loading) {
+    return <LoadingPage text='Getting Leaderboard...' progress={100} />
+  }
+
   return (
-    <div className="min-h-screen bg-[#0B0E37] text-white relative p-4">
-        <div className="flex items-center gap-4 mb-6 ml-4">
-        <Link href="/" className="text-cyan-400 text-xl font-bold">
+    <>
+      <div className='absolute z-[-2] w-full min-h-screen bg-[#040B2A]'></div>
+      <div className='absolute z-[-1] w-full min-h-screen opacity-20'>
+        <Squares
+          squareSize={125}
+          speed={0.1}
+        />
+      </div>
+      <div className="min-h-screen max-h-screen text-white relative p-4 overflow-hidden">
+        <div className="flex justify-between items-center mb-4 mx-4">
+          <div className='flex items-center gap-4'>
+            <Link href="/campaign" className="text-cyan-400 text-xl font-bold">
               <Image
                 src="/back.png"
                 alt="Back"
-                style={{ width: '60px', height: '44px' }}
+                style={{ width: '40px', height: '34px' }}
                 className="cursor-pointer"
-                width={34}
-                height={34}
+                width={24}
+                height={24}
               />
             </Link>
-      <h1 className="text-5xl font-bold text-blue-300 text-left ml-4 mb-6">LEADERBOARD</h1></div>
-  
-      {/* Top 3 */}
-      <div className="flex justify-center gap-10 mb-10">
-        {users.slice(0, 3).map((user, index) => (
-          <div key={user.username} className={`flex flex-col items-center ${index === 0 ? 'scale-110' : ''}`}>
-            <div className="relative flex flex-col items-center">
-              <Image
-                src={user.avatarUrl || '/default-avatar.png'}
-                alt="avatar"
-                width={80}
-                height={80}
-                className="w-[80px] h-[80px] object-cover border-2 border-cyan-400 shadow-[0_0_12px_3px_rgba(0,255,255,0.6)] mb-8"
-              />
-              <Image
-                src="/glow_plate.png"
-                alt="glowPlate"
-                width={1250}
-                height={1060}
-                className="absolute -bottom-6 w-full h-auto"
-              />
-            </div>
-            <p className="text-xl mt-8 text-cyan-300 font-semibold">{user.username.toUpperCase()}</p>
-            <span className="text-2xl">{index === 0 && '🥇'}
-            {index === 1 && '🥈'}
-            {index === 2 && '🥉'}
-            {(user.rating ?? user.xpPoints ?? 0).toLocaleString()}</span>
+            <h1 className="text-cyan-400 text-5xl font-bold">LEADERBOARD</h1>
           </div>
-        ))}
-      </div>  
+          <div className="flex gap-4 text-cyan-400 text-xl">
+            <Image
+              src="/gear.png"
+              alt="Settings"
+              style={{ width: '44px', height: '44px' }}
+              className="cursor-pointer"
+              width={24}
+              height={24}
+            />
+            <Link href="/">
+              <Image
+                src="/home.png"
+                alt="Home"
+                style={{ width: '44px', height: '44px' }}
+                className="cursor-pointer"
+                width={24}
+                height={24}
+              />
+            </Link>
+          </div>
+        </div>
 
-      {/* Scrollable Table */}
-      <div className="overflow-x-auto border border-blue-300 rounded-xl text-2xl">
-        <table className="table-auto w-full text-left border-collapse">
-          <thead className="bg-[#0F1635] text-blue-200">
-            <tr>
-              <th className="p-3">RANK</th>
-              <th className="p-3">USERNAME</th>
-              <th className="p-3">RATING</th>
-              <th className="p-3">CAMPAIGN LEVEL</th>
-              <th className="p-3">WINS</th>
-              <th className="p-3">LOSSES</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user, index) => (
-              <tr key={user.username} className="border-t border-blue-900 hover:bg-[#182144] transition">
-                <td className="p-3">{index + 1}</td>
-                <td className="p-3">{user.username}</td>
-                <td className="p-3">{user.rating ?? user.xpPoints ?? 0}</td>
-                <td className="p-3">{user.campaignLevel ?? '-'}</td>
-                <td className="p-3">{user.wins ?? '-'}</td>
-                <td className="p-3">{user.losses ?? '-'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="flex justify-center gap-10 mb-40 scale-120">
+          {[users[1], users[0], users[2]].filter(Boolean).map((user, index) => {
+            const trueIndex = [1, 0, 2][index];
+            const baseClasses = `flex flex-col items-center mb-20 mt-15 mx-4 ${trueIndex === 0 ? 'scale-100' : trueIndex === 1 ? 'mt-25' : trueIndex === 2 ? 'scale-100 mt-30' : 'scale-100'
+              }`;
+
+            return (
+              <div key={user.username} className={baseClasses}>
+                <div
+                  className="float relative flex flex-col items-center"
+                  style={{ animationDelay: `${index * 0.3 + 0.15}s` }}
+                >
+                  <Image
+                    src={user.avatarUrl || getRandomAvatar()}
+                    alt="avatar"
+                    width={80}
+                    height={80}
+                    className="w-[80px] h-[80px] object-cover shadow-[0_0_12px_3px_rgba(255,255,255,0.3)] mb-8"
+                  />
+
+                  <div className="flex flex-col items-center">
+                    <p className="text-xl text-cyan-300 font-semibold">{user.username}</p>
+                    <span className="text-2xl mt-1">
+                      {trueIndex === 0 && '🥇'}
+                      {trueIndex === 1 && '🥈'}
+                      {trueIndex === 2 && '🥉'}
+                      {(user.rating ?? user.xpPoints ?? 0).toLocaleString()}
+                    </span>
+                  </div>
+
+                  <Image
+                    src="/glow_plate.png"
+                    alt="glowPlate"
+                    width={1250}
+                    height={1060}
+                    className="absolute mt-20 w-full h-auto scale-200"
+                  />
+                </div>
+              </div>
+
+
+            );
+          })}
+        </div>
+
+
+
+
+        <div className="border border-cyan-300 text-[#48D3D6] mx-10 rounded-xl text-2xl overflow-hidden shadow-[0_0_10px_#48D3D6]">
+          <div className="h-[60vh] overflow-y-auto">
+            <table className="min-w-full text-left border-collapse">
+              <thead className="bg-[#0F1635] sticky top-0 z-10 border-b border-cyan-300">
+                <tr>
+                  <th className="p-3 text-center">RANK</th>
+                  <th className="p-3 text-center">USERNAME</th>
+                  <th className="p-3 text-center">RATING</th>
+                  <th className="p-3 text-center">CAMPAIGN LEVEL</th>
+                  <th className="p-3 text-center">WINS</th>
+                  <th className="p-3 text-center">LOSSES</th>
+                </tr>
+              </thead>
+              <tbody className="bg-[#0F1635]">
+                {users.map((user, index) => (
+                  <tr key={user.username} className="hover:bg-[#182144] transition">
+                    <td className="p-3 text-center">{index + 1}</td>
+                    <td className="p-3 text-center">{user.username}</td>
+                    <td className="p-3 text-center">{user.rating ?? user.xpPoints ?? 0}</td>
+                    <td className="p-3 text-center">{user.campaignLevel ?? '-'}</td>
+                    <td className="p-3 text-center">{user.wins ?? '-'}</td>
+                    <td className="p-3 text-center">{user.losses ?? '-'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
