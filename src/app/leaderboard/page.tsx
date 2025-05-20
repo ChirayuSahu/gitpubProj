@@ -28,7 +28,7 @@ const Leaderboard = () => {
       try {
         const res = await fetch('/api/leaderboard?limit=50');
         const data = await res.json();
-        let fetchedUsers: UserData[] = data.leaderboard || [];
+        const fetchedUsers: UserData[] = data.leaderboard || [];
 
         const combinedUsers = [...fetchedUsers, ...hardcodedUsers];
 
@@ -97,7 +97,7 @@ const Leaderboard = () => {
           </div>
         </div>
 
-        <div className="flex justify-center gap-10 mb-40 scale-120">
+        <div className="flex justify-center gap-15 mb-40 scale-120">
           {[users[1], users[0], users[2]].filter(Boolean).map((user, index) => {
             const trueIndex = [1, 0, 2][index];
             const baseClasses = `flex flex-col items-center mb-20 mt-15 mx-4 ${trueIndex === 0 ? 'scale-100' : trueIndex === 1 ? 'mt-25' : trueIndex === 2 ? 'scale-100 mt-30' : 'scale-100'
