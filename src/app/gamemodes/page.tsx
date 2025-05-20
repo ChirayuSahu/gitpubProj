@@ -10,7 +10,7 @@ const GameModes = () => {
         {/* CHAOS MODE */}
         <div className="bg-black/40 border-2 border-cyan-400 rounded-2xl w-[320px] h-[500px] flex flex-col justify-between items-center p-4 text-white shadow-xl hover:scale-105 transition-all duration-300">
           <div className="relative w-full h-full">
-            <Link href="/courses">
+            <Link href="/chaos">
             <Image
               src="/chaos_panel.png"
               alt="Chaos Mode"
