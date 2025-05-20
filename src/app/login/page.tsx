@@ -49,9 +49,10 @@ const LoginPage = () => {
 
             setProgress(80);
 
-            router.push('/dashboard');
-
+            
             setProgress(100);
+            
+            router.push('/dashboard');
 
         } catch (error: any) {
             toast.error('Unexpected error:', error.message);
