@@ -16,7 +16,7 @@ const Navbar = () => {
     const router = useRouter()
 
     const navItems = [
-        { name: 'Learn', href: '/path' },
+        { name: 'Learn', href: '/campaign' },
         { name: 'Battle', href: '/chaos' },
         { name: 'Rankings', href: '/leaderboard' },
         { name: 'Menu', href: '/menu' },
