@@ -18,6 +18,7 @@ Rewrite the following Python function by:
 - Adding minimal or no comments,
 - Ensuring the logic and output remain unchanged,
 - Keeping the code length close to the original.
+- remember to keep the function name and function inputs same, change anything inside the function.
 
 Return the rewritten function as a JSON object with a single key "code" whose value is the rewritten function as a string.
 

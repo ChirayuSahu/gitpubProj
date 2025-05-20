@@ -62,13 +62,14 @@ const CompletedScreen = ({ currentXp, nextTierXp, xpIncrease }: CompletedScreenP
                             </p>
                         </div>
                     </div>
+                    <button className="px-6 py-4 border-4 font-bold bg-[#000928] border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black text-7xl transition">
+                        RETRY
+                    </button>
                     <Link href="/menu">
                     <button className="px-6 py-4 border-4 font-bold bg-[#000928] border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black text-7xl transition">
                         CONTINUE
                     </button>
                     </Link>
-
-
                 </div>
             </div>
         </>

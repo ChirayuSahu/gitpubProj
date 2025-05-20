@@ -16,10 +16,12 @@ const DashboardPage = () => {
     const [user, setUser] = useState<any>(null)
     const [league, setLeague] = useState<any>(null)
     const [loading, setLoading] = useState(true)
+    const [progress, setProgress] = useState(0)
 
     useEffect(() => {
         const fetchUser = async () => {
             setLoading(true)
+            setProgress(30);
             try {
 
                 const res = await fetch(`/api/me`, {
@@ -28,6 +30,8 @@ const DashboardPage = () => {
                         'Content-Type': 'application/json',
                     },
                 })
+
+                setProgress(50);
 
                 const data = await res.json();
 
@@ -38,11 +42,13 @@ const DashboardPage = () => {
                 setUser(data);
                 setLeague(getLeague(data?.xpPoints));
 
+                setProgress(80);
 
             } catch (error: any) {
                 toast.error(error.message)
             } finally {
                 setLoading(false)
+                setProgress(100);
             }
         }
 
@@ -51,7 +57,7 @@ const DashboardPage = () => {
     }, [])
 
     if (loading) {
-        return <LoadingPage text='Fetching...' progress={100} />
+        return <LoadingPage text='Fetching...' progress={progress} />
     }
 
     return (
@@ -116,6 +122,7 @@ const DashboardPage = () => {
                                 width={1000}
                                 height={1000}
                                 className="w-50 h-50"
+                                draggable={false}
                             />
                             <AnimatedProgressBar
                                 start={league?.start}
@@ -135,25 +142,28 @@ const DashboardPage = () => {
                             width={1000}
                             height={2000}
                             className="absolute -top-8 -right-20 w-[32vh]"
+                            draggable={false}
                         />
                     </div>
 
                     <div className='col-span-4 row-span-1 bg-[#000116] rounded-lg shadow-lg flex flex-col items-center justify-center drop-shadow-[0_0_10px_#4324CD]'>
                         <h1 className='text-cyan-400 text-3xl font-bold mb-10'>ACHIEVEMENTS</h1>
-                        <div className='flex items-center justify-center gap-20'>
+                        <div className='flex items-center justify-center gap-[2vw]'>
                             <Image
                             src={'/achievements/ac1.png'}
                             alt="Achievement 1"
                             width={1000}
                             height={1000}
-                            className="w-40 h-40"
+                            className="w-[10vw]"
+                            draggable={false}
                             />
                             <Image
                             src={'/achievements/ac2.png'}
                             alt='Achievement 2'
                             width={1000}
                             height={1000}
-                            className='w-40 h-40'
+                            className='w-[10vw]'
+                            draggable={false}
                             />
                         </div>
                     </div>
@@ -195,9 +205,9 @@ const DashboardPage = () => {
                     </div>
                     <div className="relative col-span-4 row-span-1 bg-[#0A1B3D] rounded-lg shadow-lg flex drop-shadow-[0_0_7px_#4324CD] flex-col items-center justify-between p-10 overflow-hidden">
                         <div className="absolute inset-0 bg-cover scale-150 opacity-50 " style={{ backgroundImage: 'url("/dashimage.png")' }}></div>
-                        <h1 className='text-cyan-400 text-3xl font-bold'>CAMPAIGN PROGRESS</h1>
+                        <h1 className='text-cyan-400 text-3xl text-center font-bold'>CAMPAIGN PROGRESS</h1>
                         <div className='flex flex-col gap-6'>
-                            <div className='relative w-80'>
+                            <div className='relative w-[20vw]'>
                                 <AnimatedProgressBar
                                     start={0}
                                     end={6}

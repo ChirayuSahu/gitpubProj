@@ -31,7 +31,7 @@ const Navbar = () => {
 
 
         <>
-            <div className='fixed z-100 w-full py-4 flex justify-between items-center px-15 text-[#24F2F4] backdrop-blur-md border-b border-[#24F2F4]'>
+            <div suppressHydrationWarning className='fixed z-100 w-full py-4 flex justify-between items-center px-15 text-[#24F2F4] backdrop-blur-md border-b border-[#24F2F4]'>
                 <div>
                     <Link href={'/'}>
                         <h1 className='text-4xl'>{`</CodeClash`}</h1>
@@ -47,17 +47,17 @@ const Navbar = () => {
                 {user ? (
                     <>
                         <div className='flex gap-2'>
-                            <div className=''>
-                                <Button className='text-lg py-2 px-6' onClick={()=>(router.push('/dashboard'))} >Dashboard</Button>
+                            <div>
+                                <Button className='text-lg py-2 px-6 cursor-pointer' onClick={()=>(router.push('/dashboard'))} >Dashboard</Button>
                             </div>
-                            <div className=''>
-                                <Button className='text-lg py-2 px-6' onClick={handleLogout}>Logout</Button>
+                            <div>
+                                <Button className='text-lg py-2 px-6 cursor-pointer' onClick={handleLogout}>Logout</Button>
                             </div>
                         </div>
                     </>
                 ) : (
-                    <div className=''>
-                        <Button className='text-lg py-2 px-6' onClick={()=>(router.push('/login'))}>Login</Button>
+                    <div>
+                        <Button className='text-lg py-2 px-6 cursor-pointer' onClick={()=>(router.push('/login'))}>Login</Button>
                     </div>
                 )}
 

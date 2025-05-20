@@ -109,20 +109,20 @@ export default function CurvedPathPage() {
               key={index}
               onClick={() => {
                 if (isUnlocked) {
-                  router.push(`/campaign/${point.page}`);
+                  router.push(`/rules?r=${point.page}`);
                 } else {
                   toast.warning('Complete the previous level first!');
                 }
               }}
               disabled={!isUnlocked}
-              className={`${point.top} ${point.left} absolute w-14 h-14 flex items-center justify-center rounded-full border-2 shadow-lg transition-all duration-300 z-10
+              className={`${point.top} ${point.left} cursor-pointer absolute w-14 h-14 flex items-center justify-center rounded-full border-2 shadow-lg transition-all duration-300 z-10
         ${isCompleted ? 'bg-cyan-500 hover:scale-110 border-cyan-300 text-white' :  !isUnlocked && isSpecial ? `'bg-gray-400 border-gray-300 text-gray-100 cursor-not-allowed opacity-60` :
                   isSpecial ? 'bg-red-600 hover:bg-red-400 hover:scale-110 border-red-300 text-white' :
                     isUnlocked ? 'bg-transparent border-cyan-300 hover:bg-cyan-700 text-cyan-300 hover:text-white hover:scale-110' :
                       'bg-gray-400 border-gray-300 text-gray-100 cursor-not-allowed opacity-60'}
       `}
             >
-              <Star className="w-6 h-6" />
+              {index + 1}
             </button>
           );
         })}
