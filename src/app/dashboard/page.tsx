@@ -9,6 +9,7 @@ import { getLeague } from './dashboard.helpers'
 import { AnimatedProgressBar } from '@/components/custom/progressBar'
 import { Clock5 } from 'lucide-react'
 import LoadingPage from '@/components/custom/loadingPage'
+import TopMenu from '@/components/custom/topMenu'
 
 
 const DashboardPage = () => {
@@ -70,40 +71,8 @@ const DashboardPage = () => {
                 />
             </div>
             <div className='absolute z-20 w-full min-h-screen flex-col items-center justify-center'>
-                <div className="flex justify-between items-center mb-4 m-10">
-                    <div className='flex items-center gap-4'>
-                        <Link href="/" className="text-cyan-400 text-xl font-bold">
-                            <Image
-                                src="/back.png"
-                                alt="Back"
-                                style={{ width: '40px', height: '34px' }}
-                                className="cursor-pointer"
-                                width={24}
-                                height={24}
-                            />
-                        </Link>
-                        <h1 className="text-cyan-400 text-5xl font-bold">DASHBOARD</h1>
-                    </div>
-                    <div className="flex gap-4 text-cyan-400 text-xl">
-                        <Image
-                            src="/gear.png"
-                            alt="Settings"
-                            style={{ width: '44px', height: '44px' }}
-                            className="cursor-pointer"
-                            width={24}
-                            height={24}
-                        />
-                        <Link href="/">
-                            <Image
-                                src="/home.png"
-                                alt="Home"
-                                style={{ width: '44px', height: '44px' }}
-                                className="cursor-pointer"
-                                width={24}
-                                height={24}
-                            />
-                        </Link>
-                    </div>
+                <div className=''>
+                <TopMenu text='Dashboard' back='/'/>
                 </div>
                 <div className='grid grid-cols-11 grid-rows-2 gap-15 m-10'>
                     <div className='w-full col-span-2 row-span-2 bg-[#000928] rounded-4xl drop-shadow-[0_0_10px_#4324CD] flex items-center justify-center'>
@@ -204,7 +173,7 @@ const DashboardPage = () => {
 
                     </div>
                     <div className="relative col-span-4 row-span-1 bg-[#0A1B3D] rounded-lg shadow-lg flex drop-shadow-[0_0_7px_#4324CD] flex-col items-center justify-between p-10 overflow-hidden">
-                        <div className="absolute inset-0 bg-cover scale-150 opacity-50 " style={{ backgroundImage: 'url("/dashimage.png")' }}></div>
+                        <div className="absolute inset-0 bg-cover scale-100 opacity-70 " style={{ backgroundImage: 'url("/dashimage.png")' }}></div>
                         <h1 className='text-cyan-400 text-3xl text-center font-bold'>CAMPAIGN PROGRESS</h1>
                         <div className='flex flex-col gap-6'>
                             <div className='relative w-[20vw]'>

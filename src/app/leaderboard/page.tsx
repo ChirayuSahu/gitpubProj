@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import LoadingPage from '@/components/custom/loadingPage';
 import Squares from '@/components/Squares/Squares';
 import { hardcodedUsers, getRandomAvatar } from './leaderboard.helpers';
+import TopMenu from '@/components/custom/topMenu';
 
 interface UserData {
   username: string;
@@ -60,42 +61,8 @@ const Leaderboard = () => {
           speed={0.1}
         />
       </div>
-      <div className="min-h-screen max-h-screen text-white relative p-4 overflow-hidden">
-        <div className="flex justify-between items-center mb-4 mx-4">
-          <div className='flex items-center gap-4'>
-            <Link href="/" className="text-cyan-400 text-xl font-bold">
-              <Image
-                src="/back.png"
-                alt="Back"
-                style={{ width: '40px', height: '34px' }}
-                className="cursor-pointer"
-                width={24}
-                height={24}
-              />
-            </Link>
-            <h1 className="text-cyan-400 text-5xl font-bold">LEADERBOARD</h1>
-          </div>
-          <div className="flex gap-4 text-cyan-400 text-xl">
-            <Image
-              src="/gear.png"
-              alt="Settings"
-              style={{ width: '44px', height: '44px' }}
-              className="cursor-pointer"
-              width={24}
-              height={24}
-            />
-            <Link href="/">
-              <Image
-                src="/home.png"
-                alt="Home"
-                style={{ width: '44px', height: '44px' }}
-                className="cursor-pointer"
-                width={24}
-                height={24}
-              />
-            </Link>
-          </div>
-        </div>
+      <div className="min-h-screen max-h-screen text-white relative p-4 pt-0 overflow-hidden">
+        <TopMenu text='Leaderboard' back='/menu'/>
 
         <div className="flex justify-center gap-15 mb-40 scale-120">
           {[users[1], users[0], users[2]].filter(Boolean).map((user, index) => {
@@ -136,15 +103,9 @@ const Leaderboard = () => {
                   />
                 </div>
               </div>
-
-
             );
           })}
         </div>
-
-
-
-
         <div className="border border-cyan-300 text-[#48D3D6] mx-10 rounded-xl text-2xl overflow-hidden shadow-[0_0_10px_#48D3D6]">
           <div className="h-[60vh] overflow-y-auto">
             <table className="min-w-full text-left border-collapse">

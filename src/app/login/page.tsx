@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Button from '@/components/custom/button'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
@@ -15,6 +15,8 @@ const LoginPage = () => {
     const router = useRouter();
     const [loading, setLoading] = useState(false)
     const [progress, setProgress] = useState(0)
+
+    const [scale, setScale] = useState(1);
 
     const [form, setForm] = useState({
         email: '',
@@ -40,7 +42,7 @@ const LoginPage = () => {
 
             setProgress(50);
 
-            if(!result?.ok){
+            if (!result?.ok) {
                 setProgress(100);
                 setLoading(false);
                 toast.error('Invalid credentials');
@@ -49,9 +51,9 @@ const LoginPage = () => {
 
             setProgress(80);
 
-            
+
             setProgress(100);
-            
+
             router.push('/dashboard');
 
         } catch (error: any) {
@@ -61,9 +63,22 @@ const LoginPage = () => {
         }
     };
 
+    useEffect(() => {
+        function updateScale() {
+            const baseHeight = 900;
+            const currentHeight = window.innerHeight;
+
+            const newScale = Math.min(Math.max(currentHeight / baseHeight, 0.7), 1.2);
+            setScale(newScale);
+        }
+
+        updateScale();
+        window.addEventListener('resize', updateScale);
+        return () => window.removeEventListener('resize', updateScale);
+    }, []);
 
     if (loading) {
-        return <LoadingPage text="Logging in..." progress={progress}/>
+        return <LoadingPage text="Logging in..." progress={progress} />
     }
 
 
@@ -71,10 +86,10 @@ const LoginPage = () => {
         <>
             <AnimatedCards />
             <div className='min-h-screen bg-[url("/herobg.png")] bg-center bg-cover'>
-                <div className='absolute flex items-center justify-center w-full h-full backdrop-blur-xs'>
+                <div className='absolute flex items-center justify-center w-full h-full backdrop-blur-xs' style={{ transform: `scale(${scale})`}}>
                     <form
                         onSubmit={handleSubmit}
-                        className='bg-[#0B0E37] p-10 rounded-2xl shadow-[#6370A5] shadow-sm border-2 border-[#6370A5] w-100 h-[50vh] flex flex-col gap-3 justify-center'
+                        className='bg-[#0B0E37] p-10 rounded-2xl shadow-[#6370A5] shadow-sm border-2 border-[#6370A5] w-100 min-h-[50vh] flex flex-col gap-3 justify-center'
                     >
                         <div className='flex items-center justify-center gap-5 mb-6'>
                             <Image
@@ -89,7 +104,7 @@ const LoginPage = () => {
 
                         <div className='flex flex-col gap-1'>
                             <label htmlFor='email' className='text-white font-medium'>
-                                Email
+                                Email or Username
                             </label>
                             <input
                                 type='text'

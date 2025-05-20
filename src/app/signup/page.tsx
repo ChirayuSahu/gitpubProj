@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Button from '@/components/custom/button'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -14,6 +14,7 @@ const SignUpPage = () => {
     const router = useRouter();
     const [loading, setLoading] = useState(false)
     const [progress, setProgress] = useState(0)
+    const [scale, setScale] = useState(1);
 
     const [form, setForm] = useState({
         name: '',
@@ -59,6 +60,20 @@ const SignUpPage = () => {
         }
     };
 
+    useEffect(() => {
+            function updateScale() {
+                const baseHeight = 1100;
+                const currentHeight = window.innerHeight;
+    
+                const newScale = Math.min(Math.max(currentHeight / baseHeight, 0.7), 1.2);
+                setScale(newScale);
+            }
+    
+            updateScale();
+            window.addEventListener('resize', updateScale);
+            return () => window.removeEventListener('resize', updateScale);
+        }, []);
+
 
     if (loading) {
         return <LoadingPage text="Signing up..." progress={progress} />
@@ -69,7 +84,7 @@ const SignUpPage = () => {
         <>
             <AnimatedCards />
             <div className='min-h-screen bg-[url("/herobg.png")] bg-center bg-cover'>
-                <div className='absolute flex items-center justify-center w-full h-full backdrop-blur-xs'>
+                <div className='absolute flex items-center justify-center w-full h-full backdrop-blur-xs' style={{ transform: `scale(${scale})` }}>
                     <form
                         onSubmit={handleSubmit}
                         className='bg-[#0B0E37] p-10 rounded-2xl shadow-[#6370A5] shadow-sm border-2 border-[#6370A5] w-100 min-h-[50vh] flex flex-col gap-3 justify-center'

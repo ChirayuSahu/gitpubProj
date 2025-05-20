@@ -38,7 +38,7 @@ const Hero = () => {
                             <Link
                             href={session ? '/menu' : '/signup'}
                             >
-                            <Button className='px-12 py-4 text-xl'>Start Clashing</Button>
+                            <Button className='px-12 py-4 text-xl cursor-pointer'>Start Clashing</Button>
                             </Link>
                         </div>
                     </div>

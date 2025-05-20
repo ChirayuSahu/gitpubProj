@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Editor, { useMonaco } from '@monaco-editor/react';
-import Link from 'next/link';
+import TopMenu from '@/components/custom/topMenu';
 import Image from 'next/image';
 import { toast } from 'sonner';
 import LoadingPage from '@/components/custom/loadingPage';
@@ -124,24 +124,6 @@ export default function SpecificCampaignPage({ params }: PageProps) {
   const [isAddingChaos, setIsAddingChaos] = useState(false);
   const timeLeft = useTimerStore((state) => state.timeLeft);
   const lastRunAt = useRef<number | null>(null);
-
-
-  useEffect(() => {
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'F') {
-        event.preventDefault();
-        setFullScreen(prev => !prev);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-
-
-  }, []);
 
   useEffect(() => {
 
@@ -451,41 +433,9 @@ export default function SpecificCampaignPage({ params }: PageProps) {
 
         />
       </div>
-      <div className="absolute z-20 text-white p-6 overflow-hidden">
-        <div className="flex justify-between items-center mb-4">
-          <div className='flex items-center gap-4'>
-            <Link href="/campaign" className="text-cyan-400 text-xl font-bold">
-              <Image
-                src="/back.png"
-                alt="Back"
-                style={{ width: '30px', height: '24px' }}
-                className="cursor-pointer"
-                width={24}
-                height={24}
-              />
-            </Link>
-            <h1 className="text-cyan-400 text-5xl font-bold">CAMPAIGN MODE</h1>
-          </div>
-          <div className="flex gap-4 text-cyan-400 text-xl">
-            <Image
-              src="/gear.png"
-              alt="Settings"
-              style={{ width: '44px', height: '44px' }}
-              className="cursor-pointer"
-              width={24}
-              height={24}
-            />
-            <Link href="/">
-              <Image
-                src="/home.png"
-                alt="Home"
-                style={{ width: '44px', height: '44px' }}
-                className="cursor-pointer"
-                width={24}
-                height={24}
-              />
-            </Link>
-          </div>
+      <div className="absolute z-20 text-white p-6 pt-0 overflow-hidden">
+        <div className='-px-6'>
+        <TopMenu text='Game Modes' back='/menu' />
         </div>
 
         <div className="grid grid-cols-4 gap-6 overflow-auto custom-scrollbar">

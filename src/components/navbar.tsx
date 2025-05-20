@@ -31,7 +31,7 @@ const Navbar = () => {
 
 
         <>
-            <div suppressHydrationWarning className='fixed z-100 w-full py-4 flex justify-between items-center px-15 text-[#24F2F4] backdrop-blur-md border-b border-[#24F2F4]'>
+            <div suppressHydrationWarning className='fixed z-100 w-full py-4 flex justify-between items-center px-15 text-[rgb(36,242,244)] backdrop-blur-md border-b border-[#24F2F4]'>
                 <div>
                     <Link href={'/'}>
                         <h1 className='text-4xl'>{`</CodeClash`}</h1>

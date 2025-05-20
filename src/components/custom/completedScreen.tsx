@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Squares from '../Squares/Squares'
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 type CompletedScreenProps = {
     currentXp: number;
@@ -15,6 +16,7 @@ type CompletedScreenProps = {
 const CompletedScreen = ({ currentXp, nextTierXp, xpIncrease }: CompletedScreenProps) => {
 
     const [xp, setXp] = useState(currentXp);
+    const router = useRouter();
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -58,14 +60,14 @@ const CompletedScreen = ({ currentXp, nextTierXp, xpIncrease }: CompletedScreenP
                                 style={{ width: `${percentFilled}%` }}
                             />
                             <p className='absolute inset-0 flex items-center justify-center text-4xl text-[#ffffff] font-bold z-10'>
-                                {xp} / {nextTierXp} XP
+                                {xp} / {nextTierXp}
                             </p>
                         </div>
                     </div>
-                    <button className="px-6 py-4 border-4 font-bold bg-[#000928] border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black text-7xl transition">
-                        RETRY
+                    <button onClick={()=>(router.refresh())} className="px-6 py-4 border-4 font-bold bg-[#000928] border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black text-7xl transition">
+                        CONTINUE
                     </button>
-                    <Link href="/menu">
+                    <Link href="/campaign">
                     <button className="px-6 py-4 border-4 font-bold bg-[#000928] border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black text-7xl transition">
                         CONTINUE
                     </button>
