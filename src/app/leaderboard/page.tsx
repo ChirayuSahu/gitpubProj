@@ -53,7 +53,7 @@ const Leaderboard = () => {
 
   return (
     <>
-      <div className='absolute z-[-2] w-full min-h-screen bg-[#040B2A]'></div>
+      <div className='absolute z-[-2] w-full min-h-screen bg-[linear-gradient(to_bottom,_#040B2A,_#051D5B)]'></div>
       <div className='absolute z-[-1] w-full min-h-screen opacity-20'>
         <Squares
           squareSize={125}
@@ -63,7 +63,7 @@ const Leaderboard = () => {
       <div className="min-h-screen max-h-screen text-white relative p-4 overflow-hidden">
         <div className="flex justify-between items-center mb-4 mx-4">
           <div className='flex items-center gap-4'>
-            <Link href="/campaign" className="text-cyan-400 text-xl font-bold">
+            <Link href="/" className="text-cyan-400 text-xl font-bold">
               <Image
                 src="/back.png"
                 alt="Back"
