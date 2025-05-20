@@ -32,6 +32,27 @@
   
 }
 
+.custom-scrollbar-1::-webkit-scrollbar {
+  width: 20px;
+  height: 2px;
+}
+
+.custom-scrollbar-1::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar-1::-webkit-scrollbar-thumb {
+  background-color: #4324CD;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.custom-scrollbar-1::-webkit-scrollbar-thumb:hover {
+  background-color: #4324CD;
+  
+}
+
 
 @theme inline {
   --color-background: var(--background);

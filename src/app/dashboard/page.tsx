@@ -50,8 +50,8 @@ const DashboardPage = () => {
         fetchUser();
     }, [])
 
-    if(loading){
-        return <LoadingPage text='Fetching...' progress={100}/>
+    if (loading) {
+        return <LoadingPage text='Fetching...' progress={100} />
     }
 
     return (
@@ -102,14 +102,20 @@ const DashboardPage = () => {
                 <div className='grid grid-cols-11 grid-rows-2 gap-15 m-10'>
                     <div className='w-full col-span-2 row-span-2 bg-[#000928] rounded-4xl drop-shadow-[0_0_10px_#4324CD] flex items-center justify-center'>
                     </div>
-                    <div className="relative col-span-5 row-span-1 rounded-lg shadow-lg flex items-center justify-evenly" style={{ backgroundColor: league?.bgColor, boxShadow: `0 0 10px ${league?.cardShadowColor}, 0 0 20px ${league?.cardShadowColor}` }}>
-                        <div className='absolute left-[5vw] scale-[20vw] flex flex-col gap-4 items-center justify-center'>
+                    <div
+                        className="relative col-span-5 row-span-1 rounded-lg shadow-lg flex items-center justify-center"
+                        style={{
+                            backgroundColor: league?.bgColor,
+                            boxShadow: `0 0 10px ${league?.cardShadowColor}, 0 0 20px ${league?.cardShadowColor}`,
+                        }}
+                    >
+                        <div className="absolute top-1/2 left-1/3 transform -translate-x-1/3 -translate-y-1/2 flex flex-col gap-4 items-center justify-center z-10">
                             <Image
                                 src={league?.icon || `https://placehold.co/600x600/${league?.bgColor}/FFFFFF.png`}
                                 alt="League Icon"
                                 width={1000}
                                 height={1000}
-                                className='w-50 h-50'
+                                className="w-50 h-50"
                             />
                             <AnimatedProgressBar
                                 start={league?.start}
@@ -119,20 +125,39 @@ const DashboardPage = () => {
                                 glowColor={league?.barGlowColor}
                                 barBackgroundColor={league?.barBg}
                             />
-                            <h1 className={`text-3xl`} style={{color: league?.barColor}}>{user?.xpPoints} / {league?.end}</h1>
+                            <h1 className="text-3xl" style={{ color: league?.barColor }}>
+                                {user?.xpPoints} / {league?.end}
+                            </h1>
                         </div>
                         <Image
-                            src={league?.human || '/byte/human.png'}
+                            src={league?.human || "/byte/human.png"}
                             alt="League Human"
                             width={1000}
                             height={2000}
-                            className='absolute -top-8 -right-20 w-[32vh]'
+                            className="absolute -top-8 -right-20 w-[32vh]"
                         />
                     </div>
-                    <div className='col-span-4 row-span-1 bg-[#000116] rounded-lg shadow-lg flex items-center justify-center drop-shadow-[0_0_10px_#4324CD]'>
-                        <h1 className='text-cyan-400 text-3xl font-bold'>Level 2</h1>
+
+                    <div className='col-span-4 row-span-1 bg-[#000116] rounded-lg shadow-lg flex flex-col items-center justify-center drop-shadow-[0_0_10px_#4324CD]'>
+                        <h1 className='text-cyan-400 text-3xl font-bold mb-10'>ACHIEVEMENTS</h1>
+                        <div className='flex items-center justify-center gap-20'>
+                            <Image
+                            src={'/achievements/ac1.png'}
+                            alt="Achievement 1"
+                            width={1000}
+                            height={1000}
+                            className="w-40 h-40"
+                            />
+                            <Image
+                            src={'/achievements/ac2.png'}
+                            alt='Achievement 2'
+                            width={1000}
+                            height={1000}
+                            className='w-40 h-40'
+                            />
+                        </div>
                     </div>
-                    <div className='col-span-5 max-h-[40vh] overflow-auto row-span-1 bg-[#000928] rounded-lg shadow-lg flex flex-col items-center justify-center p-8 drop-shadow-[0_0_10px_#4324CD]'>
+                    <div className='col-span-5 max-h-[37vh] custom-scrollbar-1 overflow-auto row-span-1 bg-[#000928] rounded-lg shadow-lg flex flex-col items-center justify-center p-8 drop-shadow-[0_0_10px_#4324CD]'>
                         <h1 className='text-cyan-400 text-3xl font-bold mb-10'>MATCH HISTORY</h1>
                         <div className='flex flex-col gap-6 w-full'>
                             <div className='px-6 bg-[#541916] text-[#FF8F00] drop-shadow-[0_0_7px_#9B3E00] flex items-center justify-between w-full rounded-lg shadow-lg p-4'>
