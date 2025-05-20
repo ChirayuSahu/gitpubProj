@@ -17,7 +17,7 @@ const Navbar = () => {
 
     const navItems = [
         { name: 'Learn', href: '/campaign' },
-        { name: 'Battle', href: '/chaos' },
+        { name: 'Battle', href: '/' },
         { name: 'Rankings', href: '/leaderboard' },
         { name: 'Menu', href: '/menu' },
     ]
