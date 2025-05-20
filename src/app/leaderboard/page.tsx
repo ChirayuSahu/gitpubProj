@@ -106,7 +106,7 @@ const Leaderboard = () => {
             return (
               <div key={user.username} className={baseClasses}>
                 <div
-                  className="float relative flex flex-col items-center"
+                  className="float relative flex flex-col items-center justify-center"
                   style={{ animationDelay: `${index * 0.3 + 0.15}s` }}
                 >
                   <Image
@@ -118,8 +118,8 @@ const Leaderboard = () => {
                   />
 
                   <div className="flex flex-col items-center">
-                    <p className="text-xl text-cyan-300 font-semibold">{user.username}</p>
-                    <span className="text-2xl mt-1">
+                    <p className="text-xl text-cyan-300 text-center font-semibold">{user.username}</p>
+                    <span className="text-2xl text-center mt-1">
                       {trueIndex === 0 && '🥇'}
                       {trueIndex === 1 && '🥈'}
                       {trueIndex === 2 && '🥉'}
@@ -132,7 +132,7 @@ const Leaderboard = () => {
                     alt="glowPlate"
                     width={1250}
                     height={1060}
-                    className="absolute mt-20 w-full h-auto scale-200"
+                    className="absolute mt-20 -ml-1 w-full h-auto scale-200"
                   />
                 </div>
               </div>
