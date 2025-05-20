@@ -155,7 +155,6 @@ export default function SpecificCampaignPage({ params }: PageProps) {
     checkCompleted();
   }, [id, router]);
 
-
   useEffect(() => {
 
     const fetchQuestion = async () => {
@@ -435,7 +434,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
       </div>
       <div className="absolute z-20 text-white p-6 pt-0 overflow-hidden">
         <div className='-px-6'>
-        <TopMenu text='Game Modes' back='/menu' />
+        <TopMenu text='Campaign' back='/menu' />
         </div>
 
         <div className="grid grid-cols-4 gap-6 overflow-auto custom-scrollbar">
