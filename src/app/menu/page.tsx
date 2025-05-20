@@ -26,23 +26,23 @@ const Dashboard = () => {
 
       <button
         onClick={handleGameClick}
-        className="px-16 py-8 min-w-100 text-5xl drop-shadow-[0_0_10px_#49D8E9] font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300"
+        className="px-16 py-8 min-w-100 text-5xl drop-shadow-[0_0_10px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300"
       >
         GAME MODES
       </button>
       <button 
       onClick={handleLeadClick}
-      className="px-16 py-8 min-w-100 text-5xl drop-shadow-[0_0_10px_#49D8E9] font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
+      className="px-16 py-8 min-w-100 text-5xl drop-shadow-[0_0_10px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
         LEADERBOARD
       </button>
       <button 
       onClick={handleDashClick}
-      className="px-16 py-8 min-w-100 text-5xl drop-shadow-[0_0_10px_#49D8E9] font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
+      className="px-16 py-8 min-w-100 text-5xl drop-shadow-[0_0_10px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
         DASHBOARD
       </button>
       <button 
       onClick={handleAboutClick}
-      className="px-16 py-8 min-w-100 text-5xl drop-shadow-[0_0_10px_#49D8E9] font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
+      className="px-16 py-8 min-w-100 text-5xl drop-shadow-[0_0_10px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
         ABOUT US
       </button>
     </div>
