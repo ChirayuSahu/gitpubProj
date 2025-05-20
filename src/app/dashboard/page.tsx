@@ -72,7 +72,7 @@ const DashboardPage = () => {
             <div className='absolute z-20 w-full min-h-screen flex-col items-center justify-center'>
                 <div className="flex justify-between items-center mb-4 m-10">
                     <div className='flex items-center gap-4'>
-                        <Link href="/campaign" className="text-cyan-400 text-xl font-bold">
+                        <Link href="/" className="text-cyan-400 text-xl font-bold">
                             <Image
                                 src="/back.png"
                                 alt="Back"
