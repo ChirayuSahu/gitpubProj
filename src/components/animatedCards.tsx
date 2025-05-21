@@ -56,7 +56,7 @@ const AnimatedCards = () => {
           alt="Card 1"
           width={500}
           height={500}
-          className="absolute left-70 top-20 scale-25"
+          className="absolute left-70 top-20 w-[50rem] scale-25"
           style={{ transform: `scale(${scale})`}}
         />
         <Image

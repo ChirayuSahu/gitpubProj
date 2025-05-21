@@ -124,6 +124,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
   const [isAddingChaos, setIsAddingChaos] = useState(false);
   const timeLeft = useTimerStore((state) => state.timeLeft);
   const lastRunAt = useRef<number | null>(null);
+  const [scale, setScale] = useState(1);
 
   useEffect(() => {
 
@@ -358,6 +359,20 @@ export default function SpecificCampaignPage({ params }: PageProps) {
     }
   }
 
+  useEffect(() => {
+    function updateScale() {
+      const baseHeight = 1050;
+      const currentHeight = window.innerHeight;
+
+      const newScale = Math.min(Math.max(currentHeight / baseHeight, 0.8), 1.2);
+      setScale(newScale);
+    }
+
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
+
   if (completed) {
     return (
       <div className='absolute z-0 h-screen w-full bg-[#011037]'>
@@ -423,143 +438,145 @@ export default function SpecificCampaignPage({ params }: PageProps) {
 
   return (
     <>
-      <div className='absolute bg-[#051D5B] top-0 left-0 w-full min-h-screen overflow-hidden'>
-      </div>
-      <div className='absolute opacity-10 top-0 z-10 left-0 w-full min-h-screen overflow-hidden'>
-        <Squares
-          speed={0.1}
-          squareSize={100}
-
-        />
-      </div>
-      <div className="absolute z-20 text-white p-6 pt-0 overflow-hidden">
-        <div className='-px-6'>
-        <TopMenu text='Campaign' back='/menu' />
+      <div className="relative w-full min-h-screen">
+        <div className='absolute bg-[#051D5B] top-0 left-0 w-full h-full overflow-auto'>
         </div>
+        <div className='absolute opacity-10 top-0 z-10 left-0 w-full min-h-screen overflow-auto'>
+          <Squares
+            speed={0.1}
+            squareSize={100}
+          />
+        </div>
+        <div className='absolute w-full'>
+          <TopMenu text='Campaign' back='/menu' />
+        </div>
+        <div className="absolute z-20 mt-25 text-white p-6 pb-0 pt-0 overflow-hidden">
 
-        <div className="grid grid-cols-4 gap-6 overflow-auto custom-scrollbar">
-          <div className={`custom-scrollbar --font-outfit font-black col-span-1 border-2 border-blue-500 p-8 bg-[#000928] rounded-lg relative overflow-auto ${output || checkingData ? 'max-h-[45vh]' : 'h-[80vh]'}`}>
-            <h2 className="text-2xl font-bold mb-2">{question?.name} {alreadyCompleted.current && (<span className='text-green-400'>- Completed</span>)}</h2>
-            <p className="text-xl mb-4 whitespace-pre-wrap">{question?.description}</p>
-            <p className="text-xl mb-4 whitespace-pre-wrap">Test Cases</p>
-            {question?.testCases.map((testCase, index) => (
-              <div key={index} className="mb-2">
-                <p className="text-xl"><span className='text-yellow-500'>Input:</span> {JSON.stringify(testCase.input)}</p>
-                <p className="text-xl"><span className='text-yellow-500'>Output:</span> {testCase.output}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="relative col-span-3 border-2 border-blue-500 rounded-lg bg-[#020c2b] p-2">
-            <div className={`py-2 ${chaos ? `pt-12` : ``}  ${output || checkingData ? 'h-full' : 'h-[77vh]'}`}>
-              {chaos && (
-                <div className="absolute top-1 right-5 flex gap-4 z-50 bg-opacity-70 p-2 rounded">
-                  <CountdownTimer minutes={question?.timeLimit} onTimeUp={() => setTimeUp(true)} />
+          <div className="grid grid-cols-4 gap-6 overflow-auto custom-scrollbar">
+            <div className={`custom-scrollbar --font-outfit font-black col-span-1 border-2 border-blue-500 p-8 bg-[#000928] rounded-lg relative overflow-auto ${output || checkingData ? 'max-h-[45vh]' : 'h-[80vh]'}`}>
+              <h2 className="text-2xl font-bold mb-2">{question?.name} {alreadyCompleted.current && (<span className='text-green-400'>- Completed</span>)}</h2>
+              <p className="text-xl mb-4 whitespace-pre-wrap">{question?.description}</p>
+              <p className="text-xl mb-4 whitespace-pre-wrap">Test Cases</p>
+              {question?.testCases.map((testCase, index) => (
+                <div key={index} className="mb-2">
+                  <p className="text-xl"><span className='text-yellow-500'>Input:</span> {JSON.stringify(testCase.input)}</p>
+                  <p className="text-xl"><span className='text-yellow-500'>Output:</span> {testCase.output}</p>
                 </div>
-              )}
-              <Editor
-                height="100%"
-                defaultLanguage="python"
-                value={userCode.current}
-                theme="my-dark-theme"
-                onChange={(value) => { userCode.current = value || ''; }}
-                options={{
-                  scrollBeyondLastLine: false,
-                  fontSize: 20,
-                  minimap: { enabled: false },
+              ))}
+            </div>
 
-                }}
-              />
-              <div className="absolute bottom-5 right-5 flex gap-4">
-                <button onClick={() => setFullScreen(!fullscreen)} className="bg-[#000928] p-2 rounded-full">
-                  <Image
-                    src="/fullscreen.png"
-                    alt="Fullscreen"
-                    style={{ width: '24px', height: '24px' }}
-                    className="cursor-pointer"
-                    width={24}
-                    height={24}
-                  />
-                </button>
+            <div className="relative col-span-3 border-2 border-blue-500 rounded-lg bg-[#020c2b] p-2">
+              <div className={`py-2 ${chaos ? `pt-12` : ``}  ${output || checkingData ? '' : 'h-[77vh]'}`}>
+                {chaos && (
+                  <div className="absolute top-1 right-5 flex gap-4 z-50 bg-opacity-70 p-2 rounded">
+                    <CountdownTimer minutes={question?.timeLimit} onTimeUp={() => setTimeUp(true)} />
+                  </div>
+                )}
+                <Editor
+                  height="100%"
+                  defaultLanguage="python"
+                  value={userCode.current}
+                  theme="my-dark-theme"
+                  onChange={(value) => { userCode.current = value || ''; }}
+                  options={{
+                    scrollBeyondLastLine: false,
+                    fontSize: 20,
+                    minimap: { enabled: false },
+
+                  }}
+                />
+                <div className="absolute bottom-5 right-5 flex gap-4">
+                  <button onClick={() => setFullScreen(!fullscreen)} className="bg-[#000928] p-2 rounded-full">
+                    <Image
+                      src="/fullscreen.png"
+                      alt="Fullscreen"
+                      style={{ width: '24px', height: '24px' }}
+                      className="cursor-pointer"
+                      width={24}
+                      height={24}
+                    />
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className='flex items-center justify-center'>
-            {!alreadyCompleted.current && (
-              <button
-                disabled={!correct}
-                onClick={handleSubmit}
-                className={`px-4 text-2xl font-black py-1 border-4 bg-[#000928] border-yellow-400 text-yellow-300 rounded transition ${correct ? 'cursor-pointer hover:text-black hover:bg-yellow-400 text-yellow-300' : 'cursor-not-allowed hover:bg-[#000928]'}`}
-              >
-                Submit
-              </button>
-            )}
-          </div>
-
-          <div className="flex justify-center items-center col-span-3 gap-4">
-            <button
-              className="px-4 py-1 border-4 font-bold bg-[#000928] border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black text-2xl transition"
-              onClick={handleExecuteCode}
-            >
-              RUN
-            </button>
-            <button
-              className="px-4 py-1 border-4 font-bold bg-[#000928] border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black text-2xl transition"
-              onClick={handleCheckCode}
-            >
-              Check Answer
-            </button>
-          </div>
-        </div>
-
-        {checkingData && !output && (
-          <div className="mt-6 flex flex-col gap-5 border-2 border-blue-500 p-6 rounded-lg bg-[#020c2b] overflow-auto min-h-[32vh] max-h-[32vh]">
-            <h3 className="text-4xl font-bold mb-2 text-white">Test Results</h3>
-            {Array.isArray(checkingData.results) ? (
-              checkingData.results.map((res: any, index: number) => (
-                <div
-                  key={index}
-                  className={`rounded-lg p-4 border m-2 ${res.passed
-                    ? 'border-[#0DFF00]'
-                    : 'border-[#FF0000]'
-                    }`}
-                  style={{
-                    boxShadow: res.passed
-                      ? '0 0 10px 3px rgba(34,197,94, 0.25)'
-                      : '0 0 10px 3px rgba(239,68,68, 0.25)'
-                  }}
+            <div className='flex items-center justify-center'>
+              {!alreadyCompleted.current && (
+                <button
+                  disabled={!correct}
+                  onClick={handleSubmit}
+                  className={`px-4 text-2xl font-black py-1 border-4 bg-[#000928] border-yellow-400 text-yellow-300 rounded transition ${correct ? 'cursor-pointer hover:text-black hover:bg-yellow-400 text-yellow-300' : 'cursor-not-allowed hover:bg-[#000928]'}`}
                 >
+                  Submit
+                </button>
+              )}
+            </div>
 
-                  <div className="flex justify-between items-center mb-2">
-                    <h4 className="font-semibold text-xl text-white">Test Case {index + 1}</h4>
-                    <span
-                      className={`text-xs font-medium px-2 py-1 rounded-full ${res.passed ? 'bg-white text-green-700' : 'bg-white text-red-500'
-                        }`}
-                    >
-                      {res.passed ? 'Passed' : 'Failed'}
-                    </span>
+            <div className="flex flex-col sm:flex-row justify-center items-center col-span-3 gap-4 w-full px-4">
+              <button
+                className="w-full sm:w-auto px-4 py-2 border-4 font-bold bg-[#000928] border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black text-xl sm:text-2xl transition"
+                onClick={handleExecuteCode}
+              >
+                RUN
+              </button>
+              <button
+                className="w-full sm:w-auto px-4 py-2 border-4 font-bold bg-[#000928] border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black text-xl sm:text-2xl transition"
+                onClick={handleCheckCode}
+              >
+                Check Answer
+              </button>
+            </div>
+
+          </div>
+
+          {checkingData && !output && (
+            <div className="mt-6 flex flex-col gap-5 border-2 border-blue-500 p-6 rounded-lg bg-[#020c2b] overflow-auto min-h-[32vh] max-h-[32vh]">
+              <h3 className="text-4xl font-bold mb-2 text-white">Test Results</h3>
+              {Array.isArray(checkingData.results) ? (
+                checkingData.results.map((res: any, index: number) => (
+                  <div
+                    key={index}
+                    className={`rounded-lg p-4 border m-2 ${res.passed
+                      ? 'border-[#0DFF00]'
+                      : 'border-[#FF0000]'
+                      }`}
+                    style={{
+                      boxShadow: res.passed
+                        ? '0 0 10px 3px rgba(34,197,94, 0.25)'
+                        : '0 0 10px 3px rgba(239,68,68, 0.25)'
+                    }}
+                  >
+
+                    <div className="flex justify-between items-center mb-2">
+                      <h4 className="font-semibold text-xl text-white">Test Case {index + 1}</h4>
+                      <span
+                        className={`text-xs font-medium px-2 py-1 rounded-full ${res.passed ? 'bg-white text-green-700' : 'bg-white text-red-500'
+                          }`}
+                      >
+                        {res.passed ? 'Passed' : 'Failed'}
+                      </span>
+                    </div>
+                    <p className="text-lg text-gray-300"><strong className="text-white">Input:</strong> {res.input}</p>
+                    <pre className="text-lg text-gray-300"><strong className="text-white">Expected:</strong> {res.expectedOutput}</pre>
+                    <pre className="text-lg text-gray-300"><strong className="text-white">Received:</strong> {res.actualOutput}</pre>
                   </div>
-                  <p className="text-lg text-gray-300"><strong className="text-white">Input:</strong> {res.input}</p>
-                  <pre className="text-lg text-gray-300"><strong className="text-white">Expected:</strong> {res.expectedOutput}</pre>
-                  <pre className="text-lg text-gray-300"><strong className="text-white">Received:</strong> {res.actualOutput}</pre>
-                </div>
 
-              ))
-            ) : (
-              <p>No results to display</p>
-            )}
-          </div>
-        )}
+                ))
+              ) : (
+                <p>No results to display</p>
+              )}
+            </div>
+          )}
 
-        {output && (
-          <div className="mt-6 border-2 border-blue-500 p-4 rounded-lg bg-[#020c2b] min-h-[32vh] max-h-[32vh] overflow-auto">
-            <h3 className="text-4xl font-bold mb-2 text-white">Output</h3>
-            <h3 className="text-xl mb-4 text-green-500">{output.message}</h3>
-            <pre className="text-white whitespace-pre-wrap my-4">stdout: {output.output}</pre>
-            <pre className="text-red-500 whitespace-pre-wrap my-4">stderr: {output.stderr}</pre>
-          </div>
-        )}
+          {output && (
+            <div className="mt-6 border-2 border-blue-500 p-4 rounded-lg bg-[#020c2b] min-h-[32vh] max-h-[32vh] overflow-auto">
+              <h3 className="text-4xl font-bold mb-2 text-white">Output</h3>
+              <h3 className="text-xl mb-4 text-green-500">{output.message}</h3>
+              <pre className="text-white whitespace-pre-wrap my-4">stdout: {output.output}</pre>
+              <pre className="text-red-500 whitespace-pre-wrap my-4">stderr: {output.stderr}</pre>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

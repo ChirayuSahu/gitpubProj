@@ -18,7 +18,7 @@ const Hero = () => {
             <div className='min-h-screen bg-[url("/herobg.png")] bg-center'>
                 <div className='absolute flex justify-center w-full h-full backdrop-blur-xs'>
                     <div className='flex flex-col gap-20 justify-center m-20'>
-                        <h1 className={`text-[#24F2F4] text-8xl font-bold text-center text-shadow-lg/20`}>CodeClash <p>Arena</p></h1>
+                        <h1 className={`text-[#24F2F4] text-7xl font-bold text-center text-shadow-lg/20`}>CodeClash <p>Arena</p></h1>
                         <div className='flex gap-4 justify-center items-center'>
                             <h1 className='text-5xl font-bold text-center text-white text-shadow-lg/20'>Let&apos;s</h1>
                             <RotatingText
@@ -38,7 +38,7 @@ const Hero = () => {
                             <Link
                             href={session ? '/menu' : '/signup'}
                             >
-                            <Button className='px-12 py-4 text-xl cursor-pointer'>Start Clashing</Button>
+                            <Button className='px-12 py-4 text-[2rem] cursor-pointer'>Start Clashing</Button>
                             </Link>
                         </div>
                     </div>

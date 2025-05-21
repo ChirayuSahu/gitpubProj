@@ -136,7 +136,7 @@ const DashboardPage = () => {
                             />
                         </div>
                     </div>
-                    <div className='col-span-5 max-h-[37vh] custom-scrollbar-1 overflow-auto row-span-1 bg-[#000928] rounded-lg shadow-lg flex flex-col items-center justify-center p-8 drop-shadow-[0_0_10px_#4324CD]'>
+                    <div className='col-span-5 row-span-1 bg-[#000928] rounded-lg shadow-lg flex flex-col items-center p-8 drop-shadow-[0_0_10px_#4324CD] overflow-auto max-h-[40vh]'>
                         <h1 className='text-cyan-400 text-3xl font-bold mb-10'>MATCH HISTORY</h1>
                         <div className='flex flex-col gap-6 w-full'>
                             <div className='px-6 bg-[#541916] text-[#FF8F00] drop-shadow-[0_0_7px_#9B3E00] flex items-center justify-between w-full rounded-lg shadow-lg p-4'>
