@@ -31,20 +31,6 @@ const AnimatedCards = () => {
     }
   }, [])
 
-  useEffect(() => {
-    function updateScale() {
-      const baseHeight = 900;
-      const currentHeight = window.innerHeight;
-
-      const newScale = Math.min(Math.max(currentHeight / baseHeight, 0.7), 1.2);
-      setScale(newScale);
-    }
-
-    updateScale();
-    window.addEventListener('resize', updateScale);
-    return () => window.removeEventListener('resize', updateScale);
-  }, []);
-
   return (
     <div className="absolute w-full h-screen overflow-hidden">
       <div
@@ -56,7 +42,7 @@ const AnimatedCards = () => {
           alt="Card 1"
           width={500}
           height={500}
-          className="absolute left-70 top-20 w-[50rem] scale-25"
+          className="absolute left-0 top-10 w-100 scale-25 xl:scale-40 2xl:scale-45 2xl:left-30 transition-all duration-500"
           style={{ transform: `scale(${scale})`}}
         />
         <Image
@@ -64,7 +50,7 @@ const AnimatedCards = () => {
           alt="Card 2"
           width={500}
           height={500}
-          className="absolute right-7 bottom-20 scale-35"
+          className="absolute right-20 bottom-10 scale-25 xl:scale-40 2xl:scale-45 2xl:right-40 transition-all duration-500"
           style={{ transform: `scale(${scale})`}}
         />
         <Image
@@ -72,7 +58,7 @@ const AnimatedCards = () => {
           alt="Card 2"
           width={500}
           height={500}
-          className="absolute right-100 top-20 scale-45"
+          className="absolute right-0 top-10 scale-30 xl:scale-45 2xl:scale-50 transition-all duration-500"
           style={{ transform: `scale(${scale})`}}
         />
         <Image
@@ -80,7 +66,7 @@ const AnimatedCards = () => {
           alt="Card 3"
           width={500}
           height={500}
-          className="absolute left-10 bottom-30 scale-70"
+          className="absolute left-10 bottom-10 scale-30 xl:scale-45 2xl:scale-50 transition-all duration-500"
           style={{ transform: `scale(${scale})`}}
         />
       </div>
