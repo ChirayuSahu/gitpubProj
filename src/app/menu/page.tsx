@@ -28,23 +28,23 @@ const Dashboard = () => {
       <div className="min-h-screen bg-[url('/herobg.png')] bg-cover flex flex-col items-center justify-center space-y-6">
         <button
           onClick={handleGameClick}
-          className="py-4 text-2xl min-w-50 xl:text-3xl xl:min-w-60 2xl:text-5xl 2xl:min-w-80 2xl:py-8 drop-shadow-[0_0_7px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300"
+          className="py-4 text-2xl min-w-50 xl:text-3xl xl:min-w-60 2xl:text-5xl 2xl:min-w-90 2xl:py-8 drop-shadow-[0_0_7px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300"
         >
           GAME MODES
         </button>
         <button
           onClick={handleLeadClick}
-          className="py-4 text-2xl min-w-50 xl:text-3xl xl:min-w-60 2xl:text-5xl 2xl:min-w-80 2xl:py-8 drop-shadow-[0_0_7px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
+          className="py-4 text-2xl min-w-50 xl:text-3xl xl:min-w-60 2xl:text-5xl 2xl:min-w-90 2xl:py-8 drop-shadow-[0_0_7px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
           LEADERBOARD
         </button>
         <button
           onClick={handleDashClick}
-          className="py-4 text-2xl min-w-50 xl:text-3xl xl:min-w-60 2xl:text-5xl 2xl:min-w-80 2xl:py-8 drop-shadow-[0_0_7px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
+          className="py-4 text-2xl min-w-50 xl:text-3xl xl:min-w-60 2xl:text-5xl 2xl:min-w-90 2xl:py-8 drop-shadow-[0_0_7px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
           DASHBOARD
         </button>
         <button
           onClick={handleAboutClick}
-          className="py-4 text-2xl min-w-50 xl:text-3xl xl:min-w-60 2xl:text-5xl 2xl:min-w-80 2xl:py-8 drop-shadow-[0_0_7px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
+          className="py-4 text-2xl min-w-50 xl:text-3xl xl:min-w-60 2xl:text-5xl 2xl:min-w-90 2xl:py-8 drop-shadow-[0_0_7px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
           ABOUT US
         </button>
       </div>
