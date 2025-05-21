@@ -448,7 +448,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
           />
         </div>
         <div className='absolute z-100 w-full'>
-          <TopMenu text={`Campaign - ${question?.name}`} back='/menu' />
+          <TopMenu text={`Campaign - ${question?.name}`} back='/campaign' />
         </div>
         <div className="absolute z-20 mt-25 text-white p-6 pb-0 pt-0 overflow-hidden">
 
