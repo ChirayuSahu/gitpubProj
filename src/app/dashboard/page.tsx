@@ -89,7 +89,7 @@ const DashboardPage = () => {
                                 alt="League Icon"
                                 width={1000}
                                 height={1000}
-                                className="w-40 h-40 2xl:w-50 2xl:h-50 transition-all duration-500"
+                                className="w-30 h-30 xl:w-40 xl:h-40 2xl:w-50 2xl:h-50 transition-all duration-500"
                                 draggable={false}
                             />
                             <AnimatedProgressBar
@@ -135,7 +135,7 @@ const DashboardPage = () => {
                             />
                         </div>
                     </div>
-                    <div className='col-span-5 row-span-1 bg-[#000928] rounded-lg shadow-lg flex flex-col items-center p-8 drop-shadow-[0_0_10px_#4324CD] overflow-auto max-h-60 xl:max-h-65 2xl:max-h-100'>
+                    <div className='col-span-5 row-span-1 bg-[#000928] rounded-lg shadow-lg flex flex-col items-center p-8 drop-shadow-[0_0_10px_#4324CD] overflow-auto max-h-57 xl:max-h-62 2xl:max-h-87'>
                         <h1 className='text-cyan-400 text-3xl font-bold mb-10'>MATCH HISTORY</h1>
                         <div className='flex flex-col gap-6 w-full'>
                             <div className='px-6 bg-[#541916] text-[#FF8F00] drop-shadow-[0_0_7px_#9B3E00] flex items-center justify-between w-full rounded-lg shadow-lg p-4'>
