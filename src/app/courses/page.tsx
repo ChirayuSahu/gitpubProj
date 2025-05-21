@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Squares from "@/components/Squares/Squares";
+import TopMenu from "@/components/custom/topMenu";
 
 
 type Course = {
@@ -34,43 +35,13 @@ export default function ChooseCourse() {
         />
       </div>
       <div className="min-h-screen text-white relative overflow-hidden flex flex-col">
-        <div className="flex justify-between items-center px-6 pt-6 mb-12">
-          <div className="flex items-center gap-4">
-            <Link href="/campaign">
-              <Image
-                src="/back.png"
-                alt="Back"
-                width={40}
-                height={34}
-                className="cursor-pointer"
-              />
-            </Link>
-          </div>
-          <div className="flex gap-4">
-            <Image
-              src="/gear.png"
-              alt="Settings"
-              width={44}
-              height={44}
-              className="cursor-pointer"
-            />
-            <Link href="/">
-              <Image
-                src="/home.png"
-                alt="Home"
-                width={44}
-                height={44}
-                className="cursor-pointer"
-              />
-            </Link>
-          </div>
-        </div>
-        <div className="flex flex-col items-center justify-center px-6 mt-40">
-          <h1 className="text-4xl md:text-6xl font-bold text-[#00e5ff] mb-16 text-center">
+        <TopMenu text="" back="/gamemodes"/>
+        <div className="flex flex-col items-center justify-center px-6 mt-15 xl:mt-20 2xl:mt-40">
+          <h1 className="text-4xl xl:text-5xl font-bold text-[#00e5ff] 2xl:mb-20 text-center">
             Choose The Course
           </h1>
 
-          <div className="flex flex-wrap justify-center gap-12">
+          <div className="flex flex-wrap justify-center gap-12 scale-50 xl:scale-70 2xl:scale-100 transition-all duration-300">
             {courses.map((course, index) => {
               const isHovered = hoveredIndex === index;
               const isDimmed = hoveredIndex !== null && hoveredIndex !== index;
