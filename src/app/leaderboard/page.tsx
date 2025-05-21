@@ -53,10 +53,12 @@ const Leaderboard = () => {
       <div className='absolute z-[-1] w-full min-h-screen opacity-20'>
         <Squares squareSize={125} speed={0.1} />
       </div>
-      <div className="min-h-screen max-h-screen text-white relative p-2 sm:p-4 pt-0 overflow-hidden">
+      <div className='absolute z-100 w-full'>
         <TopMenu text='Leaderboard' back='/menu' />
+      </div>
+      <div className="min-h-screen max-h-screen text-white relative p-2 sm:p-4 overflow-hidden">
 
-        <div className="flex flex-wrap justify-center gap-4 sm:gap-10 lg:gap-15 mb-4 sm:mb-20 lg:mb-20 xl:mb-40 scale-80 xl:scale-100">
+        <div className="mt-10 xl:mt-20 2xl:mt-30 flex flex-wrap justify-center gap-4 sm:gap-10 lg:gap-15 mb-4 sm:mb-20 lg:mb-20 xl:mb-40 scale-80 xl:scale-100 transition-all duration-300">
           {[users[1], users[0], users[2]].filter(Boolean).map((user, index) => {
             let podiumMargin = '';
             if (index === 0) podiumMargin = 'mt-8 sm:mt-12';      
