@@ -23,12 +23,12 @@ const RulesPage = () => {
                 />
             </div>
             <div className='absolute z-20 w-full min-h-screen flex items-center justify-center'>
-                <div className='min-h-[90vh] min-w-[95vw] border-2 rounded-3xl border-[#0635DC] shadow-[0_0_10px_#4324CD] bg-[#000928]'>
-                    <div className='flex flex-col min-h-[90vh] justify-between gap-10 p-10 w-full h-full'>
+                <div className='max-h-150 2xl:min-h-180 min-w-[95vw] border-2 rounded-3xl border-[#0635DC] shadow-[0_0_10px_#4324CD] bg-[#000928]'>
+                    <div className='flex flex-col max-h-150 2xl:min-h-180 justify-between gap-10 p-10 w-full h-full'>
                         <div>
 
                             <h1 className='text-5xl text-cyan-400 font-bold mb-10'>RULES:</h1>
-                            <div className='flex flex-col text-white text-3xl leading-loose space-y-4'>
+                            <div className='flex flex-col text-white text-xl xl:text-xl 2xl:text-3xl leading-loose space-y-4 transition-all duration-300'>
                                 <div>
                                     <p>1. Function names must remain <span className='text-cyan-300 font-semibold'>unchanged</span>.</p>
                                     <p>2. Do <span className='text-red-400 font-semibold'>not</span> add any <code className='text-yellow-300'>console.log</code>, <code className='text-yellow-300'>print</code>, or debug statements.</p>
@@ -46,7 +46,7 @@ const RulesPage = () => {
                                 I have read the rules
                             </label>
                             ) }
-                            <button onClick={()=>{router.push( redirect ? `/campaign/${redirect}` : `/dashboard` )}} disabled={!isChecked} className={`px-6 py-4 border-4 font-bold bg-[#000928] border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black text-4xl transition ${!isChecked ? `cursor-not-allowed` : `cursor-pointer`}`}>
+                            <button onClick={()=>{router.push( redirect ? `/campaign/${redirect}` : `/dashboard` )}} disabled={!isChecked} className={`px-6 py-4 border-4 font-bold bg-[#000928] border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black text-xl xl:text-2xl transition-all duration-300 ${!isChecked ? `cursor-not-allowed` : `cursor-pointer`}`}>
                                 CONTINUE
                             </button>
                         </div>
