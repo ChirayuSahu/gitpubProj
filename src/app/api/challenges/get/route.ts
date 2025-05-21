@@ -1,8 +1,16 @@
 import { NextResponse, NextRequest } from "next/server";
 import { connectMongo } from "@/utils/connectMongo";
 import Challenges from "@/models/challenges";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
 export const GET = async (req: NextRequest) => {
+
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
   try {
     const { searchParams } = new URL(req.url);
     const difficulty = searchParams.get("difficulty");

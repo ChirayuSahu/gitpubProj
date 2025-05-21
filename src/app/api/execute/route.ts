@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
 function extractFunctionName(starterCode: string): string | null {
     const match = starterCode.match(/def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/);
@@ -6,6 +8,12 @@ function extractFunctionName(starterCode: string): string | null {
 }
 
 export const POST = async (req: NextRequest) => {
+
+    const session = await getServerSession(authOptions);
+    if (!session) {
+        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
     const { language, starterCode, code, testCases } = await req.json();
 
     if (!code || !language || !Array.isArray(testCases) || !starterCode) {

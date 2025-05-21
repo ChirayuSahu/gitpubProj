@@ -1,11 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectMongo } from "@/utils/connectMongo";
 import User from "@/models/user";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
 export const GET = async (req: NextRequest) => {
+
+    const session = await getServerSession(authOptions);
+    if (!session) {
+        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
     try {
 
-        const {searchParams} = new URL(req.url);
+        const { searchParams } = new URL(req.url);
         const limitParam = searchParams.get("limit");
 
         const limit = parseInt(limitParam as string, 10);
