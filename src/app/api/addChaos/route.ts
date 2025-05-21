@@ -11,14 +11,16 @@ export async function POST(req: NextRequest) {
   }
 
   const prompt = `
-Rewrite the following Python function by:
-- Slightly changing variable and function names to simple, different ones,
-- Adding at most one unnecessary intermediate variable,
-- Keeping the original order mostly the same,
-- Adding minimal or no comments,
-- Ensuring the logic and output remain unchanged,
-- Keeping the code length close to the original.
-- remember to keep the function name and function inputs same, change anything inside the function.
+You are given a Python function.
+
+Your task is to rewrite only the body of the function by:
+- Slightly renaming variables and helper functions to different but simple names,
+- Adding at most one unnecessary intermediate variable (e.g., aliasing an existing value),
+- Keeping the logic, structure, and output exactly the same,
+- Not adding or removing lines unnecessarily,
+- Keeping the length and order close to the original,
+- Avoiding or minimizing comments,
+- Keeping the function name and parameters unchanged.
 
 Return the rewritten function as a JSON object with a single key "code" whose value is the rewritten function as a string.
 
