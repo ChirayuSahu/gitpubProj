@@ -47,7 +47,7 @@ export default async function RootLayout({
           <NavbarWrapper />
           {children}
         </AuthSessionProvider>
-        {/*<ScreenGuard />*/}
+        <ScreenGuard />
         <Toaster richColors position="top-right" theme="light" />
       </body>
     </html>
