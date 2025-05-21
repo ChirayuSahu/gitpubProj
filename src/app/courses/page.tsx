@@ -21,10 +21,6 @@ const courses: Course[] = [
 export default function ChooseCourse() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  useEffect(() => {
-    document.title = "Choose Course | Campaign Heroes";
-  }, []);
-
   return (
     <>
       <div className='absolute z-[-2] w-full min-h-screen bg-[linear-gradient(to_bottom,_#040B2A,_#051D5B,_#040B2A)]'></div>

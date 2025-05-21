@@ -450,7 +450,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         <div className='absolute z-100 w-full'>
           <TopMenu text={`Campaign - ${question?.name}`} back='/campaign' />
         </div>
-        <div className="absolute z-20 mt-25 text-white p-6 pb-0 pt-0 overflow-hidden">
+        <div className="absolute z-20 mt-25 2xl:mt-27 text-white p-6 pb-0 pt-0 overflow-hidden">
 
           <div className="grid grid-cols-4 gap-6 overflow-auto custom-scrollbar">
             <div className={`custom-scrollbar --font-outfit font-black col-span-1 border-2 border-blue-500 p-8 bg-[#000928] rounded-lg relative overflow-auto ${output || checkingData ? 'max-h-70 xl:max-h-80 2xl:max-h-100' : 'h-120 xl:h-130 2xl:h-180'}`}>

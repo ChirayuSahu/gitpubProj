@@ -2,9 +2,15 @@ import { NextResponse, NextRequest } from "next/server";
 import { connectMongo } from "@/utils/connectMongo";
 import User from "@/models/user";
 import Challenges from "@/models/challenges";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../../auth/[...nextauth]/options";
 
+export async function POST(req: NextRequest) {
 
-export async function POST (req: NextRequest) {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
 
     const { id, challengeId } = await req.json();
 
@@ -13,15 +19,13 @@ export async function POST (req: NextRequest) {
     }
 
     try {
-        
         await connectMongo();
-        
+
         const user = await User.findOne({ _id: id });
 
         if (!user) {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
-
 
         const challenge = await Challenges.findOne({ _id: challengeId });
 
