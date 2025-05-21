@@ -27,7 +27,7 @@ export const AnimatedProgressBar = ({
 
   return (
     <div
-      className="w-full h-8 rounded-full overflow-hidden shadow-inner"
+      className="w-full h-6 rounded-full overflow-hidden shadow-inner"
       style={{
         backgroundColor: barBackgroundColor,
         boxShadow: glowColor
@@ -36,7 +36,7 @@ export const AnimatedProgressBar = ({
       }}
     >
       <div
-        className="h-6 m-1 rounded-full transition-all duration-700 ease-out"
+        className="h-4 m-1 rounded-full transition-all duration-700 ease-out"
         style={{
           width: `${progress}%`,
           backgroundColor: color,
