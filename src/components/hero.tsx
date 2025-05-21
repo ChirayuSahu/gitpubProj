@@ -18,12 +18,12 @@ const Hero = () => {
             <div className='min-h-screen bg-[url("/herobg.png")] bg-center'>
                 <div className='absolute flex justify-center w-full h-full backdrop-blur-xs'>
                     <div className='flex flex-col gap-20 justify-center m-20'>
-                        <h1 className={`text-[#24F2F4] text-7xl font-bold text-center text-shadow-lg/20`}>CodeClash <p>Arena</p></h1>
-                        <div className='flex gap-4 justify-center items-center'>
-                            <h1 className='text-5xl font-bold text-center text-white text-shadow-lg/20'>Let&apos;s</h1>
+                        <h1 className={`text-[#24F2F4] text-5xl sm:text-5xl md:text-6xl font-bold text-center text-shadow-lg/20`}>CodeClash <p>Arena</p></h1>
+                        <div className='text-2xl sm:text-3xl flex gap-2 justify-center items-center'>
+                            <h1 className='font-bold text-center text-white text-shadow-lg/20'>Let&apos;s</h1>
                             <RotatingText
                                 texts={['Clash', 'Code', 'Conquer']}
-                                mainClassName="text-5xl leading-none py-0 text-[#24F2F4] overflow-hidden flex items-center"
+                                mainClassName="leading-none py-0 text-[#24F2F4] overflow-hidden flex items-center"
                                 staggerFrom={"last"}
                                 initial={{ y: "100%" }}
                                 animate={{ y: 0 }}
@@ -38,7 +38,7 @@ const Hero = () => {
                             <Link
                             href={session ? '/menu' : '/signup'}
                             >
-                            <Button className='px-12 py-4 text-[2rem] cursor-pointer'>Start Clashing</Button>
+                            <Button className='px-12 py-4 text-xl sm:text-2xl cursor-pointer'>Start Clashing</Button>
                             </Link>
                         </div>
                     </div>

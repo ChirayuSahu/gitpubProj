@@ -24,30 +24,30 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className='absolute w-[100vw]' ><TopMenu text='Menu' back='/'/></div>
-    <div className="min-h-screen bg-[url('/herobg.png')] bg-cover flex flex-col items-center justify-center space-y-6">
-      <button
-        onClick={handleGameClick}
-        className="px-16 py-8 min-w-100 text-5xl drop-shadow-[0_0_7px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300"
-      >
-        GAME MODES
-      </button>
-      <button
-        onClick={handleLeadClick}
-        className="px-16 py-8 min-w-100 text-5xl drop-shadow-[0_0_7px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
-        LEADERBOARD
-      </button>
-      <button
-        onClick={handleDashClick}
-        className="px-16 py-8 min-w-100 text-5xl drop-shadow-[0_0_7px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
-        DASHBOARD
-      </button>
-      <button
-        onClick={handleAboutClick}
-        className="px-16 py-8 min-w-100 text-5xl drop-shadow-[0_0_7px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
-        ABOUT US
-      </button>
-    </div>
+      <div className='absolute w-[100vw]' ><TopMenu text='Menu' back='/' /></div>
+      <div className="min-h-screen bg-[url('/herobg.png')] bg-cover flex flex-col items-center justify-center space-y-6">
+        <button
+          onClick={handleGameClick}
+          className="py-4  xl:px-16 xl:py-8 text-2xl min-w-70 xl:min-w-100 xl:text-5xl drop-shadow-[0_0_7px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300"
+        >
+          GAME MODES
+        </button>
+        <button
+          onClick={handleLeadClick}
+          className="py-4  xl:px-16 xl:py-8 text-2xl min-w-70 xl:min-w-100 xl:text-5xl drop-shadow-[0_0_7px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
+          LEADERBOARD
+        </button>
+        <button
+          onClick={handleDashClick}
+          className="py-4  xl:px-16 xl:py-8 text-2xl min-w-70 xl:min-w-100 xl:text-5xl drop-shadow-[0_0_7px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
+          DASHBOARD
+        </button>
+        <button
+          onClick={handleAboutClick}
+          className="py-4  xl:px-16 xl:py-8 text-2xl min-w-70 xl:min-w-100 xl:text-5xl drop-shadow-[0_0_7px_#49D8E9] cursor-pointer font-bold text-cyan-300 bg-[#020B32] border-2 border-cyan-400 rounded-xl shadow-md hover:scale-105 transition-all duration-300">
+          ABOUT US
+        </button>
+      </div>
     </>
   );
 };
