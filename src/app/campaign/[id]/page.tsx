@@ -453,20 +453,20 @@ export default function SpecificCampaignPage({ params }: PageProps) {
         <div className="absolute z-20 mt-25 text-white p-6 pb-0 pt-0 overflow-hidden">
 
           <div className="grid grid-cols-4 gap-6 overflow-auto custom-scrollbar">
-            <div className={`custom-scrollbar --font-outfit font-black col-span-1 border-2 border-blue-500 p-8 bg-[#000928] rounded-lg relative overflow-auto ${output || checkingData ? 'max-h-[45vh]' : 'h-[80vh]'}`}>
-              <h2 className="text-2xl font-bold mb-2">{question?.name} {alreadyCompleted.current && (<span className='text-green-400'>- Completed</span>)}</h2>
-              <p className="text-xl mb-4 whitespace-pre-wrap">{question?.description}</p>
-              <p className="text-xl mb-4 whitespace-pre-wrap">Test Cases</p>
+            <div className={`custom-scrollbar --font-outfit font-black col-span-1 border-2 border-blue-500 p-8 bg-[#000928] rounded-lg relative overflow-auto ${output || checkingData ? 'max-h-70 xl:max-h-80 2xl:max-h-100' : 'h-120 xl:h-130 2xl:h-180'}`}>
+              <h2 className="text-xl xl:text-2xl 2xl:text-3xl font-bold mb-2 transition-all duration-300">{question?.name} {alreadyCompleted.current && (<span className='text-green-400'>- Completed</span>)}</h2>
+              <p className="text-base xl:text-lg 2xl:text-2xl mb-4 whitespace-pre-wrap transition-all duration-300">{question?.description}</p>
+              <p className="text-base xl:text-lg 2xl:text-2xl mb-4 whitespace-pre-wrap transition-all duration-300">Test Cases</p>
               {question?.testCases.map((testCase, index) => (
                 <div key={index} className="mb-2">
-                  <p className="text-xl"><span className='text-yellow-500'>Input:</span> {JSON.stringify(testCase.input)}</p>
-                  <p className="text-xl"><span className='text-yellow-500'>Output:</span> {testCase.output}</p>
+                  <p className="text-base xl:text-lg 2xl:text-2xl transition-all duration-300"><span className='text-yellow-500'>Input:</span> {JSON.stringify(testCase.input)}</p>
+                  <p className="text-base xl:text-lg 2xl:text-2xl transition-all duration-300"><span className='text-yellow-500'>Output:</span> {testCase.output}</p>
                 </div>
               ))}
             </div>
 
             <div className="relative col-span-3 border-2 border-blue-500 rounded-lg bg-[#020c2b] p-2">
-              <div className={`py-2 ${chaos ? `pt-12` : ``}  ${output || checkingData ? '' : 'h-[77vh]'}`}>
+              <div className={`py-2 ${chaos ? `pt-12` : ``}  ${output || checkingData ? 'h-full' : 'h-110'}`}>
                 {chaos && (
                   <div className="absolute top-1 right-5 flex gap-4 z-50 bg-opacity-70 p-2 rounded">
                     <CountdownTimer minutes={question?.timeLimit} onTimeUp={() => setTimeUp(true)} />
@@ -514,13 +514,13 @@ export default function SpecificCampaignPage({ params }: PageProps) {
 
             <div className="flex flex-col sm:flex-row justify-center items-center col-span-3 gap-4 w-full px-4">
               <button
-                className="w-full sm:w-auto px-4 py-2 border-4 font-bold bg-[#000928] border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black text-xl sm:text-2xl transition"
+                className="w-full sm:w-auto px-4 py-2 border-4 font-bold bg-[#000928] border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black text-xs xl:text-lg 2xl:text-3xl transition-all duration-300"
                 onClick={handleExecuteCode}
               >
                 RUN
               </button>
               <button
-                className="w-full sm:w-auto px-4 py-2 border-4 font-bold bg-[#000928] border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black text-xl sm:text-2xl transition"
+                className="w-full sm:w-auto px-4 py-2 border-4 font-bold bg-[#000928] border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black text-xs xl:text-lg 2xl:text-3xl transition-all duration-300"
                 onClick={handleCheckCode}
               >
                 Check Answer
@@ -530,8 +530,8 @@ export default function SpecificCampaignPage({ params }: PageProps) {
           </div>
 
           {checkingData && !output && (
-            <div className="mt-6 flex flex-col gap-5 border-2 border-blue-500 p-6 rounded-lg bg-[#020c2b] overflow-auto min-h-[32vh] max-h-[32vh]">
-              <h3 className="text-4xl font-bold mb-2 text-white">Test Results</h3>
+            <div className="mt-6 flex flex-col gap-5 border-2 border-blue-500 p-6 rounded-lg bg-[#020c2b] overflow-auto max-h-40 2xl:max-h-70">
+              <h3 className="text-xl 2xl:text-2xl font-bold mb-2 text-white">Test Results</h3>
               {Array.isArray(checkingData.results) ? (
                 checkingData.results.map((res: any, index: number) => (
                   <div
@@ -548,7 +548,7 @@ export default function SpecificCampaignPage({ params }: PageProps) {
                   >
 
                     <div className="flex justify-between items-center mb-2">
-                      <h4 className="font-semibold text-xl text-white">Test Case {index + 1}</h4>
+                      <h4 className="font-semibold text-base text-white">Test Case {index + 1}</h4>
                       <span
                         className={`text-xs font-medium px-2 py-1 rounded-full ${res.passed ? 'bg-white text-green-700' : 'bg-white text-red-500'
                           }`}
@@ -556,9 +556,9 @@ export default function SpecificCampaignPage({ params }: PageProps) {
                         {res.passed ? 'Passed' : 'Failed'}
                       </span>
                     </div>
-                    <p className="text-lg text-gray-300"><strong className="text-white">Input:</strong> {res.input}</p>
-                    <pre className="text-lg text-gray-300"><strong className="text-white">Expected:</strong> {res.expectedOutput}</pre>
-                    <pre className="text-lg text-gray-300"><strong className="text-white">Received:</strong> {res.actualOutput}</pre>
+                    <p className="text-xs 2xl:text-lg text-gray-300"><strong className="text-white">Input:</strong> {res.input}</p>
+                    <pre className="text-xs 2xl:text-lg text-gray-300"><strong className="text-white">Expected:</strong> {res.expectedOutput}</pre>
+                    <pre className="text-xs 2xl:text-lg text-gray-300"><strong className="text-white">Received:</strong> {res.actualOutput}</pre>
                   </div>
 
                 ))
@@ -569,11 +569,11 @@ export default function SpecificCampaignPage({ params }: PageProps) {
           )}
 
           {output && (
-            <div className="mt-6 border-2 border-blue-500 p-4 rounded-lg bg-[#020c2b] min-h-[32vh] max-h-[32vh] overflow-auto">
-              <h3 className="text-4xl font-bold mb-2 text-white">Output</h3>
-              <h3 className="text-xl mb-4 text-green-500">{output.message}</h3>
-              <pre className="text-white whitespace-pre-wrap my-4">stdout: {output.output}</pre>
-              <pre className="text-red-500 whitespace-pre-wrap my-4">stderr: {output.stderr}</pre>
+            <div className="mt-6 border-2 border-blue-500 p-4 rounded-lg bg-[#020c2b] overflow-auto 2xl:min-h-70">
+              <h3 className="text-xl 2xl:text-2xl font-bold mb-2 text-white">Output</h3>
+              <h3 className="text-base 2xl:text-lg mb-4 text-green-500">{output.message}</h3>
+              <pre className="text-white text-xs 2xl:text-lg whitespace-pre-wrap my-4">stdout: {output.output}</pre>
+              <pre className="text-red-500 text-xs 2xl:text-lg whitespace-pre-wrap my-4">stderr: {output.stderr}</pre>
             </div>
           )}
         </div>

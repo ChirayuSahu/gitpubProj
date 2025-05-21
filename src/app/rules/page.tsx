@@ -46,7 +46,7 @@ const RulesPage = () => {
                                 I have read the rules
                             </label>
                             ) }
-                            <button onClick={()=>{router.push( redirect ? `/campaign/${redirect}` : `/dashboard` )}} disabled={!isChecked} className={`px-6 py-4 border-4 font-bold bg-[#000928] border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black text-xl xl:text-2xl transition-all duration-300 ${!isChecked ? `cursor-not-allowed` : `cursor-pointer`}`}>
+                            <button onClick={()=>{router.push( redirect ? `/campaign/${redirect}` : `/campaign` )}} disabled={!isChecked} className={`px-6 py-4 border-4 font-bold bg-[#000928] border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black text-xl xl:text-2xl transition-all duration-300 ${!redirect ? 'cursor-pointer' : !isChecked ? `cursor-not-allowed` : `cursor-pointer`}`}>
                                 CONTINUE
                             </button>
                         </div>
