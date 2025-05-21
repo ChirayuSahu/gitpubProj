@@ -21,26 +21,30 @@ interface UserData {
 const Leaderboard = () => {
   const [users, setUsers] = useState<UserData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
+      setProgress(30);
       setLoading(true);
       try {
         const res = await fetch('/api/leaderboard?limit=50');
         const data = await res.json();
         const fetchedUsers: UserData[] = data.leaderboard || [];
         setUsers(fetchedUsers);
+        setProgress(50);
       } catch (error: any) {
         toast.error(error.message);
       } finally {
         setLoading(false);
+        setProgress(100);
       }
     };
     fetchData();
   }, []);
 
   if (loading) {
-    return <LoadingPage text='Getting Leaderboard...' progress={100} />
+    return <LoadingPage text='Getting Leaderboard...' progress={progress} />
   }
 
   return (
@@ -63,7 +67,7 @@ const Leaderboard = () => {
               <div key={user.username} className={`flex flex-col items-center ${podiumMargin} mx-2 sm:mx-4`}>
                 <div
                   className="float relative flex flex-col items-center justify-center"
-                  style={{ animationDelay: `${index * 0.3 + 0.15}s` }} // optional: stagger the float
+                  style={{ animationDelay: `${index * 0.3 + 0.15}s` }}
                 >
                   <Image
                     src={user.avatarUrl || getRandomAvatar()}
