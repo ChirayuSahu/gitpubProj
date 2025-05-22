@@ -3,13 +3,14 @@ import { connectMongo } from "@/utils/connectMongo";
 import Challenges from "@/models/challenges";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { sanitizeFilter } from "mongoose";
 
 export const GET = async (req: NextRequest) => {
 
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
 
   try {
     const { searchParams } = new URL(req.url);
@@ -17,12 +18,19 @@ export const GET = async (req: NextRequest) => {
     const limitParam = searchParams.get("limit");
     const questionId = searchParams.get("id");
 
+    const allowedDifficulties = ['easy', 'medium', 'hard'];
+
+    if (difficulty && !allowedDifficulties.includes(difficulty)) {
+      return NextResponse.json({ message: "Invalid difficulty level." }, { status: 400 });
+    }
+
     if (questionId) {
-      
+
       await connectMongo();
 
 
       const challenge = await Challenges.findById(questionId);
+
       if (!challenge) {
         return NextResponse.json({ message: "Challenge not found." }, { status: 404 });
       }
@@ -40,11 +48,11 @@ export const GET = async (req: NextRequest) => {
     let challenges;
     if (limit) {
       challenges = await Challenges.aggregate([
-        { $match: { difficulty } },
+        { $match: sanitizeFilter({ difficulty }) },
         { $sample: { size: limit } }
       ]);
     } else {
-      challenges = await Challenges.find({ difficulty });
+      challenges = await Challenges.find(sanitizeFilter({ difficulty }));
     }
 
     if (challenges.length === 0) {

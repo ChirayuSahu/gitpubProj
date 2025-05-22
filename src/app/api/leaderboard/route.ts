@@ -3,6 +3,7 @@ import { connectMongo } from "@/utils/connectMongo";
 import User from "@/models/user";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { sanitizeFilter } from "mongoose";
 
 export const GET = async (req: NextRequest) => {
 
@@ -20,7 +21,7 @@ export const GET = async (req: NextRequest) => {
 
         await connectMongo();
 
-        const leaderboard = await User.find({}).sort({ xpPoints: -1 }).limit(limit);
+        const leaderboard = await User.find(sanitizeFilter({})).sort({ xpPoints: -1 }).limit(limit);
 
         if (leaderboard.length === 0) {
             return NextResponse.json({ message: "No users found." }, { status: 404 });

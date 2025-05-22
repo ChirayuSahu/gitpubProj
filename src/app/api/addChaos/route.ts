@@ -8,6 +8,7 @@ const genAI = new GoogleGenAI({ apiKey: process.env.NEXT_GEMINI_API_KEY! });
 export async function POST(req: NextRequest) {
 
   const session = await getServerSession(authOptions);
+
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }

@@ -4,6 +4,7 @@ import User from "@/models/user";
 import Challenges from "@/models/challenges";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth/[...nextauth]/options";
+import { sanitizeFilter } from "mongoose";
 
 export async function POST(req: NextRequest) {
 
@@ -21,13 +22,13 @@ export async function POST(req: NextRequest) {
     try {
         await connectMongo();
 
-        const user = await User.findOne({ _id: id });
+        const user = await User.findOne(sanitizeFilter({ _id: id }));
 
         if (!user) {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
 
-        const challenge = await Challenges.findOne({ _id: challengeId });
+        const challenge = await Challenges.findOne(sanitizeFilter({ _id: challengeId }));
 
         if (!challenge) {
             return NextResponse.json({ message: "Challenge not found" }, { status: 404 });

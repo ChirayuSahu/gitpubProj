@@ -2,6 +2,7 @@ import { connectMongo } from "@/utils/connectMongo";
 import { NextResponse, NextRequest } from "next/server";
 import User from "@/models/user";
 import { hashPass } from "@/lib/encrypt";
+import { sanitizeFilter } from "mongoose";
 
 
 export const POST = async (req: NextRequest) => {
@@ -18,24 +19,24 @@ export const POST = async (req: NextRequest) => {
 
         await connectMongo();
 
-        const existingEmail = await User.findOne({ email });
+        const existingEmail = await User.findOne(sanitizeFilter({ email }));
 
         if (existingEmail) {
             return NextResponse.json({message: "Email already exists."}, {status: 400});
         }
 
-        const existingUsername = await User.findOne({ username });
+        const existingUsername = await User.findOne(sanitizeFilter({ username }));
 
         if(existingUsername) {
             return NextResponse.json({message: "Username already exists."}, {status: 400});
         }
 
-        const user = await User.create({
+        const user = await User.create(sanitizeFilter({
             name,
             username,
             email,
             password: hashedPass,
-        })
+        }));
         
         user.save();
 

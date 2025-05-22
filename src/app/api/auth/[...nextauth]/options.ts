@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { connectMongo } from "@/utils/connectMongo";
 import User from "@/models/user";
 import { comparePass } from "@/lib/encrypt";
+import { sanitizeFilter } from "mongoose";
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -21,8 +22,8 @@ export const authOptions: NextAuthOptions = {
                     await connectMongo();
                     const user = await User.findOne({
                         $or:[
-                            { email: credentials.email },
-                            { username: credentials.email }
+                            sanitizeFilter({ email: credentials.email }),
+                            sanitizeFilter({ username: credentials.email })
                         ]
                     });
 

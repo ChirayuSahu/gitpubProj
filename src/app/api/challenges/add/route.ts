@@ -3,6 +3,7 @@ import { connectMongo } from "@/utils/connectMongo";
 import Challenge from "@/models/challenges";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { sanitizeFilter } from "mongoose";
 
 export const POST = async (req: NextRequest) => {
 
@@ -20,7 +21,7 @@ export const POST = async (req: NextRequest) => {
     try {
         await connectMongo();
 
-        const challenge = await Challenge.create({
+        const challenge = await Challenge.create(sanitizeFilter({
             name,
             description,
             difficulty,
@@ -29,7 +30,7 @@ export const POST = async (req: NextRequest) => {
             timeLimit,
             testCases,
             starterCode,
-        });
+        }));
 
         challenge.save();
 
