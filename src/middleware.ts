@@ -8,8 +8,19 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isAuthPage = pathname === "/login" || pathname === "/signup";
-  const protectedRoutes = ["/dashboard", "/campaign", "/pvp", "/menu", "/leaderboard", "/gamemodes", "/courses", "/chaos" ];
+  const protectedRoutes = ["/dashboard", "/campaign", "/pvp", "/menu", "/leaderboard", "/gamemodes", "/courses", "/chaos"];
   const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route));
+
+  if (pathname.startsWith("/api")) {
+
+    const acceptHeader = request.headers.get("accept") || "";
+
+    if (acceptHeader.includes("text/html")) {
+      return NextResponse.redirect(new URL("/menu", request.url));
+    }
+
+    return NextResponse.next();
+  }
 
   if (isProtectedRoute && !token) {
     return NextResponse.redirect(new URL("/login", request.url));
@@ -23,5 +34,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login", "/signup", "/campaign/:path*", "/pvp/:path*", "/menu", "/leaderboard", "/gamemodes", "/courses", "/chaos"],
+  matcher: ["/dashboard/:path*", "/login", "/signup", "/campaign/:path*", "/pvp/:path*", "/menu", "/leaderboard", "/gamemodes", "/courses", "/chaos", "/api/:path*"],
 };
