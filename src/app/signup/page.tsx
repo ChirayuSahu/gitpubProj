@@ -79,6 +79,15 @@ const SignUpPage = () => {
         return <LoadingPage text="Signing up..." progress={progress} />
     }
 
+    useEffect(() => {
+        const lowerCaseUsername = form.username.toLowerCase();
+
+        if (form.username !== lowerCaseUsername) {
+            setForm((prev) => ({ ...prev, username: lowerCaseUsername }));
+        }
+
+    },[form.username])
+
 
     return (
         <>

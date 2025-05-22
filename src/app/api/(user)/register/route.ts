@@ -13,6 +13,18 @@ export const POST = async (req: NextRequest) => {
         return NextResponse.json({ message: "All fields are required." }, { status: 400 });
     }
 
+    if(username.includes(" ")) {
+        return NextResponse.json({ message: "Username cannot contain spaces." }, { status: 400 });
+    }
+    
+    if(!username.match(/^[a-zA-Z0-9_]+$/)) {
+        return NextResponse.json({ message: "Username can only contain letters, numbers, and underscores." }, { status: 400 });
+    }
+
+    if(!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        return NextResponse.json({ message: "Invalid email address." }, { status: 400 });
+    }
+
     const hashedPass = await hashPass(password);
 
     try {
